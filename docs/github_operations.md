@@ -33,6 +33,8 @@ state/latest_hashes.json
 3. Actions의 첫 수동 실행이 `SEED_COHORT`, 8/8 success인지 확인
 4. `data` 브랜치의 bundle과 manifest 생성 확인
 
+저장소 공개 설정은 15분마다 실행되는 standard GitHub-hosted runner 비용을 피하기 위한 MVP 선택이다. 비공개 전환 전에는 Actions 사용량 예산과 billing을 먼저 확인한다.
+
 서울 공식 OpenAPI endpoint가 HTTP를 사용하므로 인증키는 URL path에 들어간다. workflow와 Python client는 URL을 로그에 출력하지 않지만 전송계층 자체는 서울 공식 endpoint 조건을 따른다.
 
 ## 저장소 한계와 이관 gate
@@ -45,4 +47,3 @@ state/latest_hashes.json
 - 최초 30일 운영 완료
 
 이관 후 `data` 브랜치에는 manifest와 object URI/hash만 남긴다. GitHub Actions 자체는 orchestrator로 유지한다.
-
