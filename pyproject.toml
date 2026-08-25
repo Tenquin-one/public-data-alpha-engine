@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "public-data-alpha-engine"
+version = "0.1.0"
+description = "Opportunity Foundry v0.3 Public Data Alpha Engine local MVP"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+pdae = "public_data_alpha_engine.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
