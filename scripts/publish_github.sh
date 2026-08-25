@@ -1,7 +1,8 @@
 #!/bin/sh
 set -eu
 
-REPOSITORY="taing77/public-data-alpha-engine"
+EXPECTED_LOGIN="Tenquin-one"
+REPOSITORY="$EXPECTED_LOGIN/public-data-alpha-engine"
 GH_VERSION="2.97.0"
 PROJECT_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
 PUBLISH_TMP=$(mktemp -d)
@@ -35,8 +36,8 @@ if ! "$GH_BIN" auth status --hostname github.com >/dev/null 2>&1; then
 fi
 
 LOGIN=$("$GH_BIN" api user --jq .login)
-if [ "$LOGIN" != "taing77" ]; then
-  echo "Authenticated GitHub account is '$LOGIN', expected 'taing77'. No repository was created." >&2
+if [ "$LOGIN" != "$EXPECTED_LOGIN" ]; then
+  echo "Authenticated GitHub account is '$LOGIN', expected '$EXPECTED_LOGIN'. No repository was created." >&2
   exit 1
 fi
 
@@ -64,4 +65,3 @@ git push origin data
 
 "$GH_BIN" workflow run collect-seoul.yml --repo "$REPOSITORY" --ref main
 echo "Repository created and first sample collection dispatched: https://github.com/$REPOSITORY"
-
