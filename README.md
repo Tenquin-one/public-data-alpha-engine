@@ -59,12 +59,14 @@ python3 -m public_data_alpha_engine.cli check
 python3 -m public_data_alpha_engine.cli collect-seoul --sample
 ```
 
-8곳을 실제 운영하려면 서울 열린데이터광장 키를 환경변수로 넣는다. 키는 URL·DB·로그에서 `REDACTED` 처리된다.
+8곳을 실제 운영하려면 서울 열린데이터광장 키를 환경변수로 넣는다. 로컬 CLI는 프로젝트 루트의 `.env`도 자동으로 읽으며, 이미 설정된 shell/GitHub Actions 환경변수를 덮어쓰지 않는다. 별도 `python-dotenv` 의존성은 없다. 키는 URL·DB·로그에서 `REDACTED` 처리된다.
 
 ```bash
-export SEOUL_OPEN_DATA_KEY="발급받은_키"
+# .env를 편집해 SEOUL_OPEN_DATA_KEY를 넣은 뒤 실행
 python3 -m public_data_alpha_engine.cli collect-seoul
 ```
+
+`.env`는 `.gitignore`에 포함되어 있으며 Git에 커밋하지 않는다. 채팅이나 로그에 노출된 키는 폐기하고 새 키로 교체한다.
 
 공공데이터포털 전체 목록은 활용신청 키를 사용한다. 공식 테스트 키는 조건 없는 10건만 반환한다.
 
@@ -84,7 +86,7 @@ python3 -m public_data_alpha_engine.cli mirror-csv planned.csv --planned
 운영 절차와 장애 복구는 [runbook](docs/runbook.md), 계산 규칙은 [scoring spec](docs/scoring_spec.md), 전체 테이블은 [data dictionary](docs/data_dictionary.md)를 참고한다.
 초기 후보·점수·Seed Queue·서울 cohort의 CSV는 `data/exports/`에 생성된다.
 
-GitHub 운영에서는 `.github/workflows/collect-seoul.yml`이 매시 07·22·37·52분에 실행된다. Repository secret `SEOUL_OPEN_DATA_KEY`가 없으면 공식 sample 지역 1곳, 있으면 seed 8곳을 수집한다. 원문은 매번 커지는 SQLite 대신 재구성 가능한 tar+gzip bundle로 `data` 브랜치에 적립한다. 설정과 object-storage 이관 gate는 [GitHub operations](docs/github_operations.md)에 있다.
+GitHub 운영에서는 `.github/workflows/collect-seoul.yml`이 매시 07·22·37·52분 실행을 요청한다. GitHub 예약 실행은 지연되거나 드물게 누락될 수 있으며, 다음 성공 run이 2.5 cadence를 넘긴 공백과 추정 누락 횟수를 manifest에 기록한다. Repository secret `SEOUL_OPEN_DATA_KEY`가 없으면 공식 sample 지역 1곳, 있으면 seed 8곳을 수집한다. 원문은 매번 커지는 SQLite 대신 재구성 가능한 tar+gzip bundle로 `data` 브랜치에 적립한다. 설정과 object-storage 이관 gate는 [GitHub operations](docs/github_operations.md)에 있다.
 
 ## 공식 근거
 

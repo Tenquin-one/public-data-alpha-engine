@@ -10,7 +10,7 @@ SQLite를 15분마다 커밋하면 DB 전체의 binary history가 누적된다. 
 
 ## 자동화
 
-`.github/workflows/collect-seoul.yml`은 UTC 매시 07·22·37·52분, 즉 15분 간격으로 실행한다. GitHub가 매시 정각에 혼잡할 수 있어 정각을 피했다.
+`.github/workflows/collect-seoul.yml`은 UTC 매시 07·22·37·52분, 즉 15분 간격으로 실행을 요청한다. GitHub가 매시 정각에 혼잡할 수 있어 정각을 피했다. 다만 GitHub `schedule`은 best-effort라 지연되거나 드물게 누락될 수 있다. 다음 실행은 직전 run과의 간격이 37분 30초를 넘으면 manifest `health.schedule`에 `WARNING`, 지연 초, 추정 누락 횟수를 기록한다.
 
 Repository secret `SEOUL_OPEN_DATA_KEY`가 있으면 8개 seed 장소를 수집한다. 없으면 workflow가 중단되지 않고 공식 `sample` 키로 광화문·덕수궁 한 곳만 수집하며 Actions summary에 경고를 남긴다. Secret 값은 저장하거나 로그에 출력하지 않고 endpoint에는 `REDACTED`만 남긴다.
 
@@ -24,7 +24,7 @@ runs/YYYY/MM/DD/<run-id>.json
 state/latest_hashes.json
 ```
 
-각 run manifest에는 수집시각, source timestamp, 장소, redacted endpoint/query, SHA-256, 원문·gzip byte, HTTP/retry/latency, missing section과 상태가 있다. 이전 hash와 같으면 새 raw payload를 bundle에 넣지 않지만 run manifest는 보존한다.
+각 run manifest에는 수집시각, source timestamp, 장소, redacted endpoint/query, SHA-256, 원문·gzip byte, HTTP/retry/latency, missing section, schedule health와 상태가 있다. 이전 hash와 같으면 새 raw payload를 bundle에 넣지 않지만 run manifest는 보존한다.
 
 ## 반드시 필요한 운영 설정
 
@@ -33,13 +33,13 @@ state/latest_hashes.json
 3. Actions의 첫 수동 실행이 `SEED_COHORT`, 8/8 success인지 확인
 4. `data` 브랜치의 bundle과 manifest 생성 확인
 
-저장소 공개 설정은 15분마다 실행되는 standard GitHub-hosted runner 비용을 피하기 위한 MVP 선택이다. 비공개 전환 전에는 Actions 사용량 예산과 billing을 먼저 확인한다.
+저장소 공개 설정은 15분마다 실행되는 standard GitHub-hosted runner 비용을 피하기 위한 MVP 선택이다. 30일 기준 예약 job은 최대 2,880회다. 각 job이 1분 미만이어도 유료 계산에서는 job별 올림 때문에 최대 2,880분으로 본다. 현재처럼 public repository + standard Linux runner이면 Actions 시간 비용은 $0다. 비공개 GitHub Free로 전환하면 2,000분 포함량을 약 880분 초과하며, 2026-08 기준 Linux $0.006/분이면 약 $5.28/월이다. 이 workflow는 Actions artifact/cache를 만들지 않으며 `data` 브랜치 저장량은 Actions artifact 과금과 별개다.
 
 서울 공식 OpenAPI endpoint가 HTTP를 사용하므로 인증키는 URL path에 들어간다. workflow와 Python client는 URL을 로그에 출력하지 않지만 전송계층 자체는 서울 공식 endpoint 조건을 따른다.
 
 ## 저장소 한계와 이관 gate
 
-8곳 실측 기준 약 24.48MB/day, 0.734GB/30일이다. Git은 장기 object storage가 아니므로 다음 중 하나가 먼저 발생하면 S3-compatible object storage로 bundle target을 이관한다.
+sample 1곳의 최근 실측 gzip 32,452 bytes 기준 raw는 약 3.12MB/day, 0.093GB/30일이며 manifest/Git overhead를 포함해 약 0.10~0.12GB/월로 본다. 8곳은 기존 실측 평균 31,875 bytes/장소 기준 약 24.48MB/day, 0.734GB/30일이고 overhead 포함 약 0.75~0.85GB/월로 예상한다. Git은 장기 object storage가 아니므로 다음 중 하나가 먼저 발생하면 S3-compatible object storage로 bundle target을 이관한다.
 
 - 누적 bundle 500MB
 - `data` checkout/commit 2분 초과

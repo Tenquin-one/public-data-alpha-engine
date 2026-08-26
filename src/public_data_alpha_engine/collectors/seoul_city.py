@@ -96,7 +96,7 @@ def register(conn: sqlite3.Connection) -> None:
             "Seoul realtime commercial/city seed cohort",
             "public_data_alpha_engine.collectors.seoul_city:SeoulCityCollector",
             f"{BASE_URL}/{{KEY}}/{{TYPE}}/{INTEGRATED_SERVICE}/1/5/{{AREA_NM}}",
-            "*/15 * * * *",
+            "7,22,37,52 * * * *",
             900,
             "AREA_NM/AREA_CD",
             "15-minute integrated snapshots; gzip raw only on unseen content hash; normalized sections and source timestamps in SQLite",
@@ -408,10 +408,30 @@ def detect_gaps(conn: sqlite3.Connection, *, now: datetime | None = None) -> int
     inserted = 0
     for place in conn.execute("SELECT area_name FROM place_registry WHERE enabled=1"):
         latest = conn.execute(
-            "SELECT collected_at FROM snapshots WHERE collector_id=? AND entity_key=? ORDER BY collected_at DESC LIMIT 1",
-            (COLLECTOR_ID, place["area_name"]),
+            """
+            SELECT collected_at FROM raw_payloads
+            WHERE source_id=? AND json_extract(query_params_json, '$.area_name')=?
+            ORDER BY collected_at DESC LIMIT 1
+            """,
+            (SOURCE_ID, place["area_name"]),
         ).fetchone()
         if latest and datetime.fromisoformat(latest["collected_at"]) >= threshold:
+            conn.execute(
+                """
+                UPDATE data_gap_events SET resolved_at=?
+                WHERE collector_id=? AND entity_key=? AND resolved_at IS NULL
+                """,
+                (now.replace(microsecond=0).isoformat(), COLLECTOR_ID, place["area_name"]),
+            )
+            continue
+        open_gap = conn.execute(
+            """
+            SELECT 1 FROM data_gap_events
+            WHERE collector_id=? AND entity_key=? AND resolved_at IS NULL LIMIT 1
+            """,
+            (COLLECTOR_ID, place["area_name"]),
+        ).fetchone()
+        if open_gap:
             continue
         expected_at = threshold.replace(microsecond=0).isoformat()
         cursor = conn.execute(

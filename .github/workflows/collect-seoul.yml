@@ -19,19 +19,19 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Check out engine
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           path: app
 
       - name: Check out time-axis asset branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: data
           path: asset
           fetch-depth: 1
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
@@ -73,6 +73,17 @@ jobs:
           echo "### Seoul collector" >> "$GITHUB_STEP_SUMMARY"
           echo "- Mode: ${{ steps.collector.outputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
           echo "- Durable target: data branch bundles/runs/state" >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+
+          state = json.loads(Path("asset/state/latest_hashes.json").read_text(encoding="utf-8"))
+          health = state.get("last_health", {})
+          schedule = health.get("schedule", {})
+          print(f"- Collection status: {state.get('last_status', 'UNKNOWN')}")
+          print(f"- Schedule health: {schedule.get('status', 'UNKNOWN')}")
+          print(f"- Missed intervals observed at this run: {schedule.get('missed_intervals', 0)}")
+          PY
           if [ "${{ steps.collector.outputs.mode }}" = "SAMPLE" ]; then
             echo "- Action required: add repository secret SEOUL_OPEN_DATA_KEY to collect all 8 areas." >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -80,4 +91,3 @@ jobs:
       - name: Fail after preserving health record
         if: steps.collector.outputs.exit_code != '0'
         run: exit 1
-

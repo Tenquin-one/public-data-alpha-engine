@@ -19,6 +19,8 @@ python3 -m public_data_alpha_engine.cli check
 
 키는 설정파일이나 DB에 넣지 않는다. 서울 key는 실제 요청 URL에 필요하지만 저장 endpoint에서는 `REDACTED`로 바꾼다.
 
+로컬 CLI는 프로젝트 루트 `.env`에서 위 두 이름만 자동으로 읽는다. shell에 이미 존재하는 환경변수가 우선하며, `.env`는 `.gitignore`에 포함되어 있다. GitHub Actions는 repository secret을 환경변수로 주입하므로 이 로컬 편의 기능의 영향을 받지 않는다.
+
 ## 3. Schedule
 
 ### 매일 1회 CORE
@@ -42,7 +44,9 @@ cron 예시:
 15 3 * * * /absolute/path/public_data_alpha_engine/scripts/run_core_daily.sh
 ```
 
-15분 주기는 8곳×96=768 calls/day다. 10분은 1,152 calls/day가 되어 key quota와 저장량을 더 압박하므로 v1에서 쓰지 않는다. 실제 발급 key의 일일 quota를 확인한 후 조정한다.
+15분 주기는 8곳×96=768 calls/day다. 서울 공식 매뉴얼상 실시간 인구의 기준 시각은 5분 단위지만 보정 후 사용자 제공까지 약 15분이 걸린다. 따라서 15분 polling은 새 정보의 제공 지연과 균형이 맞고, 10분 polling은 1,152 calls/day와 중복 manifest를 늘리는 데 비해 시간 우위가 제한적이다. 30분은 유효 시점 일부를 놓쳐 Data Time Advantage를 약화하므로 v1은 15분을 유지한다.
+
+GitHub `schedule`은 정확한 cron 서비스가 아니라 best-effort다. 지연 또는 누락될 수 있으므로 cloud manifest의 `health.schedule`은 직전 run 이후 2.5 cadence(37분 30초)를 넘으면 `WARNING`과 추정 `missed_intervals`를 기록한다. 워크플로 자체가 실행되지 않는 동안에는 기록할 수 없고 다음 실행에서 사후 감지한다.
 
 ## 4. 상태 확인
 
@@ -52,7 +56,7 @@ python3 -m public_data_alpha_engine.cli health
 python3 -m public_data_alpha_engine.cli check
 ```
 
-`health`는 마지막 snapshot이 cadence의 2.5배보다 오래된 장소를 gap으로 기록한다. `status`는 Seed Queue와 PRA 순위를 보여준다.
+`health`는 마지막 성공 관측(raw payload, 중복 포함)이 cadence의 2.5배보다 오래된 장소를 gap으로 기록한다. 같은 unresolved gap을 반복 생성하지 않으며 새 관측이 들어오면 해결 시각을 남긴다. `status`는 Seed Queue와 PRA 순위를 보여준다.
 
 ## 5. 실패 처리
 

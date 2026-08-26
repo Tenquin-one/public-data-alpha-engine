@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import json
+import os
 import sqlite3
 import tarfile
 import tempfile
 import unittest
+import urllib.error
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from public_data_alpha_engine.bootstrap import bootstrap
 from public_data_alpha_engine.collectors.seoul_city import (
@@ -20,7 +22,7 @@ from public_data_alpha_engine.collectors.seoul_city import (
 from public_data_alpha_engine.db import connect, init_db, integrity, upsert_source
 from public_data_alpha_engine.cloud_archive import collect_cloud_archive
 from public_data_alpha_engine.exports import export_initial_results
-from public_data_alpha_engine.http_client import HttpResponse
+from public_data_alpha_engine.http_client import HttpClient, HttpResponse
 from public_data_alpha_engine.prerelease import link_signals_to_datasets, parse_nia_html, upsert_signals
 from public_data_alpha_engine.registry import (
     DatasetRecord,
@@ -29,6 +31,7 @@ from public_data_alpha_engine.registry import (
     reconcile_planned_to_open,
 )
 from public_data_alpha_engine.scoring import score_dataset, set_override
+from public_data_alpha_engine.utils import load_local_env
 
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -63,6 +66,20 @@ class EngineTest(unittest.TestCase):
         conn = connect(self.db_path)
         init_db(conn)
         return conn
+
+    def test_local_env_loads_known_keys_without_overriding_shell(self) -> None:
+        env_path = self.temp_path / ".env"
+        env_path.write_text(
+            'SEOUL_OPEN_DATA_KEY="file-key"\nUNKNOWN_KEY=ignored\n',
+            encoding="utf-8",
+        )
+        with patch.dict(os.environ, {}, clear=True):
+            self.assertEqual(load_local_env(env_path), {"SEOUL_OPEN_DATA_KEY"})
+            self.assertEqual(os.environ["SEOUL_OPEN_DATA_KEY"], "file-key")
+            self.assertNotIn("UNKNOWN_KEY", os.environ)
+        with patch.dict(os.environ, {"SEOUL_OPEN_DATA_KEY": "shell-key"}, clear=True):
+            self.assertEqual(load_local_env(env_path), set())
+            self.assertEqual(os.environ["SEOUL_OPEN_DATA_KEY"], "shell-key")
 
     def test_bootstrap_is_idempotent_and_integral(self) -> None:
         with self.connection() as conn:
@@ -213,6 +230,22 @@ class EngineTest(unittest.TestCase):
             self.assertEqual(conn.execute("SELECT count(*) FROM snapshots").fetchone()[0], 1)
             self.assertEqual(conn.execute("SELECT count(*) FROM raw_payloads WHERE is_duplicate=1").fetchone()[0], 1)
 
+    def test_duplicate_observation_counts_as_fresh_for_gap_detection(self) -> None:
+        raw = (FIXTURES / "seoul_city_sample.json").read_bytes()
+        response = HttpResponse(raw, 200, "application/json", 12, 0)
+        with self.connection() as conn:
+            bootstrap(conn)
+            collector = SeoulCityCollector(conn, api_key="sample", client=FakeClient([response]))
+            collector.collect_area("광화문·덕수궁")
+            collector.collect_area("광화문·덕수궁")
+            inserted = detect_gaps(conn, now=datetime.now(UTC) + timedelta(minutes=20))
+            self.assertEqual(inserted, 7)
+            self.assertIsNone(
+                conn.execute(
+                    "SELECT gap_id FROM data_gap_events WHERE entity_key='광화문·덕수궁'"
+                ).fetchone()
+            )
+
     def test_collector_falls_back_to_xml(self) -> None:
         xml = b"<SeoulRtd.citydata><CITYDATA><AREA_NM>sample</AREA_NM><RESULT><CODE>INFO-000</CODE></RESULT></CITYDATA></SeoulRtd.citydata>"
         fake = FakeClient([ValueError("bad json"), HttpResponse(xml, 200, "application/xml", 20, 1)])
@@ -230,6 +263,26 @@ class EngineTest(unittest.TestCase):
             inserted = detect_gaps(conn, now=now)
             self.assertEqual(inserted, 8)
             self.assertEqual(conn.execute("SELECT count(*) FROM data_gap_events").fetchone()[0], 8)
+            self.assertEqual(detect_gaps(conn, now=now + timedelta(minutes=5)), 0)
+            self.assertEqual(conn.execute("SELECT count(*) FROM data_gap_events").fetchone()[0], 8)
+
+    def test_http_client_retries_transient_failure(self) -> None:
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b"{}"
+        response.status = 200
+        response.headers.get_content_type.return_value = "application/json"
+        with (
+            patch(
+                "public_data_alpha_engine.http_client.urllib.request.urlopen",
+                side_effect=[urllib.error.URLError("temporary"), response],
+            ) as urlopen,
+            patch("public_data_alpha_engine.http_client.time.sleep"),
+        ):
+            result = HttpClient(timeout=1, max_retries=2).request("https://example.test")
+        self.assertEqual(result.status, 200)
+        self.assertEqual(result.retries, 1)
+        self.assertEqual(urlopen.call_count, 2)
 
     def test_source_timestamp_ignores_forecast_values(self) -> None:
         payload = {
@@ -282,8 +335,21 @@ class EngineTest(unittest.TestCase):
         )
         self.assertEqual(second["new_payloads"], 0)
         self.assertEqual(second["duplicates"], 1)
+        self.assertEqual(second["health_status"], "OK")
+        self.assertEqual(second["missed_intervals"], 0)
         self.assertIsNone(second["bundle_path"])
         self.assertTrue(Path(second["run_path"]).exists())
+
+        delayed = collect_cloud_archive(
+            output,
+            api_key="sample",
+            client=FakeClient([response]),
+            now=datetime(2026, 8, 26, 1, 15, tzinfo=UTC),
+        )
+        self.assertEqual(delayed["health_status"], "WARNING")
+        self.assertEqual(delayed["missed_intervals"], 3)
+        delayed_manifest = json.loads(Path(delayed["run_path"]).read_text(encoding="utf-8"))
+        self.assertEqual(delayed_manifest["health"]["schedule"]["late_by_seconds"], 2700)
 
 
 if __name__ == "__main__":

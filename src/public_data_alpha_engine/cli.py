@@ -10,12 +10,13 @@ from typing import Any
 from .bootstrap import bootstrap
 from .collectors.seoul_city import SeoulCityCollector, detect_gaps
 from .cloud_archive import collect_cloud_archive
-from .db import DEFAULT_DB, connect, init_db, integrity
+from .db import DEFAULT_DB, PROJECT_ROOT, connect, init_db, integrity
 from .exports import DEFAULT_EXPORT_ROOT, export_initial_results
 from .prerelease import fetch_nia_signals, link_signals_to_datasets, upsert_signals
 from .registry import finish_run, mirror_records, reconcile_planned_to_open, start_run
 from .scoring import score_all
 from .sources import fetch_csv_registry, fetch_odcloud_catalog
+from .utils import load_local_env
 
 
 def _json(value: Any) -> None:
@@ -341,6 +342,8 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    # Local convenience only. Existing shell/Actions variables always take precedence.
+    load_local_env(PROJECT_ROOT / ".env")
     parser = build_parser()
     args = parser.parse_args(argv)
     try:
