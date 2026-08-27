@@ -287,7 +287,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "KMA_API_HUB_KEY",
                 WEATHER_CADENCE_SECONDS,
                 (airport.iata,),
-                ("om:phenomenonTime", "iwxxm:airTemperature"),
+                ("iwxxm:observationTime", "iwxxm:airTemperature"),
             )
         )
     specs.append(
@@ -449,6 +449,68 @@ def _find_recursive(value: Any, *names: str) -> Any:
     return None
 
 
+def _local_name(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1].split(":")[-1]
+
+
+def _iwxxm_value(root: ET.Element, name: str) -> Any:
+    for element in root.iter():
+        if _local_name(element.tag) == name:
+            text = (element.text or "").strip()
+            if text:
+                return text
+            for attribute, value in element.attrib.items():
+                if _local_name(attribute) == "href" and value:
+                    return value.rsplit("/", 1)[-1]
+    return None
+
+
+def _iwxxm_observation_time(root: ET.Element) -> Any:
+    for element in root.iter():
+        if _local_name(element.tag) != "observationTime":
+            continue
+        for nested in element.iter():
+            if _local_name(nested.tag) == "timePosition" and (nested.text or "").strip():
+                return (nested.text or "").strip()
+    return None
+
+
+def _metar_fields(item: dict[str, Any]) -> dict[str, Any]:
+    message = _find_recursive(item, "msgText", "metarMsg", "iwxxm")
+    direct = {
+        "observed_at": _find_recursive(item, "observationTime", "phenomenonTime", "tm"),
+        "metar": message,
+        "temperature_c": _find_recursive(item, "airTemperature", "ta"),
+        "dewpoint_c": _find_recursive(item, "dewpointTemperature", "td"),
+        "qnh_hpa": _find_recursive(item, "qnh", "ps"),
+        "wind_direction_deg": _find_recursive(item, "meanWindDirection", "wd"),
+        "wind_speed": _find_recursive(item, "meanWindSpeed", "ws"),
+        "wind_gust": _find_recursive(item, "windGustSpeed", "gst"),
+        "visibility_m": _find_recursive(item, "prevailingVisibility", "visibility", "vs"),
+        "present_weather": _find_recursive(item, "presentWeather", "ww"),
+    }
+    if not isinstance(message, str) or not message.lstrip().startswith("<"):
+        return direct
+    try:
+        root = ET.fromstring(message)
+    except ET.ParseError:
+        return direct
+    return {
+        "observed_at": _iwxxm_observation_time(root) or direct["observed_at"],
+        # API Hub's 2025 IWXXM response no longer guarantees a TAC msgText.
+        # Keep the XML in the immutable raw payload and avoid duplicating it here.
+        "metar": None,
+        "temperature_c": _iwxxm_value(root, "airTemperature") or direct["temperature_c"],
+        "dewpoint_c": _iwxxm_value(root, "dewpointTemperature") or direct["dewpoint_c"],
+        "qnh_hpa": _iwxxm_value(root, "qnh") or direct["qnh_hpa"],
+        "wind_direction_deg": _iwxxm_value(root, "meanWindDirection") or direct["wind_direction_deg"],
+        "wind_speed": _iwxxm_value(root, "meanWindSpeed") or direct["wind_speed"],
+        "wind_gust": _iwxxm_value(root, "windGustSpeed") or direct["wind_gust"],
+        "visibility_m": _iwxxm_value(root, "prevailingVisibility") or direct["visibility_m"],
+        "present_weather": _iwxxm_value(root, "presentWeather") or direct["present_weather"],
+    }
+
+
 def _number(value: Any, *, integer: bool = False) -> int | float | None:
     value = _scalar(value)
     if value in (None, "", "-"):
@@ -527,7 +589,7 @@ def _source_timestamp(source_id: str, parsed: dict[str, Any]) -> str | None:
         elif source_id.startswith("kac_flight_"):
             candidates.append(_get(item, "fgenTime", "fgentime"))
         elif source_id.startswith("kma_metar_"):
-            candidates.append(_find_recursive(item, "phenomenonTime", "tm"))
+            candidates.append(_metar_fields(item)["observed_at"])
         elif source_id == "kma_airport_warning":
             candidates.append(_get(item, "tm"))
     parsed_values = [_datetime(value) for value in candidates]
@@ -539,6 +601,15 @@ def _missing_fields(spec: RequestSpec, parsed: dict[str, Any]) -> list[str]:
     items = _items(parsed)
     if not items:
         return ["items"]
+
+    if spec.source_id.startswith("kma_metar_"):
+        fields = _metar_fields(items[0])
+        missing = []
+        if fields["observed_at"] in (None, ""):
+            missing.append("iwxxm:observationTime")
+        if fields["temperature_c"] in (None, ""):
+            missing.append("iwxxm:airTemperature")
+        return missing
 
     def contains_field(value: Any, field: str) -> bool:
         target = field.casefold().split(":")[-1]
@@ -704,18 +775,19 @@ def _apply_payload(components: dict[str, dict[str, Any]], source_id: str, parsed
     elif source_id.startswith("kma_metar_"):
         code = source_id.rsplit("_", 1)[-1]
         item = items[0] if items else parsed
-        observed = _find_recursive(item, "phenomenonTime", "tm")
+        fields = _metar_fields(item)
+        observed = fields["observed_at"]
         components[code]["weather"] = {
             "observed_at": _iso(observed, default_tz=UTC),
-            "metar": _find_recursive(item, "msgText", "metarMsg"),
-            "temperature_c": _number(_find_recursive(item, "airTemperature", "ta")),
-            "dewpoint_c": _number(_find_recursive(item, "dewpointTemperature", "td")),
-            "qnh_hpa": _number(_find_recursive(item, "qnh", "ps")),
-            "wind_direction_deg": _number(_find_recursive(item, "meanWindDirection", "wd")),
-            "wind_speed": _number(_find_recursive(item, "meanWindSpeed", "ws")),
-            "wind_gust": _number(_find_recursive(item, "windGustSpeed", "gst")),
-            "visibility_m": _number(_find_recursive(item, "AerodromeHorizontalVisibility", "visibility", "vs")),
-            "present_weather": _find_recursive(item, "presentWeather", "ww"),
+            "metar": fields["metar"],
+            "temperature_c": _number(fields["temperature_c"]),
+            "dewpoint_c": _number(fields["dewpoint_c"]),
+            "qnh_hpa": _number(fields["qnh_hpa"]),
+            "wind_direction_deg": _number(fields["wind_direction_deg"]),
+            "wind_speed": _number(fields["wind_speed"]),
+            "wind_gust": _number(fields["wind_gust"]),
+            "visibility_m": _number(fields["visibility_m"]),
+            "present_weather": fields["present_weather"],
         }
         components[code]["source_timestamps"]["weather"] = _iso(observed, default_tz=UTC)
     elif source_id == "kma_airport_warning":

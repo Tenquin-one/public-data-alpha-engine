@@ -99,6 +99,39 @@ class AirportFrictionTest(unittest.TestCase):
         self.assertEqual(by_airport["CJU"]["weather_warnings"][0]["type"], "강풍")
         self.assertEqual(gimpo["calendar"]["weekday_iso"], 4)
 
+    def test_live_iwxxm_2023_1_metar_is_normalized(self) -> None:
+        client = FixtureRoutingClient()
+        iwxxm = """<iwxxm:METAR xmlns:iwxxm="http://icao.int/iwxxm/2023-1" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <iwxxm:issueTime><gml:TimeInstant><gml:timePosition>2026-08-27T15:59:00Z</gml:timePosition></gml:TimeInstant></iwxxm:issueTime>
+        <iwxxm:observationTime><gml:TimeInstant><gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition></gml:TimeInstant></iwxxm:observationTime>
+        <iwxxm:observation><iwxxm:MeteorologicalAerodromeObservation>
+        <iwxxm:airTemperature uom="Cel">26</iwxxm:airTemperature><iwxxm:dewpointTemperature uom="Cel">24</iwxxm:dewpointTemperature><iwxxm:qnh uom="hPa">1008</iwxxm:qnh>
+        <iwxxm:surfaceWind><iwxxm:AerodromeSurfaceWind><iwxxm:meanWindDirection uom="deg">340</iwxxm:meanWindDirection><iwxxm:meanWindSpeed uom="[kn_i]">005</iwxxm:meanWindSpeed></iwxxm:AerodromeSurfaceWind></iwxxm:surfaceWind>
+        <iwxxm:visibility><iwxxm:AerodromeHorizontalVisibility><iwxxm:prevailingVisibility uom="m">9000</iwxxm:prevailingVisibility></iwxxm:AerodromeHorizontalVisibility></iwxxm:visibility>
+        <iwxxm:presentWeather xlink:href="http://codes.wmo.int/306/4678/BR"/>
+        </iwxxm:MeteorologicalAerodromeObservation></iwxxm:observation></iwxxm:METAR>"""
+        client.responses["kma_metar_GMP"]["response"]["body"]["items"]["item"] = {
+            "icaoCode": "RKSS",
+            "metarMsg": iwxxm,
+        }
+        result = AirportFrictionCollector(
+            data_go_key="data-key", kma_key="kma-key", client=client
+        ).collect(self.output, mode="live", now=self.now, force_weather=True)
+        manifest = self.manifest(result)
+        observation = next(
+            value for value in manifest["source_observations"] if value["source_id"] == "kma_metar_GMP"
+        )
+        self.assertEqual(observation["status"], "OK")
+        self.assertEqual(observation["source_timestamp"], "2026-08-27T16:00:00+00:00")
+        gimpo = next(value for value in manifest["normalized_records"] if value["airport"]["iata"] == "GMP")
+        self.assertEqual(gimpo["weather"]["observed_at"], "2026-08-27T16:00:00+00:00")
+        self.assertEqual(gimpo["weather"]["temperature_c"], 26.0)
+        self.assertEqual(gimpo["weather"]["qnh_hpa"], 1008.0)
+        self.assertEqual(gimpo["weather"]["wind_speed"], 5.0)
+        self.assertEqual(gimpo["weather"]["visibility_m"], 9000.0)
+        self.assertEqual(gimpo["weather"]["present_weather"], "BR")
+        self.assertIsNone(gimpo["weather"]["metar"])
+
     def test_dedupe_uses_namespaced_latest_hashes(self) -> None:
         first = self.fixture_collect()
         second = self.fixture_collect(now=self.now + timedelta(minutes=15))
