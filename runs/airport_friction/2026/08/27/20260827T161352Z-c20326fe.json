@@ -1,0 +1,1519 @@
+{
+  "schema_version": 1,
+  "normalized_schema_version": "airport-friction-0.1",
+  "namespace": "airport_friction",
+  "collector_id": "airport_friction_v0_1",
+  "run_id": "20260827T161352Z-c20326fe",
+  "status": "PARTIAL",
+  "mode": "LIVE",
+  "trigger_source": "manual_after_kma_activation",
+  "collected_at": "2026-08-27T16:13:52.763088+00:00",
+  "source_observations": [
+    {
+      "source_id": "kac_process_time_v1",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/airport-process-time/v1?pageNo=1&numOfRows=1000&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "IATA_APCD",
+        "PRC_HR",
+        "STY_TCT_AVG_ALL"
+      ],
+      "http_status": 200,
+      "latency_ms": 1078,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_process_time_v2",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/airport-process-time/v2?pageNo=1&numOfRows=1000&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "IATA_APCD",
+        "PRC_HR",
+        "STY_TCT_AVG_ALL"
+      ],
+      "http_status": 200,
+      "latency_ms": 878,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_congestion_v1",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/airport-congestion/v1?pageNo=1&numOfRows=1000&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "items"
+      ],
+      "http_status": 200,
+      "latency_ms": 1014,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_congestion_v2",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/airport-congestion/v2?pageNo=1&numOfRows=1000&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "IATA_APCD",
+        "PRC_HR",
+        "CGDR_ALL_LVL"
+      ],
+      "http_status": 200,
+      "latency_ms": 1221,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_parking",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/parking-realtime-status/info?pageNo=1&numOfRows=1000&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "parkingIstay",
+        "parkingFullSpace",
+        "parkingGetdate",
+        "parkingGettime"
+      ],
+      "http_status": 200,
+      "latency_ms": 1168,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_parking_congestion",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/parking-congestion/info?pageNo=1&numOfRows=1000&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "parkingAirportCodeName",
+        "parkingCongestion",
+        "parkingCongestionDegree",
+        "parkingOccupiedSpace",
+        "parkingTotalSpace",
+        "sysGetdate",
+        "sysGettime"
+      ],
+      "http_status": 200,
+      "latency_ms": 1090,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_GMP",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=1000&searchday=20260828&from_time=0013&to_time=0213&airport_code=GMP&line=D&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "searchday": "20260828",
+        "from_time": "0013",
+        "to_time": "0213",
+        "airport_code": "GMP",
+        "line": "D",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": 200,
+      "latency_ms": 508,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_CJU",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=1000&searchday=20260828&from_time=0013&to_time=0213&airport_code=CJU&line=D&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "searchday": "20260828",
+        "from_time": "0013",
+        "to_time": "0213",
+        "airport_code": "CJU",
+        "line": "D",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": 200,
+      "latency_ms": 506,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_PUS",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=1000&searchday=20260828&from_time=0013&to_time=0213&airport_code=PUS&line=D&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "searchday": "20260828",
+        "from_time": "0013",
+        "to_time": "0213",
+        "airport_code": "PUS",
+        "line": "D",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": 200,
+      "latency_ms": 526,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_CJJ",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=1000&searchday=20260828&from_time=0013&to_time=0213&airport_code=CJJ&line=D&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "searchday": "20260828",
+        "from_time": "0013",
+        "to_time": "0213",
+        "airport_code": "CJJ",
+        "line": "D",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": 200,
+      "latency_ms": 570,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_TAE",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=1000&searchday=20260828&from_time=0013&to_time=0213&airport_code=TAE&line=D&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "searchday": "20260828",
+        "from_time": "0013",
+        "to_time": "0213",
+        "airport_code": "TAE",
+        "line": "D",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": 200,
+      "latency_ms": 732,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_schedule_GMP",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=1000&schDate=20260828&schDeptCityCode=GMP&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "schDate": "20260828",
+        "schDeptCityCode": "GMP",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": 200,
+      "latency_ms": 954,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_schedule_CJU",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=1000&schDate=20260828&schDeptCityCode=CJU&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "schDate": "20260828",
+        "schDeptCityCode": "CJU",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": 200,
+      "latency_ms": 521,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_schedule_PUS",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=1000&schDate=20260828&schDeptCityCode=PUS&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "schDate": "20260828",
+        "schDeptCityCode": "PUS",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": 200,
+      "latency_ms": 530,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_schedule_CJJ",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=1000&schDate=20260828&schDeptCityCode=CJJ&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "schDate": "20260828",
+        "schDeptCityCode": "CJJ",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": 200,
+      "latency_ms": 528,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kac_flight_schedule_TAE",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=1000&schDate=20260828&schDeptCityCode=TAE&type=json&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "1000",
+        "schDate": "20260828",
+        "schDeptCityCode": "TAE",
+        "type": "json",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": 200,
+      "latency_ms": 514,
+      "retries": 0,
+      "error": "OpenAPI gateway result 04: HTTP 에러"
+    },
+    {
+      "source_id": "kma_metar_GMP",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "PARTIAL",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKSS&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKSS",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": "e796b80fdfbdae523036971b0a09b4eb8053764d57b631c7838ca46bdf5a7cb0",
+      "raw_member": "payloads/kma-metar-gmp-e796b80fdfbdae523036971b0a09b4eb8053764d57b631c7838ca46bdf5a7cb0.json.gz",
+      "raw_uncompressed_bytes": 3344,
+      "raw_gzip_bytes": 1288,
+      "missing_sections": [
+        "om:phenomenonTime",
+        "iwxxm:airTemperature"
+      ],
+      "http_status": 200,
+      "latency_ms": 2054,
+      "retries": 0,
+      "error": null
+    },
+    {
+      "source_id": "kma_metar_CJU",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "PARTIAL",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKPC&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKPC",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": "571761075b4acf04d46b8fc0f06339be0b95b972f396e0968f6e6226cc71416a",
+      "raw_member": "payloads/kma-metar-cju-571761075b4acf04d46b8fc0f06339be0b95b972f396e0968f6e6226cc71416a.json.gz",
+      "raw_uncompressed_bytes": 3552,
+      "raw_gzip_bytes": 1292,
+      "missing_sections": [
+        "om:phenomenonTime",
+        "iwxxm:airTemperature"
+      ],
+      "http_status": 200,
+      "latency_ms": 2026,
+      "retries": 0,
+      "error": null
+    },
+    {
+      "source_id": "kma_metar_PUS",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "PARTIAL",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKPK&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKPK",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": "e308dc5877ca330f520c0db1a5453fdd7a9e0c686e66cc567af5c0abf3058de0",
+      "raw_member": "payloads/kma-metar-pus-e308dc5877ca330f520c0db1a5453fdd7a9e0c686e66cc567af5c0abf3058de0.json.gz",
+      "raw_uncompressed_bytes": 3343,
+      "raw_gzip_bytes": 1295,
+      "missing_sections": [
+        "om:phenomenonTime",
+        "iwxxm:airTemperature"
+      ],
+      "http_status": 200,
+      "latency_ms": 2224,
+      "retries": 0,
+      "error": null
+    },
+    {
+      "source_id": "kma_metar_CJJ",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "PARTIAL",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKTU&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKTU",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": "da06171ecc0e39f50b728c2fc9a62c1506e630c052bdd67673a25d4b3bb7b476",
+      "raw_member": "payloads/kma-metar-cjj-da06171ecc0e39f50b728c2fc9a62c1506e630c052bdd67673a25d4b3bb7b476.json.gz",
+      "raw_uncompressed_bytes": 3207,
+      "raw_gzip_bytes": 1312,
+      "missing_sections": [
+        "om:phenomenonTime",
+        "iwxxm:airTemperature"
+      ],
+      "http_status": 200,
+      "latency_ms": 2056,
+      "retries": 0,
+      "error": null
+    },
+    {
+      "source_id": "kma_metar_TAE",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "PARTIAL",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKTN&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKTN",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": "972f61dd5ee4d23c55173978fd3f8998d0470b98ba95c23742deca1a0255874f",
+      "raw_member": "payloads/kma-metar-tae-972f61dd5ee4d23c55173978fd3f8998d0470b98ba95c23742deca1a0255874f.json.gz",
+      "raw_uncompressed_bytes": 3553,
+      "raw_gzip_bytes": 1307,
+      "missing_sections": [
+        "om:phenomenonTime",
+        "iwxxm:airTemperature"
+      ],
+      "http_status": 200,
+      "latency_ms": 2077,
+      "retries": 0,
+      "error": null
+    },
+    {
+      "source_id": "kma_airport_warning",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "OK",
+      "collected_at": "2026-08-27T16:13:52.763088+00:00",
+      "source_timestamp": "2026-08-27T12:53:00+09:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmService/getWarning?pageNo=1&numOfRows=100&dataType=JSON&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "dataType": "JSON",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": "705c43b666963c7f2e04057fe5c4f04eddbd5d95110fc6d4f91ef81796dfcc46",
+      "raw_member": "payloads/kma-airport-warning-705c43b666963c7f2e04057fe5c4f04eddbd5d95110fc6d4f91ef81796dfcc46.json.gz",
+      "raw_uncompressed_bytes": 591,
+      "raw_gzip_bytes": 318,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1583,
+      "retries": 0,
+      "error": null
+    }
+  ],
+  "normalized_records": [
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-27T16:13:52.763088+00:00",
+      "airport": {
+        "iata": "GMP",
+        "icao": "RKSS",
+        "name_ko": "김포",
+        "name_en": "Gimpo"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-28T01:13:52.763088+09:00",
+        "end": "2026-08-28T01:43:52.763088+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": {
+        "observed_at": null,
+        "metar": "<iwxxm:METAR xmlns:aixm=\"http://www.aixm.aero/schema/5.1.1\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:iwxxm=\"http://icao.int/iwxxm/2023-1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" automatedStation=\"false\" gml:id=\"uuid.0bd70201-f5d1-42a7-ba57-6d4dcc2cd03f\" permissibleUsage=\"OPERATIONAL\" reportStatus=\"NORMAL\" xsi:schemaLocation=\"http://icao.int/iwxxm/2023-1 http://schemas.wmo.int/iwxxm/2023-1/iwxxm.xsd\">\n<iwxxm:issueTime>\n<gml:TimeInstant gml:id=\"uuid.acfaf810-a0e7-404e-b1da-07284fb290e7\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:issueTime>\n<iwxxm:aerodrome>\n<aixm:AirportHeliport gml:id=\"uuid.ab30aff2-0c2a-4845-8326-fb64975e6be5\">\n<aixm:timeSlice>\n<aixm:AirportHeliportTimeSlice gml:id=\"uuid.8251353c-3fc8-4dbf-8c5c-07c5166a20f0\">\n<gml:validTime/>\n<aixm:interpretation>SNAPSHOT</aixm:interpretation>\n<aixm:designator>RKSS</aixm:designator>\n<aixm:name>GIMPO INTERNATIONAL AIRPORT</aixm:name>\n<aixm:locationIndicatorICAO>RKSS</aixm:locationIndicatorICAO>\n<aixm:ARP>\n<aixm:ElevatedPoint axisLabels=\"latitude longitude\" gml:id=\"uuid.4e901b44-7b97-41d1-b2d9-dd13cde7bc28\" srsDimension=\"2\" srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\">\n<gml:pos>37.33 126.48</gml:pos>\n<aixm:elevation uom=\"M\">18.0</aixm:elevation>\n<aixm:verticalDatum>EGM_96</aixm:verticalDatum>\n</aixm:ElevatedPoint>\n</aixm:ARP>\n</aixm:AirportHeliportTimeSlice>\n</aixm:timeSlice>\n</aixm:AirportHeliport>\n</iwxxm:aerodrome>\n<iwxxm:observationTime>\n<gml:TimeInstant gml:id=\"uuid.ee1325bb-6075-4201-becf-5bb684e61860\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:observationTime>\n<iwxxm:observation>\n<iwxxm:MeteorologicalAerodromeObservation cloudAndVisibilityOK=\"false\" gml:id=\"uuid.0fb4cd3b-79d5-4d03-96d9-57b9cca375ba\">\n<iwxxm:airTemperature uom=\"Cel\">26</iwxxm:airTemperature>\n<iwxxm:dewpointTemperature uom=\"Cel\">26</iwxxm:dewpointTemperature>\n<iwxxm:qnh uom=\"hPa\">1008</iwxxm:qnh>\n<iwxxm:surfaceWind>\n<iwxxm:AerodromeSurfaceWind variableWindDirection=\"false\">\n<iwxxm:meanWindDirection uom=\"deg\">340</iwxxm:meanWindDirection>\n<iwxxm:meanWindSpeed uom=\"[kn_i]\">005</iwxxm:meanWindSpeed>\n</iwxxm:AerodromeSurfaceWind>\n</iwxxm:surfaceWind>\n<iwxxm:visibility>\n<iwxxm:AerodromeHorizontalVisibility>\n<iwxxm:prevailingVisibility uom=\"m\">10000</iwxxm:prevailingVisibility>\n</iwxxm:AerodromeHorizontalVisibility>\n</iwxxm:visibility>\n<iwxxm:cloud>\n<iwxxm:AerodromeCloud>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/FEW\"/>\n<iwxxm:base uom=\"[ft_i]\">4000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/BKN\"/>\n<iwxxm:base uom=\"[ft_i]\">16000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n</iwxxm:AerodromeCloud>\n</iwxxm:cloud>\n</iwxxm:MeteorologicalAerodromeObservation>\n</iwxxm:observation>\n</iwxxm:METAR>\n",
+        "temperature_c": null,
+        "dewpoint_c": null,
+        "qnh_hpa": null,
+        "wind_direction_deg": null,
+        "wind_speed": null,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-28",
+        "weekday_iso": 5,
+        "weekday_name": "Friday",
+        "is_weekend": false,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": null,
+        "weather_warning": "2026-08-27T12:53:00+09:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "PARTIAL",
+        "weather_warning": "OK"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "dd502b333a4c1cb927903d0e7d5d6655522d104f2f4ba3e40900fb9085589a3f"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-27T16:13:52.763088+00:00",
+      "airport": {
+        "iata": "CJU",
+        "icao": "RKPC",
+        "name_ko": "제주",
+        "name_en": "Jeju"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-28T01:13:52.763088+09:00",
+        "end": "2026-08-28T01:43:52.763088+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": {
+        "observed_at": null,
+        "metar": "<iwxxm:METAR xmlns:aixm=\"http://www.aixm.aero/schema/5.1.1\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:iwxxm=\"http://icao.int/iwxxm/2023-1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" automatedStation=\"false\" gml:id=\"uuid.a7aa8ad2-4e41-46e9-9b00-4ee1d44b3741\" permissibleUsage=\"OPERATIONAL\" reportStatus=\"NORMAL\" xsi:schemaLocation=\"http://icao.int/iwxxm/2023-1 http://schemas.wmo.int/iwxxm/2023-1/iwxxm.xsd\">\n<iwxxm:issueTime>\n<gml:TimeInstant gml:id=\"uuid.3c3effb4-bb41-4935-b45d-f71891cb03d5\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:issueTime>\n<iwxxm:aerodrome>\n<aixm:AirportHeliport gml:id=\"uuid.6d72b91a-e9e5-4703-adf9-64d8d04f5e61\">\n<aixm:timeSlice>\n<aixm:AirportHeliportTimeSlice gml:id=\"uuid.c63ef9b9-785f-4e3a-94eb-24e1dc9ad19e\">\n<gml:validTime/>\n<aixm:interpretation>SNAPSHOT</aixm:interpretation>\n<aixm:designator>RKPC</aixm:designator>\n<aixm:name>JEJU INTERNATIONAL AIRPORT</aixm:name>\n<aixm:locationIndicatorICAO>RKPC</aixm:locationIndicatorICAO>\n<aixm:ARP>\n<aixm:ElevatedPoint axisLabels=\"latitude longitude\" gml:id=\"uuid.74c96fde-43ae-4d4e-ab23-a99c632b8d07\" srsDimension=\"2\" srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\">\n<gml:pos>33.3 126.29</gml:pos>\n<aixm:elevation uom=\"M\">36.0</aixm:elevation>\n<aixm:verticalDatum>EGM_96</aixm:verticalDatum>\n</aixm:ElevatedPoint>\n</aixm:ARP>\n</aixm:AirportHeliportTimeSlice>\n</aixm:timeSlice>\n</aixm:AirportHeliport>\n</iwxxm:aerodrome>\n<iwxxm:observationTime>\n<gml:TimeInstant gml:id=\"uuid.58669af8-bbda-4aee-9811-1ce78e2ba6fe\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:observationTime>\n<iwxxm:observation>\n<iwxxm:MeteorologicalAerodromeObservation cloudAndVisibilityOK=\"false\" gml:id=\"uuid.f762d735-644e-472a-9419-342334f24104\">\n<iwxxm:airTemperature uom=\"Cel\">26</iwxxm:airTemperature>\n<iwxxm:dewpointTemperature uom=\"Cel\">26</iwxxm:dewpointTemperature>\n<iwxxm:qnh uom=\"hPa\">1007</iwxxm:qnh>\n<iwxxm:surfaceWind>\n<iwxxm:AerodromeSurfaceWind variableWindDirection=\"false\">\n<iwxxm:meanWindDirection uom=\"deg\">120</iwxxm:meanWindDirection>\n<iwxxm:meanWindSpeed uom=\"[kn_i]\">002</iwxxm:meanWindSpeed>\n</iwxxm:AerodromeSurfaceWind>\n</iwxxm:surfaceWind>\n<iwxxm:visibility>\n<iwxxm:AerodromeHorizontalVisibility>\n<iwxxm:prevailingVisibility uom=\"m\">10000</iwxxm:prevailingVisibility>\n</iwxxm:AerodromeHorizontalVisibility>\n</iwxxm:visibility>\n<iwxxm:cloud>\n<iwxxm:AerodromeCloud>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/FEW\"/>\n<iwxxm:base uom=\"[ft_i]\">1500</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/BKN\"/>\n<iwxxm:base uom=\"[ft_i]\">5000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/BKN\"/>\n<iwxxm:base uom=\"[ft_i]\">8000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n</iwxxm:AerodromeCloud>\n</iwxxm:cloud>\n</iwxxm:MeteorologicalAerodromeObservation>\n</iwxxm:observation>\n</iwxxm:METAR>\n",
+        "temperature_c": null,
+        "dewpoint_c": null,
+        "qnh_hpa": null,
+        "wind_direction_deg": null,
+        "wind_speed": null,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [
+        {
+          "issued_at": "2026-08-27T12:53:00+09:00",
+          "type": "00",
+          "valid_from": "2026-08-27T12:52:00+09:00",
+          "valid_to": "2026-08-27T17:00:00+09:00",
+          "message": "RKPC WS WRNG 4\r\n271253 VALID 271252/271700\r\nWS IN CLIMB-OUT OBS="
+        },
+        {
+          "issued_at": "2026-08-27T12:52:00+09:00",
+          "type": "00",
+          "valid_from": "2026-08-27T12:52:00+09:00",
+          "valid_to": "2026-08-27T17:00:00+09:00",
+          "message": "RKPC WS WRNG 3\r\n271252 VALID 271252/271700\r\nWS IN APCH OBS="
+        }
+      ],
+      "calendar": {
+        "local_date": "2026-08-28",
+        "weekday_iso": 5,
+        "weekday_name": "Friday",
+        "is_weekend": false,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": null,
+        "weather_warning": "2026-08-27T12:52:00+09:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "PARTIAL",
+        "weather_warning": "OK"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "86ca86a7721b6b4f4df72c755ac2470990db2bf6aa0041908114b002fc73e815"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-27T16:13:52.763088+00:00",
+      "airport": {
+        "iata": "PUS",
+        "icao": "RKPK",
+        "name_ko": "김해",
+        "name_en": "Gimhae"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-28T01:13:52.763088+09:00",
+        "end": "2026-08-28T01:43:52.763088+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": {
+        "observed_at": null,
+        "metar": "<iwxxm:METAR xmlns:aixm=\"http://www.aixm.aero/schema/5.1.1\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:iwxxm=\"http://icao.int/iwxxm/2023-1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" automatedStation=\"true\" gml:id=\"uuid.8ce8f0a0-6a78-4e9b-9327-4131e705c52d\" permissibleUsage=\"OPERATIONAL\" reportStatus=\"NORMAL\" xsi:schemaLocation=\"http://icao.int/iwxxm/2023-1 http://schemas.wmo.int/iwxxm/2023-1/iwxxm.xsd\">\n<iwxxm:issueTime>\n<gml:TimeInstant gml:id=\"uuid.08eaec48-2be6-46c2-987b-7a0c6c8df7fe\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:issueTime>\n<iwxxm:aerodrome>\n<aixm:AirportHeliport gml:id=\"uuid.895ce54e-936d-4ed3-b6b0-e522c0b8cfd0\">\n<aixm:timeSlice>\n<aixm:AirportHeliportTimeSlice gml:id=\"uuid.d6f1736e-bb30-4aeb-898a-02224ce7bf2c\">\n<gml:validTime/>\n<aixm:interpretation>SNAPSHOT</aixm:interpretation>\n<aixm:designator>RKPK</aixm:designator>\n<aixm:name>GIMHAE INTERNATIONAL AIRPORT</aixm:name>\n<aixm:locationIndicatorICAO>RKPK</aixm:locationIndicatorICAO>\n<aixm:ARP>\n<aixm:ElevatedPoint axisLabels=\"latitude longitude\" gml:id=\"uuid.8ac20d94-b228-4912-a8e4-208e6443d6eb\" srsDimension=\"2\" srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\">\n<gml:pos>35.11 128.56</gml:pos>\n<aixm:elevation uom=\"M\">4.0</aixm:elevation>\n<aixm:verticalDatum>EGM_96</aixm:verticalDatum>\n</aixm:ElevatedPoint>\n</aixm:ARP>\n</aixm:AirportHeliportTimeSlice>\n</aixm:timeSlice>\n</aixm:AirportHeliport>\n</iwxxm:aerodrome>\n<iwxxm:observationTime>\n<gml:TimeInstant gml:id=\"uuid.300f734d-322a-4014-86f8-769a956e9354\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:observationTime>\n<iwxxm:observation>\n<iwxxm:MeteorologicalAerodromeObservation cloudAndVisibilityOK=\"false\" gml:id=\"uuid.6b66d760-680e-4abf-a311-778d3586d580\">\n<iwxxm:airTemperature uom=\"Cel\">27</iwxxm:airTemperature>\n<iwxxm:dewpointTemperature uom=\"Cel\">25</iwxxm:dewpointTemperature>\n<iwxxm:qnh uom=\"hPa\">1008</iwxxm:qnh>\n<iwxxm:surfaceWind>\n<iwxxm:AerodromeSurfaceWind variableWindDirection=\"false\">\n<iwxxm:meanWindDirection uom=\"deg\">360</iwxxm:meanWindDirection>\n<iwxxm:meanWindSpeed uom=\"[kn_i]\">003</iwxxm:meanWindSpeed>\n</iwxxm:AerodromeSurfaceWind>\n</iwxxm:surfaceWind>\n<iwxxm:visibility>\n<iwxxm:AerodromeHorizontalVisibility>\n<iwxxm:prevailingVisibility uom=\"m\">10000</iwxxm:prevailingVisibility>\n</iwxxm:AerodromeHorizontalVisibility>\n</iwxxm:visibility>\n<iwxxm:cloud>\n<iwxxm:AerodromeCloud>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/FEW\"/>\n<iwxxm:base uom=\"[ft_i]\">5000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/SCT\"/>\n<iwxxm:base uom=\"[ft_i]\">25000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n</iwxxm:AerodromeCloud>\n</iwxxm:cloud>\n</iwxxm:MeteorologicalAerodromeObservation>\n</iwxxm:observation>\n</iwxxm:METAR>\n",
+        "temperature_c": null,
+        "dewpoint_c": null,
+        "qnh_hpa": null,
+        "wind_direction_deg": null,
+        "wind_speed": null,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-28",
+        "weekday_iso": 5,
+        "weekday_name": "Friday",
+        "is_weekend": false,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": null,
+        "weather_warning": "2026-08-27T12:53:00+09:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "PARTIAL",
+        "weather_warning": "OK"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "c307dcd2c50dffc0d76a7daf6ca95cb45c1188a398e04bf5b1c82d876195fb4e"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-27T16:13:52.763088+00:00",
+      "airport": {
+        "iata": "CJJ",
+        "icao": "RKTU",
+        "name_ko": "청주",
+        "name_en": "Cheongju"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-28T01:13:52.763088+09:00",
+        "end": "2026-08-28T01:43:52.763088+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": {
+        "observed_at": null,
+        "metar": "<iwxxm:METAR xmlns:aixm=\"http://www.aixm.aero/schema/5.1.1\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:iwxxm=\"http://icao.int/iwxxm/2023-1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" automatedStation=\"true\" gml:id=\"uuid.e04c7e53-590f-408e-ac95-aecf01bcdf06\" permissibleUsage=\"OPERATIONAL\" reportStatus=\"NORMAL\" xsi:schemaLocation=\"http://icao.int/iwxxm/2023-1 http://schemas.wmo.int/iwxxm/2023-1/iwxxm.xsd\">\n<iwxxm:issueTime>\n<gml:TimeInstant gml:id=\"uuid.4860607e-fe48-4cf7-8019-6b74669ec725\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:issueTime>\n<iwxxm:aerodrome>\n<aixm:AirportHeliport gml:id=\"uuid.b78e1e45-2824-4220-8ecc-c501b40c4686\">\n<aixm:timeSlice>\n<aixm:AirportHeliportTimeSlice gml:id=\"uuid.23aaf466-170f-4e5a-b11a-e50c0c6ee0ad\">\n<gml:validTime/>\n<aixm:interpretation>SNAPSHOT</aixm:interpretation>\n<aixm:designator>RKTU</aixm:designator>\n<aixm:name>CHEONGJU INTERNATIONAL AIRPORT</aixm:name>\n<aixm:locationIndicatorICAO>RKTU</aixm:locationIndicatorICAO>\n<aixm:ARP>\n<aixm:ElevatedPoint axisLabels=\"latitude longitude\" gml:id=\"uuid.9e36070e-7961-48ac-9d42-7043c105be37\" srsDimension=\"2\" srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\">\n<gml:pos>36.43 127.29</gml:pos>\n<aixm:elevation uom=\"M\">58.5</aixm:elevation>\n<aixm:verticalDatum>EGM_96</aixm:verticalDatum>\n</aixm:ElevatedPoint>\n</aixm:ARP>\n</aixm:AirportHeliportTimeSlice>\n</aixm:timeSlice>\n</aixm:AirportHeliport>\n</iwxxm:aerodrome>\n<iwxxm:observationTime>\n<gml:TimeInstant gml:id=\"uuid.62710d70-cb4c-4468-9ffe-db864c5ee9bd\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:observationTime>\n<iwxxm:observation>\n<iwxxm:MeteorologicalAerodromeObservation cloudAndVisibilityOK=\"false\" gml:id=\"uuid.9f0471fa-edc3-4b1b-8d12-95e8b58a6802\">\n<iwxxm:airTemperature uom=\"Cel\">24</iwxxm:airTemperature>\n<iwxxm:dewpointTemperature uom=\"Cel\">23</iwxxm:dewpointTemperature>\n<iwxxm:qnh uom=\"hPa\">1008</iwxxm:qnh>\n<iwxxm:surfaceWind>\n<iwxxm:AerodromeSurfaceWind variableWindDirection=\"false\">\n<iwxxm:meanWindDirection uom=\"deg\">310</iwxxm:meanWindDirection>\n<iwxxm:meanWindSpeed uom=\"[kn_i]\">001</iwxxm:meanWindSpeed>\n</iwxxm:AerodromeSurfaceWind>\n</iwxxm:surfaceWind>\n<iwxxm:visibility>\n<iwxxm:AerodromeHorizontalVisibility>\n<iwxxm:prevailingVisibility uom=\"m\"> 9000</iwxxm:prevailingVisibility>\n</iwxxm:AerodromeHorizontalVisibility>\n</iwxxm:visibility>\n<iwxxm:presentWeather xlink:href=\"http://codes.wmo.int/306/4678/BR\"/>\n<iwxxm:cloud>\n<iwxxm:AerodromeCloud>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/FEW\"/>\n<iwxxm:base uom=\"[ft_i]\">6000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n</iwxxm:AerodromeCloud>\n</iwxxm:cloud>\n</iwxxm:MeteorologicalAerodromeObservation>\n</iwxxm:observation>\n</iwxxm:METAR>\n",
+        "temperature_c": null,
+        "dewpoint_c": null,
+        "qnh_hpa": null,
+        "wind_direction_deg": null,
+        "wind_speed": null,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-28",
+        "weekday_iso": 5,
+        "weekday_name": "Friday",
+        "is_weekend": false,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": null,
+        "weather_warning": "2026-08-27T12:53:00+09:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "PARTIAL",
+        "weather_warning": "OK"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "21c8d663ab05155717078fbe4a14b596bde96783beb37a53a5b322818523574d"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-27T16:13:52.763088+00:00",
+      "airport": {
+        "iata": "TAE",
+        "icao": "RKTN",
+        "name_ko": "대구",
+        "name_en": "Daegu"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-28T01:13:52.763088+09:00",
+        "end": "2026-08-28T01:43:52.763088+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": {
+        "observed_at": null,
+        "metar": "<iwxxm:METAR xmlns:aixm=\"http://www.aixm.aero/schema/5.1.1\" xmlns:gml=\"http://www.opengis.net/gml/3.2\" xmlns:iwxxm=\"http://icao.int/iwxxm/2023-1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" automatedStation=\"true\" gml:id=\"uuid.9743e286-f313-46fe-96d5-fb539e1eff3e\" permissibleUsage=\"OPERATIONAL\" reportStatus=\"NORMAL\" xsi:schemaLocation=\"http://icao.int/iwxxm/2023-1 http://schemas.wmo.int/iwxxm/2023-1/iwxxm.xsd\">\n<iwxxm:issueTime>\n<gml:TimeInstant gml:id=\"uuid.e6e3ad1c-55bb-446a-96bb-62c935b37897\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:issueTime>\n<iwxxm:aerodrome>\n<aixm:AirportHeliport gml:id=\"uuid.a1747a01-9f01-4fde-8b8d-f1cd5bd85ea1\">\n<aixm:timeSlice>\n<aixm:AirportHeliportTimeSlice gml:id=\"uuid.b1ad1aad-da50-448e-9428-2d517815c9b3\">\n<gml:validTime/>\n<aixm:interpretation>SNAPSHOT</aixm:interpretation>\n<aixm:designator>RKTN</aixm:designator>\n<aixm:name>DAEGU INTERNATIONAL AIRPORT</aixm:name>\n<aixm:locationIndicatorICAO>RKTN</aixm:locationIndicatorICAO>\n<aixm:ARP>\n<aixm:ElevatedPoint axisLabels=\"latitude longitude\" gml:id=\"uuid.2ed7ffb5-2f07-4877-8b75-993f673f3513\" srsDimension=\"2\" srsName=\"http://www.opengis.net/def/crs/EPSG/0/4326\">\n<gml:pos>35.53 128.39</gml:pos>\n<aixm:elevation uom=\"M\">36.6</aixm:elevation>\n<aixm:verticalDatum>EGM_96</aixm:verticalDatum>\n</aixm:ElevatedPoint>\n</aixm:ARP>\n</aixm:AirportHeliportTimeSlice>\n</aixm:timeSlice>\n</aixm:AirportHeliport>\n</iwxxm:aerodrome>\n<iwxxm:observationTime>\n<gml:TimeInstant gml:id=\"uuid.4704befd-9ef3-4578-9d30-58e1cbbd7fcf\">\n<gml:timePosition>2026-08-27T16:00:00Z</gml:timePosition>\n</gml:TimeInstant>\n</iwxxm:observationTime>\n<iwxxm:observation>\n<iwxxm:MeteorologicalAerodromeObservation cloudAndVisibilityOK=\"false\" gml:id=\"uuid.82685446-4416-4859-a472-21179ae031a9\">\n<iwxxm:airTemperature uom=\"Cel\">25</iwxxm:airTemperature>\n<iwxxm:dewpointTemperature uom=\"Cel\">24</iwxxm:dewpointTemperature>\n<iwxxm:qnh uom=\"hPa\">1009</iwxxm:qnh>\n<iwxxm:surfaceWind>\n<iwxxm:AerodromeSurfaceWind variableWindDirection=\"false\">\n<iwxxm:meanWindDirection uom=\"deg\">140</iwxxm:meanWindDirection>\n<iwxxm:meanWindSpeed uom=\"[kn_i]\">001</iwxxm:meanWindSpeed>\n</iwxxm:AerodromeSurfaceWind>\n</iwxxm:surfaceWind>\n<iwxxm:visibility>\n<iwxxm:AerodromeHorizontalVisibility>\n<iwxxm:prevailingVisibility uom=\"m\">10000</iwxxm:prevailingVisibility>\n</iwxxm:AerodromeHorizontalVisibility>\n</iwxxm:visibility>\n<iwxxm:cloud>\n<iwxxm:AerodromeCloud>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/FEW\"/>\n<iwxxm:base uom=\"[ft_i]\">1000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/SCT\"/>\n<iwxxm:base uom=\"[ft_i]\">3000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n<iwxxm:layer>\n<iwxxm:CloudLayer>\n<iwxxm:amount xlink:href=\"http://codes.wmo.int/49-2/CloudAmountReportedAtAerodrome/BKN\"/>\n<iwxxm:base uom=\"[ft_i]\">7000</iwxxm:base>\n</iwxxm:CloudLayer>\n</iwxxm:layer>\n</iwxxm:AerodromeCloud>\n</iwxxm:cloud>\n</iwxxm:MeteorologicalAerodromeObservation>\n</iwxxm:observation>\n</iwxxm:METAR>\n",
+        "temperature_c": null,
+        "dewpoint_c": null,
+        "qnh_hpa": null,
+        "wind_direction_deg": null,
+        "wind_speed": null,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-28",
+        "weekday_iso": 5,
+        "weekday_name": "Friday",
+        "is_weekend": false,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": null,
+        "weather_warning": "2026-08-27T12:53:00+09:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "PARTIAL",
+        "weather_warning": "OK"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "49480927957f5b29691ce036e5c969326b629036221c82943626b2b659931363"
+    }
+  ],
+  "summary": {
+    "airports": 5,
+    "sources_due_or_skipped": 22,
+    "sources_succeeded": 6,
+    "sources_partial": 5,
+    "sources_skipped_not_due": 0,
+    "new_payloads": 6,
+    "duplicates": 0,
+    "errors": 16,
+    "gzip_bytes": 6812
+  },
+  "health": {
+    "schedule": {
+      "status": "OK",
+      "cadence_seconds": 900,
+      "previous_run_at": "2026-08-27T16:00:32.080426+00:00",
+      "elapsed_seconds": 801,
+      "late_by_seconds": 0,
+      "missed_intervals": 0
+    },
+    "source_gaps": [
+      {
+        "source_id": "kac_process_time_v1",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_process_time_v2",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_congestion_v1",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_congestion_v2",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_parking",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_parking_congestion",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_GMP",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_CJU",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_PUS",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_CJJ",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_TAE",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_GMP",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_CJU",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_PUS",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_CJJ",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_TAE",
+        "status": "STALE",
+        "age_seconds": 9294,
+        "cadence_seconds": 900
+      }
+    ],
+    "requests": {
+      "total_retries": 0,
+      "max_latency_ms": 2224,
+      "missing_sections": 81
+    },
+    "storage": {
+      "new_gzip_bytes": 6812,
+      "cumulative_new_gzip_bytes": 9004,
+      "migration_threshold_bytes": 500000000,
+      "status": "OK"
+    }
+  },
+  "quota_budget": {
+    "cadence_minutes": 15,
+    "weather_minutes": 30,
+    "services": {
+      "kac_airport_process_time": {
+        "requests_per_run": 2,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 192,
+        "quota_utilization_pct": 3.84,
+        "headroom": 4808
+      },
+      "kac_airport_congestion": {
+        "requests_per_run": 2,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 192,
+        "quota_utilization_pct": 3.84,
+        "headroom": 4808
+      },
+      "kac_parking_realtime_status": {
+        "requests_per_run": 1,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 96,
+        "quota_utilization_pct": 1.92,
+        "headroom": 4904
+      },
+      "kac_parking_congestion": {
+        "requests_per_run": 1,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 96,
+        "quota_utilization_pct": 1.92,
+        "headroom": 4904
+      },
+      "kac_flight_status": {
+        "requests_per_run": 5,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 480,
+        "quota_utilization_pct": 9.6,
+        "headroom": 4520
+      },
+      "kac_flight_schedule": {
+        "requests_per_run": 5,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 480,
+        "quota_utilization_pct": 9.6,
+        "headroom": 4520
+      },
+      "kma_api_hub_combined": {
+        "requests_per_run": 6,
+        "runs_per_day": 48,
+        "quota": 20000,
+        "requests_per_day": 288,
+        "quota_utilization_pct": 1.44,
+        "headroom": 19712
+      }
+    },
+    "totals": {
+      "kac_requests_per_day": 1536,
+      "kma_requests_per_day": 288,
+      "all_requests_per_day": 1824,
+      "requests_60_days": 109440,
+      "requests_90_days": 164160
+    },
+    "temporary_dual_scheduler_overlap": {
+      "assumption": "two 15-minute clocks; shared state; force_weather=false",
+      "kac_requests_per_day": 3072,
+      "kma_requests_per_day": 288,
+      "all_requests_per_day": 3360,
+      "kac_shared_pool_utilization_pct": 61.44,
+      "all_services_within_published_limits": true
+    }
+  }
+}
