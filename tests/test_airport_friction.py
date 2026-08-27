@@ -193,7 +193,7 @@ class AirportFrictionTest(unittest.TestCase):
         for url in kac_urls:
             query = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
             self.assertEqual(query["type"], ["xml"])
-            expected_rows = "1000" if "flight-schedule" in url else "100"
+            expected_rows = "999" if "flight-schedule" in url else "100"
             self.assertEqual(query["numOfRows"], [expected_rows])
             self.assertEqual(query["serviceKey"], ["data-key"])
             self.assertTrue(urllib.parse.urlparse(url).query.startswith("serviceKey="))

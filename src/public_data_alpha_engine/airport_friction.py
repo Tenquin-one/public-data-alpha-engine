@@ -261,7 +261,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/dom",
                 {
                     "pageNo": "1",
-                    "numOfRows": "1000",
+                    "numOfRows": "999",
                     "schDate": local.strftime("%Y%m%d"),
                     "schDeptCityCode": airport.iata,
                     "type": "xml",

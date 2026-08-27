@@ -36,7 +36,7 @@ gateway `04 HTTP_ERROR` observed when the newly migrated services were called
 with forced JSON and 1,000-row pages; raw XML remains gzip-compressed and the
 same normalization layer handles it.
 
-The recurring flight-schedule operation uses a 1,000-row page because the
+The recurring flight-schedule operation uses a 999-row page because the
 Gimpo and Jeju result sets exceed 100 rows. Every response still compares
 `totalCount` with the returned item count; an unexpectedly larger result is
 marked `pagination_incomplete` and `PARTIAL`, including when its payload hash is
