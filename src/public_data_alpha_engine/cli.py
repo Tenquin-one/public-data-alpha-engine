@@ -7,7 +7,9 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from .airport_friction import quota_budget
 from .bootstrap import bootstrap
+from .collectors.factory import create_collector
 from .collectors.seoul_city import SeoulCityCollector, detect_gaps
 from .cloud_archive import collect_cloud_archive
 from .db import DEFAULT_DB, PROJECT_ROOT, connect, init_db, integrity
@@ -168,6 +170,27 @@ def command_collect_cloud(args: argparse.Namespace) -> None:
     _json(result)
     if result["status"] == "FAILED":
         raise RuntimeError("all Seoul cloud archive requests failed")
+
+
+def command_collect_airport(args: argparse.Namespace) -> None:
+    collector = create_collector(
+        "airport_friction",
+        data_go_key=os.getenv("DATA_GO_KR_SERVICE_KEY"),
+        kma_key=os.getenv("KMA_API_HUB_KEY"),
+    )
+    result = collector.collect(
+        Path(args.output),
+        mode="fixture" if args.fixture else "live",
+        trigger_source=args.trigger_source,
+        force_weather=args.force_weather,
+    )
+    _json(result)
+    if result["status"] == "FAILED" or (args.strict and result["status"] != "SUCCESS"):
+        raise RuntimeError(f"Airport Friction collection ended {result['status']}")
+
+
+def command_airport_quota(_: argparse.Namespace) -> None:
+    _json(quota_budget())
 
 
 def command_health(args: argparse.Namespace) -> None:
@@ -331,6 +354,14 @@ def build_parser() -> argparse.ArgumentParser:
     cloud = sub.add_parser("collect-cloud")
     cloud.add_argument("--output", required=True, help="Data-branch checkout directory")
     cloud.set_defaults(func=command_collect_cloud)
+    airport = sub.add_parser("collect-airport")
+    airport.add_argument("--output", required=True, help="Data-branch checkout directory")
+    airport.add_argument("--fixture", action="store_true", help="Use the offline contract fixture; never calls a live API")
+    airport.add_argument("--trigger-source", default="manual", help="Provenance label such as manual, external, or github_schedule")
+    airport.add_argument("--force-weather", action="store_true", help="Collect 30-minute weather sources even when not due")
+    airport.add_argument("--strict", action="store_true", help="Return a failure exit code for PARTIAL as well as FAILED")
+    airport.set_defaults(func=command_collect_airport)
+    sub.add_parser("airport-quota").set_defaults(func=command_airport_quota)
     sub.add_parser("health").set_defaults(func=command_health)
     sub.add_parser("status").set_defaults(func=command_status)
     sub.add_parser("check").set_defaults(func=command_check)

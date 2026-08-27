@@ -15,11 +15,12 @@ python3 -m public_data_alpha_engine.cli check
 ## 2. 자격정보
 
 - `SEOUL_OPEN_DATA_KEY`: 서울 열린데이터광장 실시간 도시데이터 키
-- `DATA_GO_KR_SERVICE_KEY`: 공공데이터포털 목록조회 활용신청 키
+- `DATA_GO_KR_SERVICE_KEY`: 공공데이터포털 목록조회 및 활용신청한 KAC GW API 키
+- `KMA_API_HUB_KEY`: 기상청 API허브 국내항공 METAR/SPECI·공항특보 키
 
 키는 설정파일이나 DB에 넣지 않는다. 서울 key는 실제 요청 URL에 필요하지만 저장 endpoint에서는 `REDACTED`로 바꾼다.
 
-로컬 CLI는 프로젝트 루트 `.env`에서 위 두 이름만 자동으로 읽는다. shell에 이미 존재하는 환경변수가 우선하며, `.env`는 `.gitignore`에 포함되어 있다. GitHub Actions는 repository secret을 환경변수로 주입하므로 이 로컬 편의 기능의 영향을 받지 않는다.
+로컬 CLI는 프로젝트 루트 `.env`에서 위 세 이름만 자동으로 읽는다. shell에 이미 존재하는 환경변수가 우선하며, `.env`는 `.gitignore`에 포함되어 있다. GitHub Actions는 repository secret을 환경변수로 주입하므로 이 로컬 편의 기능의 영향을 받지 않는다.
 
 ## 3. Schedule
 
@@ -48,6 +49,14 @@ cron 예시:
 
 GitHub `schedule`은 정확한 cron 서비스가 아니라 best-effort다. 지연 또는 누락될 수 있으므로 cloud manifest의 `health.schedule`은 직전 run 이후 2.5 cadence(37분 30초)를 넘으면 `WARNING`과 추정 `missed_intervals`를 기록한다. 워크플로 자체가 실행되지 않는 동안에는 기록할 수 없고 다음 실행에서 사후 감지한다.
 
+### 15분마다 Airport Friction
+
+```bash
+scripts/run_airport_friction.sh /absolute/path/to/data-branch-checkout
+```
+
+KAC는 15분, KMA METAR/특보는 30분 간격이다. `workflow_dispatch` 외부 호출과 임시 GitHub backup schedule, 필요한 두 secret, quota와 복구 절차는 [Airport Friction runbook](airport_friction_runbook.md)에 있다.
+
 ## 4. 상태 확인
 
 ```bash
@@ -65,6 +74,8 @@ python3 -m public_data_alpha_engine.cli check
 - 서울: `SEOUL_OPEN_DATA_KEY`와 해당 API 이용신청 상태 확인
 - sample 키: `collect-seoul --sample`만 사용. 다른 7곳은 sample로 호출하지 않는다.
 - 공공데이터포털: 목록조회 API 활용신청 키를 사용. 테스트 키는 10건 제한
+- Airport Friction: KAC 7개 GW API가 모두 사용 가능 상태인지와 `DATA_GO_KR_SERVICE_KEY` 확인
+- 기상청 항공기상: API허브 활용신청과 `KMA_API_HUB_KEY` 확인. 폐기된 임시 test key 대신 offline fixture 사용
 
 ### TLS certificate 오류
 

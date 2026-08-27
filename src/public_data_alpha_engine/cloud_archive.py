@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import gzip
-import io
-import json
 import tarfile
 import urllib.parse
 import uuid
@@ -11,6 +9,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+from .archive import add_bytes as _add_bytes
+from .archive import read_json_state, schedule_health, write_json_atomic
 from .collectors.seoul_city import (
     BASE_URL,
     EXPECTED_SECTIONS,
@@ -49,54 +49,22 @@ class CloudArchiveRecord:
 
 
 def _read_state(path: Path) -> dict[str, Any]:
-    if not path.exists():
-        return {"version": 1, "areas": {}}
-    return json.loads(path.read_text(encoding="utf-8"))
+    state = read_json_state(path)
+    state.setdefault("areas", {})
+    return state
 
 
 def _write_json_atomic(path: Path, value: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(path.suffix + ".tmp")
-    temporary.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    temporary.replace(path)
+    write_json_atomic(path, value)
 
 
 def _schedule_health(state: dict[str, Any], now: datetime) -> dict[str, Any]:
-    previous_value = state.get("updated_at")
-    if not isinstance(previous_value, str):
-        return {
-            "status": "NO_BASELINE",
-            "cadence_seconds": CLOUD_CADENCE_SECONDS,
-            "previous_run_at": None,
-            "elapsed_seconds": None,
-            "late_by_seconds": 0,
-            "missed_intervals": 0,
-        }
-    try:
-        previous = datetime.fromisoformat(previous_value)
-        if previous.tzinfo is None:
-            previous = previous.replace(tzinfo=UTC)
-        previous = previous.astimezone(UTC)
-    except ValueError:
-        return {
-            "status": "INVALID_BASELINE",
-            "cadence_seconds": CLOUD_CADENCE_SECONDS,
-            "previous_run_at": previous_value,
-            "elapsed_seconds": None,
-            "late_by_seconds": 0,
-            "missed_intervals": 0,
-        }
-    elapsed = max(0, round((now - previous).total_seconds()))
-    missed_intervals = max(0, elapsed // CLOUD_CADENCE_SECONDS - 1)
-    threshold = CLOUD_CADENCE_SECONDS * CLOUD_GAP_THRESHOLD_MULTIPLIER
-    return {
-        "status": "WARNING" if elapsed > threshold else "OK",
-        "cadence_seconds": CLOUD_CADENCE_SECONDS,
-        "previous_run_at": previous.isoformat(),
-        "elapsed_seconds": elapsed,
-        "late_by_seconds": max(0, elapsed - CLOUD_CADENCE_SECONDS),
-        "missed_intervals": missed_intervals,
-    }
+    return schedule_health(
+        state,
+        now,
+        cadence_seconds=CLOUD_CADENCE_SECONDS,
+        gap_threshold_multiplier=CLOUD_GAP_THRESHOLD_MULTIPLIER,
+    )
 
 
 def _request_area(
@@ -120,14 +88,6 @@ def _request_area(
             if first_error is None:
                 first_error = exc
     raise RuntimeError(f"JSON and XML collection failed: {first_error}")
-
-
-def _add_bytes(archive: tarfile.TarFile, name: str, content: bytes, mtime: int) -> None:
-    info = tarfile.TarInfo(name)
-    info.size = len(content)
-    info.mtime = mtime
-    info.mode = 0o644
-    archive.addfile(info, io.BytesIO(content))
 
 
 def collect_cloud_archive(

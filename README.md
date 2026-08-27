@@ -1,10 +1,10 @@
 # Public Data Alpha Engine
 
-Opportunity Foundry v0.3의 CORE 모듈을 SQLite와 GitHub Actions 운영 구조로 구현한 MVP다. 질문은 하나다.
+Opportunity Foundry v0.3의 CORE 모듈과 PRIORITY SEED 수집기를 SQLite·GitHub Actions 운영 구조로 구현한 MVP다. 질문은 하나다.
 
 > 지금 저장하지 않으면 나중에 복원할 수 없는 경제적 상태는 무엇인가?
 
-이 프로젝트는 전체 공공데이터를 아카이빙하지 않는다. 현재·예정 데이터의 **메타데이터 변화**, 공개 전 조달 신호, v0.3 점수, 75점 이상 Seed 후보만 관리한다. 첫 실제 snapshot collector는 서울 실시간 도시·상권 데이터의 대표 8곳만 수집한다. 기존 `prelaunch_signal_graph`는 변경하지 않았고 이 프로젝트의 실행 경로에도 포함하지 않았다.
+이 프로젝트는 전체 공공데이터를 아카이빙하지 않는다. 현재·예정 데이터의 **메타데이터 변화**, 공개 전 조달 신호, v0.3 점수, 75점 이상 Seed 후보만 관리한다. 실제 snapshot collector는 서울 실시간 도시·상권 데이터 8곳과 `Airport Friction Seed v0.1`의 국내 5개 공항을 수집한다. 기존 `prelaunch_signal_graph`는 변경하지 않았고 이 프로젝트의 실행 경로에도 포함하지 않았다.
 
 ## 현재 결과
 
@@ -13,6 +13,8 @@ Opportunity Foundry v0.3의 CORE 모듈을 SQLite와 GitHub Actions 운영 구�
 - 서울 실시간 도시데이터 Seed 96.0, 상권 전용 데이터 Seed 91.8
 - 서울 sample 실호출 1건 성공: 광화문·덕수궁, 8개 기대 섹션 전부 확인
 - GitHub Actions 15분 collector: `main`의 코드와 `data` 브랜치의 immutable run bundle 분리
+- Airport Friction Seed v0.1: 김포·제주·김해·청주·대구의 KAC 시계열 6종(소요시간·혼잡도·운항정보·운항스케줄·주차정보·주차혼잡도) + KMA METAR/공항특보. 김포 실내 주차면은 향후 앱의 on-demand 소스로만 예약
+- Airport offline fixture: 22개 source response, 5개 공항 normalized record, dedupe/partial-failure/manifest까지 검증
 - gzip 원문 실측 31,875 bytes/snapshot
 - 테스트 13개: diff, 예정→공개, rights kill gate, override 분리, NIA parsing/linking, JSON/XML, 중복, fallback, source timestamp, gap, export, cloud bundle
 - SQLite `integrity_check=ok`, 외래키 오류 0
@@ -27,7 +29,8 @@ Planned Registry ─┼─> Metadata Diff ─> PRA / Ephemeral / Seed ─> Seed 
 NIA Pre-Release ──┘                                      │
                                                          └─> Collector Registry
                                                                │
-                                                     Seoul 8-place snapshots
+                                                     ├─ Seoul 8-place snapshots
+                                                     └─ Airport Friction 5-airport snapshots
 ```
 
 - Registry Mirror: ODCloud 목록조회 API, 현재/예정 CSV의 공통 정규화
@@ -51,6 +54,15 @@ python3 -m public_data_alpha_engine.cli status
 python3 -m public_data_alpha_engine.cli export
 python3 -m unittest discover -s tests -v
 python3 -m public_data_alpha_engine.cli check
+```
+
+Airport Friction은 키 없이도 명시적인 offline fixture로 전체 저장 파이프라인을 검증할 수 있다.
+
+```bash
+python3 -m public_data_alpha_engine.cli airport-quota
+python3 -m public_data_alpha_engine.cli collect-airport \
+  --output /tmp/airport-friction-fixture \
+  --fixture --force-weather --trigger-source fixture_smoke
 ```
 
 공식 sample 키로 광화문·덕수궁 한 곳을 시험한다.
@@ -83,10 +95,12 @@ python3 -m public_data_alpha_engine.cli mirror-csv current.csv
 python3 -m public_data_alpha_engine.cli mirror-csv planned.csv --planned
 ```
 
-운영 절차와 장애 복구는 [runbook](docs/runbook.md), 계산 규칙은 [scoring spec](docs/scoring_spec.md), 전체 테이블은 [data dictionary](docs/data_dictionary.md)를 참고한다.
+Airport Friction의 실제 운영 준비는 [전용 runbook](docs/airport_friction_runbook.md), 공식 API 검증은 [source audit](docs/airport_friction_sources.md), 보존 필드는 [normalized schema](docs/airport_friction_schema.md)에 정리했다. 공통 운영 절차와 장애 복구는 [runbook](docs/runbook.md), 계산 규칙은 [scoring spec](docs/scoring_spec.md), 전체 테이블은 [data dictionary](docs/data_dictionary.md)를 참고한다.
 초기 후보·점수·Seed Queue·서울 cohort의 CSV는 `data/exports/`에 생성된다.
 
 GitHub 운영에서는 `.github/workflows/collect-seoul.yml`이 매시 07·22·37·52분 실행을 요청한다. GitHub 예약 실행은 지연되거나 드물게 누락될 수 있으며, 다음 성공 run이 2.5 cadence를 넘긴 공백과 추정 누락 횟수를 manifest에 기록한다. Repository secret `SEOUL_OPEN_DATA_KEY`가 없으면 공식 sample 지역 1곳, 있으면 seed 8곳을 수집한다. 원문은 매번 커지는 SQLite 대신 재구성 가능한 tar+gzip bundle로 `data` 브랜치에 적립한다. 설정과 object-storage 이관 gate는 [GitHub operations](docs/github_operations.md)에 있다.
+
+Airport Friction workflow도 `workflow_dispatch`를 제공하며 외부 scheduler가 15분마다 호출할 수 있다. 외부 trigger를 7일 검증할 때까지만 GitHub `schedule`을 보조 clock으로 유지한다. Airport 데이터는 `bundles/airport_friction/`, `runs/airport_friction/`, `state/airport_friction/`에만 기록되어 기존 서울 자산과 충돌하지 않는다.
 
 ## 공식 근거
 
@@ -96,6 +110,14 @@ GitHub 운영에서는 `.github/workflows/collect-seoul.yml`이 매시 07·22·3
 - [서울 실시간 도시데이터](https://data.seoul.go.kr/dataList/OA-21285/F/1/datasetView.do)
 - [서울 실시간 상권현황데이터](https://data.seoul.go.kr/dataList/OA-22385/F/1/datasetView.do)
 - [서울 실시간 도시데이터 매뉴얼 v8.5](https://data.seoul.go.kr/SeoulRtd/downloads/%EC%8B%A4%EC%8B%9C%EA%B0%84_%EB%8F%84%EC%8B%9C%EB%8D%B0%EC%9D%B4%ED%84%B0_%EB%A7%A4%EB%89%B4%EC%96%BC.pdf)
+- [한국공항공사 공항 소요시간 정보 GW](https://www.data.go.kr/data/15158950/openapi.do)
+- [한국공항공사 공항 혼잡도 정보 GW](https://www.data.go.kr/data/15159598/openapi.do)
+- [한국공항공사 전국공항 실시간 주차정보 GW](https://www.data.go.kr/data/15158681/openapi.do)
+- [한국공항공사 전국공항 주차장 혼잡도 GW](https://www.data.go.kr/data/15158689/openapi.do)
+- [한국공항공사 김포공항 실내주차장 빈 주차면 GW](https://www.data.go.kr/data/15158508/openapi.do)
+- [한국공항공사 실시간 운항정보 GW](https://www.data.go.kr/data/15158625/openapi.do)
+- [한국공항공사 항공기 운항 스케줄 정보 GW](https://www.data.go.kr/data/15158949/openapi.do)
+- [기상청 API허브 국내항공 METAR/SPECI](https://apihub.kma.go.kr/apiList.do?seqApi=14)
 
 ## 범위 밖
 

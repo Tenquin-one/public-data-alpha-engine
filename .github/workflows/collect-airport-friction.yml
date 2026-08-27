@@ -1,0 +1,128 @@
+name: Collect Airport Friction seed
+
+on:
+  # Temporary 15-minute safety net. Remove this block after the external
+  # workflow_dispatch scheduler has seven healthy days.
+  schedule:
+    - cron: "11,26,41,56 * * * *"
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "live collects official APIs; fixture is an offline pipeline check"
+        required: true
+        default: live
+        type: choice
+        options:
+          - live
+          - fixture
+      trigger_source:
+        description: "Provenance label used by the external scheduler"
+        required: true
+        default: external
+        type: string
+      force_weather:
+        description: "Ignore the normal 30-minute KMA cadence"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: airport-friction-seed
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out engine
+        uses: actions/checkout@v7
+        with:
+          path: app
+
+      - name: Check out time-axis asset branch
+        uses: actions/checkout@v7
+        with:
+          ref: data
+          path: asset
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+
+      - name: Collect and make a reproducible Airport Friction bundle
+        id: collector
+        shell: bash
+        env:
+          DATA_GO_KR_SERVICE_KEY: ${{ secrets.DATA_GO_KR_SERVICE_KEY }}
+          KMA_API_HUB_KEY: ${{ secrets.KMA_API_HUB_KEY }}
+          DISPATCH_MODE: ${{ inputs.mode || 'live' }}
+          DISPATCH_SOURCE: ${{ inputs.trigger_source || github.event_name }}
+          FORCE_WEATHER: ${{ inputs.force_weather || 'false' }}
+        run: |
+          set +e
+          args=(--output asset --trigger-source "$DISPATCH_SOURCE")
+          if [ "$DISPATCH_MODE" = "fixture" ]; then
+            args+=(--fixture --force-weather)
+          else
+            args+=(--strict)
+            if [ "$FORCE_WEATHER" = "true" ]; then
+              args+=(--force-weather)
+            fi
+          fi
+          PYTHONPATH=app/src python3 -m public_data_alpha_engine.cli collect-airport "${args[@]}"
+          collector_exit=$?
+          echo "exit_code=$collector_exit" >> "$GITHUB_OUTPUT"
+          echo "mode=$DISPATCH_MODE" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Commit Airport Friction namespace only
+        working-directory: asset
+        shell: bash
+        run: |
+          git config user.name "public-data-alpha-bot"
+          git config user.email "public-data-alpha-bot@users.noreply.github.com"
+          git add -A -- runs/airport_friction state/airport_friction
+          if [ -d bundles/airport_friction ]; then
+            git add -A -- bundles/airport_friction
+          fi
+          if git diff --cached --quiet; then
+            echo "No Airport Friction asset changes"
+          else
+            git commit -m "collect: Airport Friction $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            git push origin HEAD:data
+          fi
+
+      - name: Report health without exposing credentials
+        shell: bash
+        run: |
+          echo "### Airport Friction Seed v0.1" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Mode: ${{ steps.collector.outputs.mode }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Trigger: ${{ inputs.trigger_source || github.event_name }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Durable target: data branch airport_friction namespace" >> "$GITHUB_STEP_SUMMARY"
+          python3 - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+
+          path = Path("asset/state/airport_friction/latest_hashes.json")
+          if not path.exists():
+              print("- Collection status: no state written")
+          else:
+              state = json.loads(path.read_text(encoding="utf-8"))
+              schedule = state.get("last_health", {}).get("schedule", {})
+              gaps = state.get("last_health", {}).get("source_gaps", [])
+              storage = state.get("last_health", {}).get("storage", {})
+              print(f"- Collection status: {state.get('last_status', 'UNKNOWN')}")
+              print(f"- Schedule health: {schedule.get('status', 'UNKNOWN')}")
+              print(f"- Source gaps: {len(gaps)}")
+              print(f"- Stored gzip bytes: {storage.get('cumulative_new_gzip_bytes', 0)}")
+          PY
+
+      - name: Fail after preserving manifest and health state
+        if: steps.collector.outputs.exit_code != '0'
+        run: exit 1

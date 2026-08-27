@@ -10,7 +10,9 @@ from pathlib import Path
 from typing import Any
 
 
-LOCAL_SECRET_ENV_KEYS = frozenset({"SEOUL_OPEN_DATA_KEY", "DATA_GO_KR_SERVICE_KEY"})
+LOCAL_SECRET_ENV_KEYS = frozenset(
+    {"SEOUL_OPEN_DATA_KEY", "DATA_GO_KR_SERVICE_KEY", "KMA_API_HUB_KEY"}
+)
 
 
 def utc_now() -> str:

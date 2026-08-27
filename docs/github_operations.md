@@ -3,7 +3,7 @@
 ## 역할 분리
 
 - `main`: 코드, schema, seed metadata, tests, 문서, GitHub Actions
-- `data`: 재구성 가능한 서울 원문 run bundle, run manifest, 장소별 latest hash state
+- `data`: 재구성 가능한 서울·Airport Friction 원문 run bundle, run manifest, latest hash state
 - 로컬 `data/alpha_engine.sqlite`: 분석·개발용 SQLite. 매 실행마다 Git에 커밋하지 않는다.
 
 SQLite를 15분마다 커밋하면 DB 전체의 binary history가 누적된다. GitHub 운영판은 매 run의 새 원문만 gzip으로 넣은 tar bundle과 provenance manifest를 `data` 브랜치에 추가한다. SQLite는 bundle에서 다시 만들 수 있는 derived index로 취급한다.
@@ -14,6 +14,8 @@ SQLite를 15분마다 커밋하면 DB 전체의 binary history가 누적된다. 
 
 Repository secret `SEOUL_OPEN_DATA_KEY`가 있으면 8개 seed 장소를 수집한다. 없으면 workflow가 중단되지 않고 공식 `sample` 키로 광화문·덕수궁 한 곳만 수집하며 Actions summary에 경고를 남긴다. Secret 값은 저장하거나 로그에 출력하지 않고 endpoint에는 `REDACTED`만 남긴다.
 
+`.github/workflows/collect-airport-friction.yml`은 외부 scheduler용 `workflow_dispatch`를 기본 진입점으로 제공한다. 외부 호출이 7일 안정적으로 쌓이기 전에는 UTC 매시 11·26·41·56분의 GitHub schedule을 보조 clock으로 유지한다. Airport live mode는 `DATA_GO_KR_SERVICE_KEY`와 `KMA_API_HUB_KEY`가 모두 필요하며, key가 없으면 fixture로 대체하지 않고 실패 manifest를 남긴다. Fixture는 수동 `mode=fixture`에서만 가능하다.
+
 ## Data branch layout
 
 ```text
@@ -22,9 +24,17 @@ bundles/YYYY/MM/DD/<run-id>.tar
   payloads/<area>-<sha256>.json.gz
 runs/YYYY/MM/DD/<run-id>.json
 state/latest_hashes.json
+
+bundles/airport_friction/YYYY/MM/DD/<run-id>.tar
+  manifest.json
+  payloads/<source>-<sha256>.json.gz
+runs/airport_friction/YYYY/MM/DD/<run-id>.json
+state/airport_friction/latest_hashes.json
 ```
 
 각 run manifest에는 수집시각, source timestamp, 장소, redacted endpoint/query, SHA-256, 원문·gzip byte, HTTP/retry/latency, missing section, schedule health와 상태가 있다. 이전 hash와 같으면 새 raw payload를 bundle에 넣지 않지만 run manifest는 보존한다.
+
+Airport namespace는 기존 서울 경로를 변경하지 않는다. 각 run에는 5개 공항 normalized records와 quota proof, source별 gap, trigger provenance도 함께 남는다.
 
 ## 반드시 필요한 운영 설정
 
@@ -32,6 +42,8 @@ state/latest_hashes.json
 2. GitHub repository `Settings → Secrets and variables → Actions`에 `SEOUL_OPEN_DATA_KEY` 등록
 3. Actions의 첫 수동 실행이 `SEED_COHORT`, 8/8 success인지 확인
 4. `data` 브랜치의 bundle과 manifest 생성 확인
+
+Airport Friction은 별도로 [전용 runbook](airport_friction_runbook.md)의 KAC 7개 사용 가능 상태 확인, KMA API허브 키, repository secret 2개 등록만 수행한다.
 
 저장소 공개 설정은 15분마다 실행되는 standard GitHub-hosted runner 비용을 피하기 위한 MVP 선택이다. 30일 기준 예약 job은 최대 2,880회다. 각 job이 1분 미만이어도 유료 계산에서는 job별 올림 때문에 최대 2,880분으로 본다. 현재처럼 public repository + standard Linux runner이면 Actions 시간 비용은 $0다. 비공개 GitHub Free로 전환하면 2,000분 포함량을 약 880분 초과하며, 2026-08 기준 Linux $0.006/분이면 약 $5.28/월이다. 이 workflow는 Actions artifact/cache를 만들지 않으며 `data` 브랜치 저장량은 Actions artifact 과금과 별개다.
 
