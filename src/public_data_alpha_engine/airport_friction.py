@@ -14,7 +14,7 @@ from typing import Any, Iterable
 
 from .archive import add_bytes, namespace_path, read_json_state, schedule_health, write_json_atomic
 from .calendar_kr import calendar_features
-from .http_client import HttpClient, HttpResponse
+from .http_client import HttpClient, HttpRequestError, HttpResponse
 from .utils import canonical_json, sha256_bytes, sha256_json, slug
 
 
@@ -142,9 +142,10 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
     # The August 2026 KAC GW guides use XML in every working request example.
     # Although the portal advertises JSON+XML, forcing JSON with a 1,000-row
     # page currently produces common gateway result 04 for every KAC service.
-    # Use the provider's exact documented page shape for the GW compatibility
-    # probe. Pagination is handled as schema drift until the gateway is healthy.
-    common_kac = {"pageNo": "1", "numOfRows": "10", "type": "xml"}
+    # XML is the only response format used by the provider's working examples.
+    # Keep the page bounded but large enough for nationwide parking and narrow
+    # live-flight windows; pagination drift remains explicit in the manifest.
+    common_kac = {"pageNo": "1", "numOfRows": "100", "type": "xml"}
     specs = [
         RequestSpec(
             "kac_process_time_v1",
@@ -236,7 +237,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/depart",
                 {
                     "pageNo": "1",
-                    "numOfRows": "10",
+                    "numOfRows": "100",
                     "searchday": local.strftime("%Y%m%d"),
                     "from_time": start,
                     "to_time": end,
@@ -260,7 +261,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/dom",
                 {
                     "pageNo": "1",
-                    "numOfRows": "10",
+                    "numOfRows": "100",
                     "schDate": local.strftime("%Y%m%d"),
                     "schDeptCityCode": airport.iata,
                     "type": "xml",
@@ -647,6 +648,12 @@ def _is_due(state: dict[str, Any], spec: RequestSpec, now: datetime, *, force_we
     entry = state.get("sources", {}).get(spec.source_id, {})
     previous = _datetime(entry.get("collected_at"), default_tz=UTC)
     return previous is None or (now - previous.astimezone(UTC)).total_seconds() >= spec.cadence_seconds - 60
+
+
+def _kac_transport_failure(exc: Exception) -> bool:
+    if isinstance(exc, HttpRequestError):
+        return exc.status is None
+    return isinstance(exc, (TimeoutError, ConnectionError))
 
 
 def _fixture_payloads(path: Path) -> dict[str, Any]:
@@ -1081,12 +1088,35 @@ class AirportFrictionCollector:
         parsed_payloads: dict[str, dict[str, Any]] = {}
         payloads: dict[str, bytes] = {}
         specs = _request_specs(now)
+        consecutive_kac_transport_failures = 0
+        kac_circuit_reason: str | None = None
 
         for spec in specs:
             secret = self._secret(spec)
             request_url, safe_url = _urls(spec, secret)
             safe_query = _safe_query(spec)
             response: HttpResponse | None = None
+            if spec.provider == "Korea Airports Corporation" and kac_circuit_reason:
+                observations[spec.source_id] = SourceObservation(
+                    spec.source_id,
+                    spec.provider,
+                    "ERROR",
+                    collected_at,
+                    None,
+                    safe_url,
+                    safe_query,
+                    list(spec.airports),
+                    None,
+                    None,
+                    0,
+                    0,
+                    list(spec.expected_fields) or ["items"],
+                    None,
+                    0,
+                    0,
+                    kac_circuit_reason,
+                )
+                continue
             if not _is_due(state, spec, now, force_weather=force_weather):
                 observations[spec.source_id] = SourceObservation(
                     spec.source_id,
@@ -1155,6 +1185,8 @@ class AirportFrictionCollector:
                 )
                 observations[spec.source_id] = observation
                 parsed_payloads[spec.source_id] = parsed
+                if spec.provider == "Korea Airports Corporation":
+                    consecutive_kac_transport_failures = 0
                 state["sources"][spec.source_id] = {
                     "content_hash": content_hash,
                     "source_timestamp": source_timestamp,
@@ -1164,6 +1196,16 @@ class AirportFrictionCollector:
                 }
             except Exception as exc:
                 error = _redact(str(exc), (self.data_go_key, self.kma_key))
+                if spec.provider == "Korea Airports Corporation":
+                    if _kac_transport_failure(exc):
+                        consecutive_kac_transport_failures += 1
+                        if consecutive_kac_transport_failures >= 2:
+                            kac_circuit_reason = (
+                                "KAC circuit open after 2 consecutive transport failures; "
+                                f"last error: {error}"
+                            )
+                    else:
+                        consecutive_kac_transport_failures = 0
                 http_status = getattr(exc, "status", None)
                 if http_status is None and response is not None:
                     http_status = response.status

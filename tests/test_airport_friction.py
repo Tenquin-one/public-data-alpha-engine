@@ -56,6 +56,14 @@ class FixtureRoutingClient:
         return HttpResponse(body, 200, "application/json", 7, 1)
 
 
+class KacOutageClient(FixtureRoutingClient):
+    def request(self, url: str, **kwargs: object) -> HttpResponse:
+        if "apis.data.go.kr/B551178/" in url:
+            self.urls.append(url)
+            raise TimeoutError("KAC provider timed out")
+        return super().request(url, **kwargs)
+
+
 class AirportFrictionTest(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
@@ -185,9 +193,27 @@ class AirportFrictionTest(unittest.TestCase):
         for url in kac_urls:
             query = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
             self.assertEqual(query["type"], ["xml"])
-            self.assertEqual(query["numOfRows"], ["10"])
+            self.assertEqual(query["numOfRows"], ["100"])
             self.assertEqual(query["serviceKey"], ["data-key"])
             self.assertTrue(urllib.parse.urlparse(url).query.startswith("serviceKey="))
+
+    def test_kac_circuit_breaker_preserves_weather_and_manifest(self) -> None:
+        client = KacOutageClient()
+        result = AirportFrictionCollector(
+            data_go_key="data-key", kma_key="kma-key", client=client
+        ).collect(self.output, mode="live", now=self.now, force_weather=True)
+        manifest = self.manifest(result)
+        kac_calls = [url for url in client.urls if "apis.data.go.kr/B551178/" in url]
+        self.assertEqual(len(kac_calls), 2)
+        self.assertEqual(manifest["summary"]["errors"], 16)
+        circuit_errors = [
+            value
+            for value in manifest["source_observations"]
+            if value["error"] and "KAC circuit open" in value["error"]
+        ]
+        self.assertEqual(len(circuit_errors), 14)
+        self.assertEqual(manifest["summary"]["sources_succeeded"], 6)
+        self.assertIsNotNone(manifest["normalized_records"][0]["weather"])
 
     def test_partial_api_failure_keeps_other_sources_and_manifest(self) -> None:
         client = FixtureRoutingClient(fail_fragment="parking-realtime-status")

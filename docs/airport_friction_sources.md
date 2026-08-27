@@ -30,11 +30,20 @@ Realtime flight status and flight schedule are also separate. `/depart` is the o
 KAC announced the GW replacements in [the 2026-06-12 transition notice](https://www.data.go.kr/bbs/ntc/selectNotice.do?originId=NOTICE_0000000004750). The retired endpoints are not used.
 
 The August 2026 KAC reference guides show XML in every request example. The
-collector therefore requests `type=xml` with 10 rows per page and places the
-service key first, matching the guide examples exactly. This avoids the
+collector therefore requests `type=xml` with 100 rows per page and places the
+service key first, matching the guide's ordering and response format. This avoids the
 gateway `04 HTTP_ERROR` observed when the newly migrated services were called
 with forced JSON and 1,000-row pages; raw XML remains gzip-compressed and the
 same normalization layer handles it.
+
+Live verification on 2026-08-28 then matched the guide exactly with a 10-row
+page. All 16 calls across the six KAC service families passed gateway
+authentication but timed out while waiting for the institution response. This
+is a KAC/GW linkage outage rather than missing overnight data, a bad key, or an
+unapproved service. The collector probes two KAC operations per run and opens a
+run-local circuit after two consecutive transport failures, while KMA and the
+immutable manifest continue normally. Every new run probes again, so recovery
+is automatic.
 
 ## KMA API Hub
 
