@@ -36,11 +36,12 @@ gateway `04 HTTP_ERROR` observed when the newly migrated services were called
 with forced JSON and 1,000-row pages; raw XML remains gzip-compressed and the
 same normalization layer handles it.
 
-The recurring flight-schedule operation uses a 999-row page because the
-Gimpo and Jeju result sets exceed 100 rows. Every response still compares
-`totalCount` with the returned item count; an unexpectedly larger result is
-marked `pagination_incomplete` and `PARTIAL`, including when its payload hash is
-a duplicate.
+The recurring flight-schedule operation follows `totalCount` for up to three
+100-row pages per airport because KAC rejects page sizes of 999 and 1,000. Each
+original response page is retained as a separate gzip member and the ordered
+page hashes form the logical source hash. A result above the 300-row safety cap
+is marked `pagination_incomplete` and `PARTIAL`, including when its logical
+payload hash is a duplicate.
 
 Live verification on 2026-08-28 then matched the guide exactly with a 10-row
 page. All 16 calls across the six KAC service families passed gateway
@@ -75,12 +76,12 @@ KMA's 2025-08-01 IWXXM 2023-1 upgrade notice says `msgText` is no longer guarant
 | KAC parking | 96 | 5,000 | 1.92% |
 | KAC parking congestion | 96 | 5,000 | 1.92% |
 | KAC flight status | 480 | 5,000 | 9.60% |
-| KAC flight schedule | 480 | 5,000 | 9.60% |
+| KAC flight schedule (three-page safety cap) | 1,440 | 5,000 | 28.80% |
 | KMA METAR + warning | 288 | 20,000 | 1.44% |
 
-Total network calls are 1,824/day, 109,440/60 days, and 164,160/90 days. Even if the KAC allowance were conservatively treated as one shared 5,000-call pool rather than six collected service allowances, the KAC total is 1,536/day (30.72%).
+The conservative maximum is 2,784 calls/day, 167,040/60 days, and 250,560/90 days. Actual volume is lower when a schedule fits in one or two pages. Even if the KAC allowance were treated as one shared 5,000-call pool rather than six collected service allowances, the KAC maximum is 2,496/day (49.92%).
 
-During the temporary seven-day external-scheduler + GitHub-backup overlap, shared state still cadence-gates KMA but KAC may be requested twice: KAC 3,072/day, KMA 288/day, total 3,360/day. That remains 61.44% even under the conservative single-pool KAC assumption; each individual service also remains below its published limit. Remove the backup `schedule` after the overlap validation.
+During the temporary seven-day external-scheduler + GitHub-backup overlap, shared state still cadence-gates KMA but KAC may be requested twice: KAC 4,992/day, KMA 288/day, total 5,280/day. KAC remains at 99.84% even under the conservative single-pool assumption, and each individual service remains below its published limit. Remove the backup `schedule` after the overlap validation.
 
 ## Static calendar source
 

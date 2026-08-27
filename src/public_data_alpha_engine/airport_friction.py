@@ -7,7 +7,7 @@ import tarfile
 import urllib.parse
 import uuid
 import xml.etree.ElementTree as ET
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from datetime import UTC, datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable
@@ -23,6 +23,7 @@ COLLECTOR_ID = "airport_friction_v0_1"
 CADENCE_SECONDS = 900
 WEATHER_CADENCE_SECONDS = 1800
 GAP_THRESHOLD_MULTIPLIER = 2.5
+KAC_SCHEDULE_MAX_PAGES = 3
 KST = timezone(timedelta(hours=9))
 FIXTURE_PATH = Path(__file__).resolve().parents[2] / "tests" / "fixtures" / "airport_friction_fixture.json"
 
@@ -79,6 +80,7 @@ class SourceObservation:
     latency_ms: int
     retries: int
     error: str | None = None
+    raw_members: list[str] | None = None
 
 
 def quota_budget(*, cadence_minutes: int = 15, weather_minutes: int = 30) -> dict[str, Any]:
@@ -94,7 +96,11 @@ def quota_budget(*, cadence_minutes: int = 15, weather_minutes: int = 30) -> dic
         "kac_parking_realtime_status": {"requests_per_run": 1, "runs_per_day": runs, "quota": 5000},
         "kac_parking_congestion": {"requests_per_run": 1, "runs_per_day": runs, "quota": 5000},
         "kac_flight_status": {"requests_per_run": 5, "runs_per_day": runs, "quota": 5000},
-        "kac_flight_schedule": {"requests_per_run": 5, "runs_per_day": runs, "quota": 5000},
+        "kac_flight_schedule": {
+            "requests_per_run": len(AIRPORTS) * KAC_SCHEDULE_MAX_PAGES,
+            "runs_per_day": runs,
+            "quota": 5000,
+        },
         "kma_api_hub_combined": {"requests_per_run": 6, "runs_per_day": weather_runs, "quota": 20000},
     }
     for value in services.values():
@@ -261,7 +267,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/dom",
                 {
                     "pageNo": "1",
-                    "numOfRows": "999",
+                    "numOfRows": "100",
                     "schDate": local.strftime("%Y%m%d"),
                     "schDeptCityCode": airport.iata,
                     "type": "xml",
@@ -660,6 +666,35 @@ def _missing_fields(spec: RequestSpec, parsed: dict[str, Any]) -> list[str]:
     if total_count is not None and total_count > len(items):
         missing.append("pagination_incomplete")
     return missing
+
+
+def _total_count(parsed: dict[str, Any]) -> int | None:
+    root = _api_root(parsed)
+    body = root.get("body", root)
+    if not isinstance(body, dict):
+        return None
+    return _number(body.get("totalCount"), integer=True)
+
+
+def _merge_pages(parsed_pages: list[dict[str, Any]]) -> dict[str, Any]:
+    if len(parsed_pages) == 1:
+        return parsed_pages[0]
+    first_root = _api_root(parsed_pages[0])
+    all_items = [item for parsed in parsed_pages for item in _items(parsed)]
+    total_count = _total_count(parsed_pages[0])
+    return {
+        "response": {
+            "header": first_root.get(
+                "header", {"resultCode": "00", "resultMsg": "NORMAL SERVICE."}
+            ),
+            "body": {
+                "pageNo": 1,
+                "numOfRows": len(all_items),
+                "totalCount": total_count if total_count is not None else len(all_items),
+                "items": {"item": all_items},
+            },
+        }
+    }
 
 
 def _is_due(state: dict[str, Any], spec: RequestSpec, now: datetime, *, force_weather: bool) -> bool:
@@ -1170,6 +1205,9 @@ class AirportFrictionCollector:
                 )
                 continue
             try:
+                page_responses: list[HttpResponse] = []
+                parsed_pages: list[dict[str, Any]] = []
+                mime_types: list[str] = []
                 if mode == "fixture":
                     if spec.source_id not in fixture_payloads:
                         raise KeyError(f"fixture response missing for {spec.source_id}")
@@ -1183,19 +1221,64 @@ class AirportFrictionCollector:
                     response = self.client.request(request_url)
                 parsed, mime_type = parse_payload(response.body)
                 _api_root(parsed)
-                content_hash = sha256_bytes(response.body)
+                page_responses.append(response)
+                parsed_pages.append(parsed)
+                mime_types.append(mime_type)
+
+                if spec.source_id.startswith("kac_flight_schedule_"):
+                    total_count = _total_count(parsed)
+                    page_size = int(spec.params["numOfRows"])
+                    total_pages = (
+                        min(
+                            KAC_SCHEDULE_MAX_PAGES,
+                            max(1, (total_count + page_size - 1) // page_size),
+                        )
+                        if total_count is not None
+                        else 1
+                    )
+                    for page_no in range(2, total_pages + 1):
+                        page_spec = replace(
+                            spec,
+                            params={**spec.params, "pageNo": str(page_no)},
+                        )
+                        page_url, _ = _urls(page_spec, secret)
+                        if page_url is None:
+                            raise RuntimeError(f"missing repository secret {spec.secret_env}")
+                        response = self.client.request(page_url)
+                        page_parsed, page_mime = parse_payload(response.body)
+                        _api_root(page_parsed)
+                        page_responses.append(response)
+                        parsed_pages.append(page_parsed)
+                        mime_types.append(page_mime)
+
+                parsed = _merge_pages(parsed_pages)
+                page_hashes = [sha256_bytes(value.body) for value in page_responses]
+                content_hash = (
+                    page_hashes[0]
+                    if len(page_hashes) == 1
+                    else sha256_json({"ordered_page_hashes": page_hashes})
+                )
                 previous = state["sources"].get(spec.source_id, {})
                 duplicate = previous.get("content_hash") == content_hash
                 source_timestamp = _source_timestamp(spec.source_id, parsed, now=now)
                 missing = _missing_fields(spec, parsed)
                 raw_member = None
+                raw_members: list[str] = []
                 compressed_bytes = 0
                 if not duplicate:
-                    suffix = "json" if "json" in mime_type else "xml"
-                    raw_member = f"payloads/{slug(spec.source_id)}-{content_hash}.{suffix}.gz"
-                    compressed = gzip.compress(response.body, compresslevel=6, mtime=0)
-                    payloads[raw_member] = compressed
-                    compressed_bytes = len(compressed)
+                    for index, (page_response, page_mime, page_hash) in enumerate(
+                        zip(page_responses, mime_types, page_hashes, strict=True), start=1
+                    ):
+                        suffix = "json" if "json" in page_mime else "xml"
+                        page_label = f"-p{index:03d}" if len(page_responses) > 1 else ""
+                        member = (
+                            f"payloads/{slug(spec.source_id)}{page_label}-{page_hash}.{suffix}.gz"
+                        )
+                        compressed = gzip.compress(page_response.body, compresslevel=6, mtime=0)
+                        payloads[member] = compressed
+                        raw_members.append(member)
+                        compressed_bytes += len(compressed)
+                    raw_member = raw_members[0]
                 # Dedupe is a storage decision, not a data-quality override.
                 # A repeated but incomplete page must remain visibly PARTIAL.
                 status = "PARTIAL" if missing else "DUPLICATE" if duplicate else "OK"
@@ -1210,12 +1293,13 @@ class AirportFrictionCollector:
                     list(spec.airports),
                     content_hash,
                     raw_member,
-                    len(response.body),
+                    sum(len(value.body) for value in page_responses),
                     compressed_bytes,
                     missing,
-                    response.status,
-                    response.elapsed_ms,
-                    response.retries,
+                    page_responses[-1].status,
+                    sum(value.elapsed_ms for value in page_responses),
+                    sum(value.retries for value in page_responses),
+                    raw_members=raw_members or None,
                 )
                 observations[spec.source_id] = observation
                 parsed_payloads[spec.source_id] = parsed

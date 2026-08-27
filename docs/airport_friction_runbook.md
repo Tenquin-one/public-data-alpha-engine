@@ -56,7 +56,7 @@ GitHub's internal 15-minute `schedule` is retained temporarily because the exter
 
 The Airport and Seoul workflows share one data-branch writer lock. If another writer still advances `data` between checkout and push, the workflow rebases its namespace-only commit on the latest branch and retries up to four times. A provider failure manifest is therefore preserved even when both Seeds finish together.
 
-The normal single-clock load is 1,824 calls/day. During this short overlap, the conservative maximum is 3,360/day because KAC can run twice while KMA remains protected by its shared 30-minute state. This still fits every published quota; the exact proof is embedded in `airport-quota` output and every run manifest.
+The conservative single-clock maximum is 2,784 calls/day after allowing up to three flight-schedule pages per airport. During this short overlap, the maximum is 5,280/day: KAC 4,992/day and cadence-gated KMA 288/day. KAC remains under a conservative shared 5,000-call ceiling, and each service remains below its own published quota. The exact proof is embedded in `airport-quota` output and every run manifest.
 
 ## Health and failure behavior
 

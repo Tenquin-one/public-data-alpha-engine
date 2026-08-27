@@ -9,9 +9,11 @@ from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 from public_data_alpha_engine.airport_friction import (
+    AIRPORTS,
     AIRPORT_BY_ICAO,
     AirportFrictionCollector,
     FIXTURE_PATH,
+    KAC_SCHEDULE_MAX_PAGES,
     quota_budget,
 )
 from public_data_alpha_engine.collectors.factory import create_collector
@@ -61,6 +63,37 @@ class KacOutageClient(FixtureRoutingClient):
         if "apis.data.go.kr/B551178/" in url:
             self.urls.append(url)
             raise TimeoutError("KAC provider timed out")
+        return super().request(url, **kwargs)
+
+
+class PaginatedScheduleClient(FixtureRoutingClient):
+    def __init__(self) -> None:
+        super().__init__()
+        base = self.responses["kac_flight_schedule_GMP"]["response"]["body"]["items"]["item"][0]
+        self.gmp_schedule = [
+            {**base, "domesticNum": f"ZZ{index:04d}"} for index in range(150)
+        ]
+
+    def request(self, url: str, **kwargs: object) -> HttpResponse:
+        parsed = urllib.parse.urlparse(url)
+        query = urllib.parse.parse_qs(parsed.query)
+        if "flight-schedule" in parsed.path and query.get("schDeptCityCode") == ["GMP"]:
+            self.urls.append(url)
+            page = int(query["pageNo"][0])
+            start = (page - 1) * 100
+            response = {
+                "response": {
+                    "header": {"resultCode": "00", "resultMsg": "NORMAL SERVICE"},
+                    "body": {
+                        "items": {"item": self.gmp_schedule[start : start + 100]},
+                        "totalCount": len(self.gmp_schedule),
+                        "pageNo": page,
+                        "numOfRows": 100,
+                    },
+                }
+            }
+            body = (canonical_json(response) + "\n").encode("utf-8")
+            return HttpResponse(body, 200, "application/json", 7, 0)
         return super().request(url, **kwargs)
 
 
@@ -175,10 +208,10 @@ class AirportFrictionTest(unittest.TestCase):
 
     def test_quota_calculation_fits_every_official_limit(self) -> None:
         budget = quota_budget()
-        self.assertEqual(budget["totals"]["all_requests_per_day"], 1824)
-        self.assertEqual(budget["totals"]["requests_90_days"], 164160)
-        self.assertEqual(budget["temporary_dual_scheduler_overlap"]["all_requests_per_day"], 3360)
-        self.assertEqual(budget["temporary_dual_scheduler_overlap"]["kac_shared_pool_utilization_pct"], 61.44)
+        self.assertEqual(budget["totals"]["all_requests_per_day"], 2784)
+        self.assertEqual(budget["totals"]["requests_90_days"], 250560)
+        self.assertEqual(budget["temporary_dual_scheduler_overlap"]["all_requests_per_day"], 5280)
+        self.assertEqual(budget["temporary_dual_scheduler_overlap"]["kac_shared_pool_utilization_pct"], 99.84)
         self.assertTrue(budget["temporary_dual_scheduler_overlap"]["all_services_within_published_limits"])
         for service in budget["services"].values():
             self.assertLess(service["requests_per_day"], service["quota"])
@@ -193,8 +226,7 @@ class AirportFrictionTest(unittest.TestCase):
         for url in kac_urls:
             query = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
             self.assertEqual(query["type"], ["xml"])
-            expected_rows = "999" if "flight-schedule" in url else "100"
-            self.assertEqual(query["numOfRows"], [expected_rows])
+            self.assertEqual(query["numOfRows"], ["100"])
             self.assertEqual(query["serviceKey"], ["data-key"])
             self.assertTrue(urllib.parse.urlparse(url).query.startswith("serviceKey="))
 
@@ -215,6 +247,24 @@ class AirportFrictionTest(unittest.TestCase):
         self.assertEqual(len(circuit_errors), 14)
         self.assertEqual(manifest["summary"]["sources_succeeded"], 6)
         self.assertIsNotNone(manifest["normalized_records"][0]["weather"])
+
+    def test_schedule_pagination_merges_and_archives_raw_pages(self) -> None:
+        client = PaginatedScheduleClient()
+        result = AirportFrictionCollector(
+            data_go_key="data-key", kma_key="kma-key", client=client
+        ).collect(self.output, mode="live", now=self.now, force_weather=True)
+        manifest = self.manifest(result)
+        observation = next(
+            value
+            for value in manifest["source_observations"]
+            if value["source_id"] == "kac_flight_schedule_GMP"
+        )
+        self.assertEqual(observation["status"], "OK")
+        self.assertEqual(len(observation["raw_members"]), 2)
+        self.assertNotIn("pagination_incomplete", observation["missing_sections"])
+        with tarfile.open(str(result["bundle_path"])) as archive:
+            names = set(archive.getnames())
+        self.assertTrue(set(observation["raw_members"]).issubset(names))
 
     def test_partial_api_failure_keeps_other_sources_and_manifest(self) -> None:
         client = FixtureRoutingClient(fail_fragment="parking-realtime-status")
@@ -371,7 +421,8 @@ class AirportFrictionTest(unittest.TestCase):
             collector.client.timeout * (collector.client.max_retries + 1)
             + sum(2**attempt for attempt in range(collector.client.max_retries))
         )
-        self.assertLess(22 * per_source_seconds, 10 * 60)
+        worst_case_requests = 22 + len(AIRPORTS) * (KAC_SCHEDULE_MAX_PAGES - 1)
+        self.assertLess(worst_case_requests * per_source_seconds, 10 * 60)
 
     def test_external_workflow_dispatch_path(self) -> None:
         workflow = (PROJECT_ROOT / ".github" / "workflows" / "collect-airport-friction.yml").read_text(encoding="utf-8")
