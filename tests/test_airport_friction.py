@@ -193,7 +193,8 @@ class AirportFrictionTest(unittest.TestCase):
         for url in kac_urls:
             query = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
             self.assertEqual(query["type"], ["xml"])
-            self.assertEqual(query["numOfRows"], ["100"])
+            expected_rows = "1000" if "flight-schedule" in url else "100"
+            self.assertEqual(query["numOfRows"], [expected_rows])
             self.assertEqual(query["serviceKey"], ["data-key"])
             self.assertTrue(urllib.parse.urlparse(url).query.startswith("serviceKey="))
 
@@ -297,6 +298,41 @@ class AirportFrictionTest(unittest.TestCase):
         )
         self.assertEqual(observation["status"], "PARTIAL")
         self.assertIn("pagination_incomplete", observation["missing_sections"])
+
+        repeated = AirportFrictionCollector(
+            data_go_key="data-key",
+            kma_key="kma-key",
+            client=client,
+        ).collect(
+            self.output,
+            mode="live",
+            now=self.now + timedelta(minutes=15),
+            force_weather=True,
+        )
+        repeated_observation = next(
+            value
+            for value in self.manifest(repeated)["source_observations"]
+            if value["source_id"] == "kac_flight_schedule_GMP"
+        )
+        self.assertEqual(repeated_observation["status"], "PARTIAL")
+        self.assertIsNone(repeated_observation["raw_member"])
+
+    def test_time_only_kac_timestamp_uses_collection_date(self) -> None:
+        client = FixtureRoutingClient()
+        for source_id in ("kac_process_time_v1", "kac_congestion_v1"):
+            items = client.responses[source_id]["response"]["body"]["items"]["item"]
+            for item in items:
+                item["PRC_HR"] = "09:55"
+        result = AirportFrictionCollector(
+            data_go_key="data-key", kma_key="kma-key", client=client
+        ).collect(self.output, mode="live", now=self.now, force_weather=True)
+        manifest = self.manifest(result)
+        process = next(
+            value for value in manifest["source_observations"] if value["source_id"] == "kac_process_time_v1"
+        )
+        self.assertEqual(process["source_timestamp"], "2026-08-27T09:55:00+09:00")
+        gimpo = next(value for value in manifest["normalized_records"] if value["airport"]["iata"] == "GMP")
+        self.assertEqual(gimpo["source_timestamps"]["process_time"], "2026-08-27T09:55:00+09:00")
 
     def test_manifest_and_bundle_are_reconstructable(self) -> None:
         result = self.fixture_collect(trigger_source="external")

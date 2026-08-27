@@ -261,7 +261,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/dom",
                 {
                     "pageNo": "1",
-                    "numOfRows": "100",
+                    "numOfRows": "1000",
                     "schDate": local.strftime("%Y%m%d"),
                     "schDeptCityCode": airport.iata,
                     "type": "xml",
@@ -585,12 +585,32 @@ def _airport_code(item: dict[str, Any]) -> str | None:
     return None
 
 
-def _source_timestamp(source_id: str, parsed: dict[str, Any]) -> str | None:
+def _source_timestamp(
+    source_id: str,
+    parsed: dict[str, Any],
+    *,
+    now: datetime | None = None,
+) -> str | None:
     items = _items(parsed)
     candidates: list[Any] = []
     for item in items:
         if source_id.startswith(("kac_process_time", "kac_congestion")):
-            candidates.append(_get(item, "PRC_HR"))
+            value = _get(item, "PRC_HR")
+            text = str(value or "").strip()
+            if now is not None and re.fullmatch(r"\d{1,2}:\d{2}(?::\d{2})?", text):
+                parts = [int(part) for part in text.split(":")]
+                local_now = now.astimezone(KST)
+                candidate = local_now.replace(
+                    hour=parts[0],
+                    minute=parts[1],
+                    second=parts[2] if len(parts) == 3 else 0,
+                    microsecond=0,
+                )
+                if candidate - local_now > timedelta(minutes=5):
+                    candidate -= timedelta(days=1)
+                candidates.append(candidate)
+            else:
+                candidates.append(value)
         elif source_id == "kac_parking":
             candidates.append(f"{_get(item, 'parkingGetdate') or ''}{_get(item, 'parkingGettime') or ''}")
         elif source_id == "kac_parking_congestion":
@@ -601,7 +621,7 @@ def _source_timestamp(source_id: str, parsed: dict[str, Any]) -> str | None:
             candidates.append(_metar_fields(item)["observed_at"])
         elif source_id == "kma_airport_warning":
             candidates.append(_get(item, "tm"))
-    parsed_values = [_datetime(value) for value in candidates]
+    parsed_values = [value if isinstance(value, datetime) else _datetime(value) for value in candidates]
     valid = [value for value in parsed_values if value]
     return max(valid).isoformat() if valid else None
 
@@ -681,7 +701,13 @@ def _empty_components() -> dict[str, dict[str, Any]]:
     }
 
 
-def _apply_payload(components: dict[str, dict[str, Any]], source_id: str, parsed: dict[str, Any]) -> None:
+def _apply_payload(
+    components: dict[str, dict[str, Any]],
+    source_id: str,
+    parsed: dict[str, Any],
+    *,
+    now: datetime,
+) -> None:
     items = _items(parsed)
     if source_id.startswith("kac_process_time"):
         for item in items:
@@ -696,7 +722,9 @@ def _apply_payload(components: dict[str, dict[str, Any]], source_id: str, parsed
                 "provider_stage_d_seconds": _number(_get(item, "STY_TCT_AVG_D"), integer=True),
                 "total_seconds": _number(_get(item, "STY_TCT_AVG_ALL"), integer=True),
             }
-            components[code]["source_timestamps"]["process_time"] = _iso(_get(item, "PRC_HR"))
+            components[code]["source_timestamps"]["process_time"] = _source_timestamp(
+                source_id, parsed, now=now
+            )
     elif source_id.startswith("kac_congestion"):
         for item in items:
             code = _airport_code(item)
@@ -708,7 +736,9 @@ def _apply_payload(components: dict[str, dict[str, Any]], source_id: str, parsed
                 "stage_c_level": _number(_get(item, "CGDR_C_LVL"), integer=True),
                 "overall_level": _number(_get(item, "CGDR_ALL_LVL"), integer=True),
             }
-            components[code]["source_timestamps"]["congestion"] = _iso(_get(item, "PRC_HR"))
+            components[code]["source_timestamps"]["congestion"] = _source_timestamp(
+                source_id, parsed, now=now
+            )
     elif source_id == "kac_parking":
         for item in items:
             code = _airport_code(item)
@@ -786,7 +816,9 @@ def _apply_payload(components: dict[str, dict[str, Any]], source_id: str, parsed
                         "source_flight_id": _get(item, "fid", "UFID"),
                     }
                 )
-            components[code]["source_timestamps"]["flight_status"] = _source_timestamp(source_id, parsed)
+            components[code]["source_timestamps"]["flight_status"] = _source_timestamp(
+                source_id, parsed, now=now
+            )
     elif source_id.startswith("kma_metar_"):
         code = source_id.rsplit("_", 1)[-1]
         item = items[0] if items else parsed
@@ -875,7 +907,7 @@ def normalize_records(
 ) -> list[dict[str, Any]]:
     components = _empty_components()
     for source_id, parsed in parsed_payloads.items():
-        _apply_payload(components, source_id, parsed)
+        _apply_payload(components, source_id, parsed, now=now)
     local = now.astimezone(KST)
     calendar = calendar_features(local.date())
     records: list[dict[str, Any]] = []
@@ -1154,7 +1186,7 @@ class AirportFrictionCollector:
                 content_hash = sha256_bytes(response.body)
                 previous = state["sources"].get(spec.source_id, {})
                 duplicate = previous.get("content_hash") == content_hash
-                source_timestamp = _source_timestamp(spec.source_id, parsed)
+                source_timestamp = _source_timestamp(spec.source_id, parsed, now=now)
                 missing = _missing_fields(spec, parsed)
                 raw_member = None
                 compressed_bytes = 0
@@ -1164,7 +1196,9 @@ class AirportFrictionCollector:
                     compressed = gzip.compress(response.body, compresslevel=6, mtime=0)
                     payloads[raw_member] = compressed
                     compressed_bytes = len(compressed)
-                status = "DUPLICATE" if duplicate else "PARTIAL" if missing else "OK"
+                # Dedupe is a storage decision, not a data-quality override.
+                # A repeated but incomplete page must remain visibly PARTIAL.
+                status = "PARTIAL" if missing else "DUPLICATE" if duplicate else "OK"
                 observation = SourceObservation(
                     spec.source_id,
                     spec.provider,
