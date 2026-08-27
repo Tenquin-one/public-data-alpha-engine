@@ -185,8 +185,9 @@ class AirportFrictionTest(unittest.TestCase):
         for url in kac_urls:
             query = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
             self.assertEqual(query["type"], ["xml"])
-            self.assertEqual(query["numOfRows"], ["100"])
+            self.assertEqual(query["numOfRows"], ["10"])
             self.assertEqual(query["serviceKey"], ["data-key"])
+            self.assertTrue(urllib.parse.urlparse(url).query.startswith("serviceKey="))
 
     def test_partial_api_failure_keeps_other_sources_and_manifest(self) -> None:
         client = FixtureRoutingClient(fail_fragment="parking-realtime-status")

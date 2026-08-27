@@ -142,9 +142,9 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
     # The August 2026 KAC GW guides use XML in every working request example.
     # Although the portal advertises JSON+XML, forcing JSON with a 1,000-row
     # page currently produces common gateway result 04 for every KAC service.
-    # A 100-row XML page covers each live/windowed source while staying close
-    # to the provider's documented request shape.
-    common_kac = {"pageNo": "1", "numOfRows": "100", "type": "xml"}
+    # Use the provider's exact documented page shape for the GW compatibility
+    # probe. Pagination is handled as schema drift until the gateway is healthy.
+    common_kac = {"pageNo": "1", "numOfRows": "10", "type": "xml"}
     specs = [
         RequestSpec(
             "kac_process_time_v1",
@@ -236,7 +236,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/depart",
                 {
                     "pageNo": "1",
-                    "numOfRows": "100",
+                    "numOfRows": "10",
                     "searchday": local.strftime("%Y%m%d"),
                     "from_time": start,
                     "to_time": end,
@@ -260,7 +260,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/dom",
                 {
                     "pageNo": "1",
-                    "numOfRows": "100",
+                    "numOfRows": "10",
                     "schDate": local.strftime("%Y%m%d"),
                     "schDeptCityCode": airport.iata,
                     "type": "xml",
@@ -323,7 +323,10 @@ def _urls(spec: RequestSpec, secret: str | None) -> tuple[str | None, str]:
         return None, safe_url
     query = urllib.parse.urlencode(spec.params)
     encoded_secret = urllib.parse.quote(secret, safe="%")
-    return f"{endpoint}?{query}&{spec.secret_param}={encoded_secret}", safe_url
+    # KAC's current GW examples put serviceKey first. Query order should be
+    # semantically irrelevant, but matching the provider example exactly also
+    # avoids compatibility bugs in newly migrated gateways.
+    return f"{endpoint}?{spec.secret_param}={encoded_secret}&{query}", safe_url
 
 
 def _redact(value: str, secrets: Iterable[str | None]) -> str:

@@ -14,7 +14,7 @@ That is the entire live-data setup. The code, namespace, cadence, retries, dedup
 ## Current first-live diagnostic (2026-08-28 KST)
 
 - Both repository secrets are reaching the workflow and remain masked.
-- If KAC returns common result `04 HTTP_ERROR`, first confirm the request still uses the official guide shape: `type=xml`, a bounded page size, and the current `B551178` GET path. The original v0.1 live probe forced `type=json&numOfRows=1000`; all six services rejected that combination with `04`, so the collector now uses `type=xml&numOfRows=100`. If the portal's own preview and this corrected shape both return `04`, report it to KAC/data.go.kr with dataset IDs 15158950, 15159598, 15158681, 15158689, 15158625, and 15158949. Never include the key in the report.
+- If KAC returns common result `04 HTTP_ERROR`, first confirm the request still uses the official guide shape: the service key first, `type=xml&numOfRows=10`, and the current `B551178` GET path. The original v0.1 live probe forced `type=json&numOfRows=1000`; all six services rejected that combination with `04`. If the portal's own preview and this exact corrected shape both return `04` or time out, report it to KAC/data.go.kr with dataset IDs 15158950, 15159598, 15158681, 15158689, 15158625, and 15158949. Never include the key in the report.
 - All five KMA METAR requests and the airport-warning request returned HTTP 403. Confirm the individual `API 활용신청` buttons for **METAR/SPECI조회** and **공항경보조회** show active/completed. Account signup creates the key, but does not itself prove those two functions are enabled.
 - The backup schedule remains enabled. Once either provider access recovers, the next run can begin saving raw payloads without another code change.
 
