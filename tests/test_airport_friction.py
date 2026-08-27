@@ -255,12 +255,22 @@ class AirportFrictionTest(unittest.TestCase):
 
     def test_external_workflow_dispatch_path(self) -> None:
         workflow = (PROJECT_ROOT / ".github" / "workflows" / "collect-airport-friction.yml").read_text(encoding="utf-8")
+        seoul_workflow = (PROJECT_ROOT / ".github" / "workflows" / "collect-seoul.yml").read_text(encoding="utf-8")
         self.assertIn("workflow_dispatch:", workflow)
         self.assertIn("trigger_source:", workflow)
         self.assertIn("collect-airport", workflow)
         self.assertIn("bundles/airport_friction", workflow)
         self.assertIn("runs/airport_friction", workflow)
         self.assertIn("state/airport_friction", workflow)
+        self.assertIn("group: public-data-time-axis-writer", workflow)
+        self.assertIn("group: public-data-time-axis-writer", seoul_workflow)
+        self.assertIn("fetch-depth: 0", workflow)
+        self.assertIn("push_data_branch.sh data", workflow)
+        self.assertIn("push_data_branch.sh data", seoul_workflow)
+
+        push_script = (PROJECT_ROOT / "scripts" / "push_data_branch.sh").read_text(encoding="utf-8")
+        self.assertIn("git rebase", push_script)
+        self.assertIn("max_attempts", push_script)
 
 
 if __name__ == "__main__":

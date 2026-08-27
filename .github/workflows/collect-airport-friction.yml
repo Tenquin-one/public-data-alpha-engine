@@ -30,7 +30,9 @@ permissions:
   contents: write
 
 concurrency:
-  group: airport-friction-seed
+  # Seoul and Airport both append to the data branch. One shared writer lock
+  # prevents ordinary scheduled runs from racing even though their namespaces differ.
+  group: public-data-time-axis-writer
   cancel-in-progress: false
 
 jobs:
@@ -48,7 +50,7 @@ jobs:
         with:
           ref: data
           path: asset
-          fetch-depth: 1
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v7
@@ -95,7 +97,7 @@ jobs:
             echo "No Airport Friction asset changes"
           else
             git commit -m "collect: Airport Friction $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            git push origin HEAD:data
+            bash ../app/scripts/push_data_branch.sh data
           fi
 
       - name: Report health without exposing credentials
