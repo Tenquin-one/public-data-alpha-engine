@@ -52,6 +52,12 @@ run-local circuit after two consecutive transport failures, while KMA and the
 immutable manifest continue normally. Every new run probes again, so recovery
 is automatic.
 
+The KAC institution link recovered later that morning. Final live run
+`20260827T234132Z-b2547b73` completed with all 22 logical sources successful,
+zero partials, and zero errors. Gimpo required two schedule pages and Jeju
+required three; both were merged without missing sections. The circuit breaker
+remains as protection for future provider outages.
+
 ## KMA API Hub
 
 The [KMA API Hub terms and quota page](https://apihub.kma.go.kr/apiInfo.do) states that a general-member account and authentication key are issued automatically at signup, and provides 20,000 calls/day and 5 GB/day. APIs are free and subject to the applicable Korea Open Government License type. The aviation detail page still exposes per-function `API 활용신청` actions, so setup only verifies those functions are active; there is no separate key-issuance application. The two individual aviation endpoint pages do not display a numbered Public Nuri type, so v0.1 does not invent one: it records the Hub-wide condition and requires a rights review if the service page or terms change.
