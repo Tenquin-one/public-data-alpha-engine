@@ -362,6 +362,15 @@ def parse_payload(raw: bytes) -> tuple[dict[str, Any], str]:
 
 
 def _api_root(parsed: dict[str, Any]) -> dict[str, Any]:
+    gateway_error = parsed.get("OpenAPI_ServiceResponse")
+    if isinstance(gateway_error, dict):
+        common_header = gateway_error.get("cmmMsgHeader")
+        if isinstance(common_header, dict):
+            code = str(common_header.get("returnReasonCode", "UNKNOWN"))
+            message = common_header.get(
+                "returnAuthMsg", common_header.get("errMsg", "unknown gateway error")
+            )
+            raise RuntimeError(f"OpenAPI gateway result {code}: {message}")
     root = parsed.get("response", parsed)
     if isinstance(root, dict) and len(root) == 1:
         only = next(iter(root.values()))

@@ -180,6 +180,31 @@ class AirportFrictionTest(unittest.TestCase):
         self.assertEqual(pus["quality_status"], "PARTIAL")
         self.assertIn("process_time", pus["missing_sections"])
 
+    def test_common_gateway_error_is_recorded_as_error(self) -> None:
+        client = FixtureRoutingClient()
+        client.responses["kac_process_time_v1"] = {
+            "OpenAPI_ServiceResponse": {
+                "cmmMsgHeader": {
+                    "errMsg": "HTTP_ERROR",
+                    "returnAuthMsg": "HTTP 에러",
+                    "returnReasonCode": "04",
+                }
+            }
+        }
+        result = AirportFrictionCollector(
+            data_go_key="data-key",
+            kma_key="kma-key",
+            client=client,
+        ).collect(self.output, mode="live", now=self.now, force_weather=True)
+        manifest = self.manifest(result)
+        observation = next(
+            value
+            for value in manifest["source_observations"]
+            if value["source_id"] == "kac_process_time_v1"
+        )
+        self.assertEqual(observation["status"], "ERROR")
+        self.assertIn("OpenAPI gateway result 04", observation["error"])
+
     def test_incomplete_page_is_marked_partial(self) -> None:
         client = FixtureRoutingClient()
         client.responses["kac_flight_schedule_GMP"]["response"]["body"]["totalCount"] = 6000
