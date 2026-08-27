@@ -8,7 +8,7 @@ The project owner confirmed applications for seven KAC services on 2026-08-27. S
 
 | Dataset | Official ID | Endpoint used | Parameters used | Fields retained |
 |---|---:|---|---|---|
-| [Airport process time GW](https://www.data.go.kr/data/15158950/openapi.do) | 15158950 | `https://apis.data.go.kr/B551178/airport-process-time/v1` for GMP/CJU; `/v2` for PUS/CJJ/TAE | `pageNo`, `numOfRows`, `type=json`, `serviceKey` | `IATA_APCD`, `PRC_HR`, `OPR_STS_CD`, `STY_TCT_AVG_A..D`, `STY_TCT_AVG_ALL` |
+| [Airport process time GW](https://www.data.go.kr/data/15158950/openapi.do) | 15158950 | `https://apis.data.go.kr/B551178/airport-process-time/v1` for GMP/CJU; `/v2` for PUS/CJJ/TAE | `pageNo`, `numOfRows`, `type=xml`, `serviceKey` | `IATA_APCD`, `PRC_HR`, `OPR_STS_CD`, `STY_TCT_AVG_A..D`, `STY_TCT_AVG_ALL` |
 | [Airport congestion GW](https://www.data.go.kr/data/15159598/openapi.do) | 15159598 | `https://apis.data.go.kr/B551178/airport-congestion/v1` for GMP/CJU; `/v2` for PUS/CJJ/TAE | `pageNo`, `numOfRows`, `type=json`, `serviceKey` | v2: `IATA_APCD`, `PRC_HR`, `CGDR_A_LVL`, `CGDR_B_LVL`, `CGDR_C_LVL`, `CGDR_ALL_LVL` |
 | [Realtime parking GW](https://www.data.go.kr/data/15158681/openapi.do) | 15158681 | `https://apis.data.go.kr/B551178/parking-realtime-status/info` | one nationwide request with `numOfRows=1000`; `schAirportCode` omitted | `parkingIstay`, `parkingFullSpace`, `parkingAirportCodeName`, `parkingGetdate`, `parkingGettime`, `parkingIincnt`, `parkingIoutcnt`, airport names |
 | [Nationwide parking congestion GW](https://www.data.go.kr/data/15158689/openapi.do) | 15158689 | `https://apis.data.go.kr/B551178/parking-congestion/info` | one nationwide request with `numOfRows=1000`; `schAirportCode` omitted | `parkingCongestion`, `parkingCongestionDegree`, `parkingOccupiedSpace`, `parkingTotalSpace`, `sysGetdate`, `sysGettime`, facility and airport names |
@@ -28,6 +28,12 @@ The two accumulated parking services are intentionally not collapsed. Realtime p
 Realtime flight status and flight schedule are also separate. `/depart` is the observed day-of-operation state including delays and cancellations. `/dom` is the planned recurring timetable with validity dates and weekday flags. v0.1 collects domestic schedules for the five priority airports and retains timetable-versus-live 30-minute differences. The `/dom` Swagger publishes no data-generation timestamp, so its provider timestamp is null; collection time and raw content hash still preserve when a schedule version was observed.
 
 KAC announced the GW replacements in [the 2026-06-12 transition notice](https://www.data.go.kr/bbs/ntc/selectNotice.do?originId=NOTICE_0000000004750). The retired endpoints are not used.
+
+The August 2026 KAC reference guides show XML in every request example. The
+collector therefore requests `type=xml` with 100 rows per page. This avoids the
+gateway `04 HTTP_ERROR` observed when the newly migrated services were called
+with forced JSON and 1,000-row pages; raw XML remains gzip-compressed and the
+same normalization layer handles it.
 
 ## KMA API Hub
 

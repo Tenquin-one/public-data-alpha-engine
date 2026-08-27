@@ -175,6 +175,19 @@ class AirportFrictionTest(unittest.TestCase):
         for service in budget["services"].values():
             self.assertLess(service["requests_per_day"], service["quota"])
 
+    def test_kac_requests_follow_official_xml_request_shape(self) -> None:
+        client = FixtureRoutingClient()
+        AirportFrictionCollector(
+            data_go_key="data-key", kma_key="kma-key", client=client
+        ).collect(self.output, mode="live", now=self.now, force_weather=True)
+        kac_urls = [url for url in client.urls if "apis.data.go.kr/B551178/" in url]
+        self.assertEqual(len(kac_urls), 16)
+        for url in kac_urls:
+            query = urllib.parse.parse_qs(urllib.parse.urlparse(url).query)
+            self.assertEqual(query["type"], ["xml"])
+            self.assertEqual(query["numOfRows"], ["100"])
+            self.assertEqual(query["serviceKey"], ["data-key"])
+
     def test_partial_api_failure_keeps_other_sources_and_manifest(self) -> None:
         client = FixtureRoutingClient(fail_fragment="parking-realtime-status")
         result = AirportFrictionCollector(

@@ -139,7 +139,12 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
     end_minutes = min(23 * 60 + 59, local.hour * 60 + local.minute + 60)
     start = f"{start_minutes // 60:02d}{start_minutes % 60:02d}"
     end = f"{end_minutes // 60:02d}{end_minutes % 60:02d}"
-    common_kac = {"pageNo": "1", "numOfRows": "1000", "type": "json"}
+    # The August 2026 KAC GW guides use XML in every working request example.
+    # Although the portal advertises JSON+XML, forcing JSON with a 1,000-row
+    # page currently produces common gateway result 04 for every KAC service.
+    # A 100-row XML page covers each live/windowed source while staying close
+    # to the provider's documented request shape.
+    common_kac = {"pageNo": "1", "numOfRows": "100", "type": "xml"}
     specs = [
         RequestSpec(
             "kac_process_time_v1",
@@ -231,13 +236,13 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/depart",
                 {
                     "pageNo": "1",
-                    "numOfRows": "1000",
+                    "numOfRows": "100",
                     "searchday": local.strftime("%Y%m%d"),
                     "from_time": start,
                     "to_time": end,
                     "airport_code": airport.iata,
                     "line": "D",
-                    "type": "json",
+                    "type": "xml",
                 },
                 "serviceKey",
                 "DATA_GO_KR_SERVICE_KEY",
@@ -255,10 +260,10 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "/dom",
                 {
                     "pageNo": "1",
-                    "numOfRows": "1000",
+                    "numOfRows": "100",
                     "schDate": local.strftime("%Y%m%d"),
                     "schDeptCityCode": airport.iata,
-                    "type": "json",
+                    "type": "xml",
                 },
                 "serviceKey",
                 "DATA_GO_KR_SERVICE_KEY",
