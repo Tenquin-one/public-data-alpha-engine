@@ -289,6 +289,14 @@ class AirportFrictionTest(unittest.TestCase):
     def test_factory_constructs_airport_collector(self) -> None:
         self.assertIsInstance(create_collector("airport_friction"), AirportFrictionCollector)
 
+    def test_live_request_deadline_fits_ten_minute_workflow(self) -> None:
+        collector = AirportFrictionCollector()
+        per_source_seconds = (
+            collector.client.timeout * (collector.client.max_retries + 1)
+            + sum(2**attempt for attempt in range(collector.client.max_retries))
+        )
+        self.assertLess(22 * per_source_seconds, 10 * 60)
+
     def test_external_workflow_dispatch_path(self) -> None:
         workflow = (PROJECT_ROOT / ".github" / "workflows" / "collect-airport-friction.yml").read_text(encoding="utf-8")
         seoul_workflow = (PROJECT_ROOT / ".github" / "workflows" / "collect-seoul.yml").read_text(encoding="utf-8")

@@ -1034,7 +1034,10 @@ class AirportFrictionCollector:
     ) -> None:
         self.data_go_key = data_go_key
         self.kma_key = kma_key
-        self.client = client or HttpClient(timeout=30, max_retries=2)
+        # Twenty-two sequential sources must always finish before the workflow's
+        # 10-minute ceiling, even when every upstream is slow. One retry still
+        # covers transient faults while preserving a manifest for partial runs.
+        self.client = client or HttpClient(timeout=8, max_retries=1)
         self.fixture_path = fixture_path or FIXTURE_PATH
 
     def _secret(self, spec: RequestSpec) -> str | None:
