@@ -287,7 +287,7 @@ def _request_specs(now: datetime) -> list[RequestSpec]:
                 "KMA_API_HUB_KEY",
                 WEATHER_CADENCE_SECONDS,
                 (airport.iata,),
-                ("msgText",),
+                ("om:phenomenonTime", "iwxxm:airTemperature"),
             )
         )
     specs.append(
@@ -1003,6 +1003,7 @@ class AirportFrictionCollector:
             secret = self._secret(spec)
             request_url, safe_url = _urls(spec, secret)
             safe_query = _safe_query(spec)
+            response: HttpResponse | None = None
             if not _is_due(state, spec, now, force_weather=force_weather):
                 observations[spec.source_id] = SourceObservation(
                     spec.source_id,
@@ -1080,6 +1081,15 @@ class AirportFrictionCollector:
                 }
             except Exception as exc:
                 error = _redact(str(exc), (self.data_go_key, self.kma_key))
+                http_status = getattr(exc, "status", None)
+                if http_status is None and response is not None:
+                    http_status = response.status
+                latency_ms = getattr(exc, "elapsed_ms", None)
+                if latency_ms is None:
+                    latency_ms = response.elapsed_ms if response is not None else 0
+                retries = getattr(exc, "retries", None)
+                if retries is None:
+                    retries = response.retries if response is not None else 0
                 observations[spec.source_id] = SourceObservation(
                     spec.source_id,
                     spec.provider,
@@ -1094,9 +1104,9 @@ class AirportFrictionCollector:
                     0,
                     0,
                     list(spec.expected_fields) or ["items"],
-                    None,
-                    0,
-                    0,
+                    http_status,
+                    int(latency_ms),
+                    int(retries),
                     error=error,
                 )
 

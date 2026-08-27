@@ -22,7 +22,7 @@ from public_data_alpha_engine.collectors.seoul_city import (
 from public_data_alpha_engine.db import connect, init_db, integrity, upsert_source
 from public_data_alpha_engine.cloud_archive import collect_cloud_archive
 from public_data_alpha_engine.exports import export_initial_results
-from public_data_alpha_engine.http_client import HttpClient, HttpResponse
+from public_data_alpha_engine.http_client import HttpClient, HttpRequestError, HttpResponse
 from public_data_alpha_engine.prerelease import link_signals_to_datasets, parse_nia_html, upsert_signals
 from public_data_alpha_engine.registry import (
     DatasetRecord,
@@ -283,6 +283,28 @@ class EngineTest(unittest.TestCase):
         self.assertEqual(result.status, 200)
         self.assertEqual(result.retries, 1)
         self.assertEqual(urlopen.call_count, 2)
+
+    def test_http_client_does_not_retry_forbidden(self) -> None:
+        forbidden = urllib.error.HTTPError(
+            "https://example.test",
+            403,
+            "Forbidden",
+            hdrs=None,
+            fp=None,
+        )
+        with (
+            patch(
+                "public_data_alpha_engine.http_client.urllib.request.urlopen",
+                side_effect=forbidden,
+            ) as urlopen,
+            patch("public_data_alpha_engine.http_client.time.sleep") as sleep,
+        ):
+            with self.assertRaises(HttpRequestError) as raised:
+                HttpClient(timeout=1, max_retries=2).request("https://example.test")
+        self.assertEqual(raised.exception.status, 403)
+        self.assertEqual(raised.exception.retries, 0)
+        self.assertEqual(urlopen.call_count, 1)
+        sleep.assert_not_called()
 
     def test_source_timestamp_ignores_forecast_values(self) -> None:
         payload = {

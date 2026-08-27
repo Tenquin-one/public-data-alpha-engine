@@ -204,6 +204,9 @@ class AirportFrictionTest(unittest.TestCase):
         )
         self.assertEqual(observation["status"], "ERROR")
         self.assertIn("OpenAPI gateway result 04", observation["error"])
+        self.assertEqual(observation["http_status"], 200)
+        self.assertEqual(observation["latency_ms"], 7)
+        self.assertEqual(observation["retries"], 1)
 
     def test_incomplete_page_is_marked_partial(self) -> None:
         client = FixtureRoutingClient()

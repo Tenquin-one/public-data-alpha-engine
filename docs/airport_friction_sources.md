@@ -1,6 +1,6 @@
 # Airport Friction Seed v0.1 — official source audit
 
-Verified against official first-party pages and their embedded Swagger definitions on 2026-08-27 (Asia/Seoul).
+Verified against official first-party pages and their embedded Swagger definitions on 2026-08-28 (Asia/Seoul).
 
 ## KAC / Public Data Portal
 
@@ -35,10 +35,12 @@ The [KMA API Hub terms and quota page](https://apihub.kma.go.kr/apiInfo.do) stat
 
 | Data | Endpoint used | Cadence | Parameters / retained values |
 |---|---|---:|---|
-| [Domestic METAR/SPECI](https://apihub.kma.go.kr/apiList.do?seqApi=14) | `https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar` | 30 min | one request per ICAO: RKSS, RKPC, RKPK, RKTU, RKTN; raw METAR, observation time, temperature, dewpoint, pressure, wind, visibility, present weather |
+| [Domestic METAR/SPECI](https://apihub.kma.go.kr/apiList.do?seqApi=14) | `https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar` | 30 min | one request per ICAO: RKSS, RKPC, RKPK, RKTU, RKTN; observation time, temperature, dewpoint, pressure, wind, visibility, present weather; raw `msgText` only when the provider includes it |
 | [Airport warning](https://apihub.kma.go.kr/apiList.do?seqApi=14&seqApiSub=260) | `https://apihub.kma.go.kr/api/typ02/openApi/AmmService/getWarning` | 30 min | one nationwide request; `tm`, `icaoCode`, `airportName`, `wrngType`, validity, `wrngMsg`, filtered to the five airports |
 
 KMA stopped publishing its temporary test key on 2026-05-06. No unofficial or guessed sample credential is used. The checked-in fixture is an offline contract fixture derived from the official field definitions and is labeled as non-live in both the file and every manifest.
+
+KMA's 2025-08-01 IWXXM 2023-1 upgrade notice says `msgText` is no longer guaranteed. The collector therefore validates observation time and air temperature as the minimum weather contract and keeps the raw METAR text nullable instead of marking an otherwise valid response partial.
 
 ## Daily quota proof
 

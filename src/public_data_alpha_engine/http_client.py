@@ -18,6 +18,21 @@ class HttpResponse:
     retries: int
 
 
+class HttpRequestError(RuntimeError):
+    def __init__(
+        self,
+        message: str,
+        *,
+        status: int | None,
+        elapsed_ms: int,
+        retries: int,
+    ) -> None:
+        super().__init__(message)
+        self.status = status
+        self.elapsed_ms = elapsed_ms
+        self.retries = retries
+
+
 class HttpClient:
     def __init__(self, timeout: float = 20.0, max_retries: int = 2) -> None:
         self.timeout = timeout
@@ -53,9 +68,28 @@ class HttpClient:
                         elapsed_ms=elapsed,
                         retries=attempt,
                     )
+            except urllib.error.HTTPError as exc:
+                last_error = exc
+                retryable = exc.code in {408, 425, 429} or exc.code >= 500
+                if retryable and attempt < self.max_retries:
+                    time.sleep(2**attempt)
+                    continue
+                elapsed = int((time.monotonic() - started) * 1000)
+                raise HttpRequestError(
+                    f"HTTP Error {exc.code}: {exc.reason}",
+                    status=exc.code,
+                    elapsed_ms=elapsed,
+                    retries=attempt,
+                ) from exc
             except (urllib.error.URLError, TimeoutError, ConnectionError) as exc:
                 last_error = exc
                 if attempt < self.max_retries:
                     time.sleep(2**attempt)
         assert last_error is not None
-        raise last_error
+        elapsed = int((time.monotonic() - started) * 1000)
+        raise HttpRequestError(
+            str(last_error),
+            status=None,
+            elapsed_ms=elapsed,
+            retries=self.max_retries,
+        ) from last_error

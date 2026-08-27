@@ -11,6 +11,13 @@
 
 That is the entire live-data setup. The code, namespace, cadence, retries, dedupe, manifests, health checks, and commits are already configured.
 
+## Current first-live diagnostic (2026-08-28 KST)
+
+- Both repository secrets are reaching the workflow and remain masked.
+- All 16 KAC requests reached the official `B551178` gateway but returned common result `04 HTTP_ERROR`. The portal's official table distinguishes this from an unregistered key (`30`) or missing service access (`20`); it means an unsupported HTTP request or failure processing the provider response. The collector uses the current official GET paths, so if the portal's own preview also returns `04`, report it to KAC/data.go.kr with dataset IDs 15158950, 15159598, 15158681, 15158689, 15158625, and 15158949. Never include the key in the report.
+- All five KMA METAR requests and the airport-warning request returned HTTP 403. Confirm the individual `API 활용신청` buttons for **METAR/SPECI조회** and **공항경보조회** show active/completed. Account signup creates the key, but does not itself prove those two functions are enabled.
+- The backup schedule remains enabled. Once either provider access recovers, the next run can begin saving raw payloads without another code change.
+
 The local project `.env` currently contains only the name `SEOUL_OPEN_DATA_KEY`; no KAC or KMA credential was found. GitHub does not expose secret values and this environment has no authenticated secret-listing client, so repository-side existence could not be independently confirmed. Do not reuse the Seoul key: KAC uses a Public Data Portal key and KMA uses an API Hub key.
 
 ## Offline verification before keys
@@ -54,6 +61,7 @@ The normal single-clock load is 1,824 calls/day. During this short overlap, the 
 ## Health and failure behavior
 
 - Network retries: two, with bounded exponential delay.
+- Non-transient HTTP 4xx responses (including KMA 403) are not retried; their HTTP status, latency, and retry count are written to the manifest.
 - One API failure: other sources are saved; manifest status is `PARTIAL`; strict workflow exits red after committing the diagnostic manifest.
 - All live sources fail or keys are absent: a redacted `FAILED` manifest/state is committed; no secret is printed.
 - Scheduler gap: warning after 2.5 × 15 minutes, with estimated missed intervals.
