@@ -97,6 +97,21 @@ class PaginatedScheduleClient(FixtureRoutingClient):
         return super().request(url, **kwargs)
 
 
+class NoActiveWarningClient(FixtureRoutingClient):
+    def request(self, url: str, **kwargs: object) -> HttpResponse:
+        if urllib.parse.urlparse(url).path.endswith("/getWarning"):
+            self.urls.append(url)
+            response = {
+                "response": {
+                    "header": {"resultCode": "03", "resultMsg": "NO_DATA"},
+                    "body": {"items": {}, "totalCount": 0},
+                }
+            }
+            body = (canonical_json(response) + "\n").encode("utf-8")
+            return HttpResponse(body, 200, "application/json", 7, 0)
+        return super().request(url, **kwargs)
+
+
 class AirportFrictionTest(unittest.TestCase):
     def setUp(self) -> None:
         self.temp = tempfile.TemporaryDirectory()
@@ -210,11 +225,30 @@ class AirportFrictionTest(unittest.TestCase):
         budget = quota_budget()
         self.assertEqual(budget["totals"]["all_requests_per_day"], 2784)
         self.assertEqual(budget["totals"]["requests_90_days"], 250560)
-        self.assertEqual(budget["temporary_dual_scheduler_overlap"]["all_requests_per_day"], 5280)
-        self.assertEqual(budget["temporary_dual_scheduler_overlap"]["kac_shared_pool_utilization_pct"], 99.84)
-        self.assertTrue(budget["temporary_dual_scheduler_overlap"]["all_services_within_published_limits"])
+        self.assertNotIn("temporary_dual_scheduler_overlap", budget)
         for service in budget["services"].values():
             self.assertLess(service["requests_per_day"], service["quota"])
+
+    def test_no_active_airport_warning_is_a_successful_empty_result(self) -> None:
+        result = AirportFrictionCollector(
+            data_go_key="data-key",
+            kma_key="kma-key",
+            client=NoActiveWarningClient(),
+        ).collect(self.output, mode="live", now=self.now, force_weather=True)
+        manifest = self.manifest(result)
+        warning = next(
+            value
+            for value in manifest["source_observations"]
+            if value["source_id"] == "kma_airport_warning"
+        )
+        self.assertEqual(manifest["status"], "SUCCESS")
+        self.assertEqual(warning["status"], "OK")
+        self.assertEqual(warning["missing_sections"], [])
+        self.assertIsNone(warning["error"])
+        for record in manifest["normalized_records"]:
+            self.assertEqual(record["weather_warnings"], [])
+            self.assertEqual(record["source_status"]["weather_warning"], "OK")
+            self.assertNotIn("weather_warning", record["missing_sections"])
 
     def test_kac_requests_follow_official_xml_request_shape(self) -> None:
         client = FixtureRoutingClient()
@@ -428,6 +462,7 @@ class AirportFrictionTest(unittest.TestCase):
         workflow = (PROJECT_ROOT / ".github" / "workflows" / "collect-airport-friction.yml").read_text(encoding="utf-8")
         seoul_workflow = (PROJECT_ROOT / ".github" / "workflows" / "collect-seoul.yml").read_text(encoding="utf-8")
         self.assertIn("workflow_dispatch:", workflow)
+        self.assertNotIn("\n  schedule:", workflow)
         self.assertIn("trigger_source:", workflow)
         self.assertIn("collect-airport", workflow)
         self.assertIn("bundles/airport_friction", workflow)

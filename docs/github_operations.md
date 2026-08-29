@@ -14,7 +14,7 @@ SQLite를 15분마다 커밋하면 DB 전체의 binary history가 누적된다. 
 
 Repository secret `SEOUL_OPEN_DATA_KEY`가 있으면 8개 seed 장소를 수집한다. 없으면 workflow가 중단되지 않고 공식 `sample` 키로 광화문·덕수궁 한 곳만 수집하며 Actions summary에 경고를 남긴다. Secret 값은 저장하거나 로그에 출력하지 않고 endpoint에는 `REDACTED`만 남긴다.
 
-`.github/workflows/collect-airport-friction.yml`은 외부 scheduler용 `workflow_dispatch`를 기본 진입점으로 제공한다. 외부 호출이 7일 안정적으로 쌓이기 전에는 UTC 매시 11·26·41·56분의 GitHub schedule을 보조 clock으로 유지한다. Airport live mode는 `DATA_GO_KR_SERVICE_KEY`와 `KMA_API_HUB_KEY`가 모두 필요하며, key가 없으면 fixture로 대체하지 않고 실패 manifest를 남긴다. Fixture는 수동 `mode=fixture`에서만 가능하다.
+`.github/workflows/collect-airport-friction.yml`은 검증된 외부 scheduler용 `workflow_dispatch`만 제공한다. 중복 API 호출을 만들던 GitHub 내부 backup schedule은 2026-08-29에 제거했다. Airport live mode는 `DATA_GO_KR_SERVICE_KEY`와 `KMA_API_HUB_KEY`가 모두 필요하며, key가 없으면 fixture로 대체하지 않고 실패 manifest를 남긴다. Fixture는 수동 `mode=fixture`에서만 가능하다.
 
 서울과 Airport workflow는 서로 다른 namespace를 쓰지만 하나의 `data` 브랜치에 append한다. 따라서 둘 다 `public-data-time-axis-writer` concurrency group을 공유해 저장을 직렬화한다. 드물게 다른 writer가 중간에 branch를 갱신해도 push helper가 최신 `origin/data` 위로 수집 commit을 rebase하고 최대 4회 재시도한다. 이 때문에 정상 수집 manifest가 단순 push race로 유실되지 않는다.
 

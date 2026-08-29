@@ -109,11 +109,6 @@ def quota_budget(*, cadence_minutes: int = 15, weather_minutes: int = 30) -> dic
         value["headroom"] = value["quota"] - value["requests_per_day"]
     kac_total = sum(value["requests_per_day"] for name, value in services.items() if name.startswith("kac_"))
     kma_total = services["kma_api_hub_combined"]["requests_per_day"]
-    # During the temporary external+GitHub scheduler overlap, every KAC source
-    # may be requested twice. KMA remains cadence-gated by shared data-branch
-    # state unless an operator explicitly forces it.
-    overlap_kac_total = kac_total * 2
-    overlap_total = overlap_kac_total + kma_total
     return {
         "cadence_minutes": cadence_minutes,
         "weather_minutes": weather_minutes,
@@ -124,17 +119,6 @@ def quota_budget(*, cadence_minutes: int = 15, weather_minutes: int = 30) -> dic
             "all_requests_per_day": kac_total + kma_total,
             "requests_60_days": (kac_total + kma_total) * 60,
             "requests_90_days": (kac_total + kma_total) * 90,
-        },
-        "temporary_dual_scheduler_overlap": {
-            "assumption": "two 15-minute clocks; shared state; force_weather=false",
-            "kac_requests_per_day": overlap_kac_total,
-            "kma_requests_per_day": kma_total,
-            "all_requests_per_day": overlap_total,
-            "kac_shared_pool_utilization_pct": round(overlap_kac_total / 5000 * 100, 2),
-            "all_services_within_published_limits": all(
-                value["requests_per_day"] * (2 if name.startswith("kac_") else 1) <= value["quota"]
-                for name, value in services.items()
-            ),
         },
     }
 
@@ -376,7 +360,7 @@ def parse_payload(raw: bytes) -> tuple[dict[str, Any], str]:
     return {root.tag.split("}")[-1]: _xml_value(root)}, "application/xml"
 
 
-def _api_root(parsed: dict[str, Any]) -> dict[str, Any]:
+def _api_root(parsed: dict[str, Any], *, allow_no_data: bool = False) -> dict[str, Any]:
     gateway_error = parsed.get("OpenAPI_ServiceResponse")
     if isinstance(gateway_error, dict):
         common_header = gateway_error.get("cmmMsgHeader")
@@ -396,20 +380,24 @@ def _api_root(parsed: dict[str, Any]) -> dict[str, Any]:
     header = root.get("header")
     if isinstance(header, dict):
         code = str(header.get("resultCode", header.get("result_code", "00")))
-        if code not in {"0", "00", "0000", "INFO-000"}:
+        if code not in {"0", "00", "0000", "INFO-000"} and not (
+            allow_no_data and code == "03"
+        ):
             message = header.get("resultMsg", header.get("result_msg", "unknown API error"))
             raise RuntimeError(f"API result {code}: {message}")
     return root
 
 
-def _items(parsed: dict[str, Any]) -> list[dict[str, Any]]:
-    root = _api_root(parsed)
+def _items(parsed: dict[str, Any], *, allow_no_data: bool = False) -> list[dict[str, Any]]:
+    root = _api_root(parsed, allow_no_data=allow_no_data)
     body = root.get("body", root)
     if not isinstance(body, dict):
         return []
     items = body.get("items", body.get("item", []))
     if isinstance(items, dict) and "item" in items:
         items = items["item"]
+    if items in ({}, None, ""):
+        return []
     if isinstance(items, dict):
         return [items]
     if isinstance(items, list):
@@ -597,7 +585,7 @@ def _source_timestamp(
     *,
     now: datetime | None = None,
 ) -> str | None:
-    items = _items(parsed)
+    items = _items(parsed, allow_no_data=source_id == "kma_airport_warning")
     candidates: list[Any] = []
     for item in items:
         if source_id.startswith(("kac_process_time", "kac_congestion")):
@@ -633,8 +621,11 @@ def _source_timestamp(
 
 
 def _missing_fields(spec: RequestSpec, parsed: dict[str, Any]) -> list[str]:
-    items = _items(parsed)
+    allow_no_data = spec.source_id == "kma_airport_warning"
+    items = _items(parsed, allow_no_data=allow_no_data)
     if not items:
+        if allow_no_data:
+            return []
         return ["items"]
 
     if spec.source_id.startswith("kma_metar_"):
@@ -743,7 +734,7 @@ def _apply_payload(
     *,
     now: datetime,
 ) -> None:
-    items = _items(parsed)
+    items = _items(parsed, allow_no_data=source_id == "kma_airport_warning")
     if source_id.startswith("kac_process_time"):
         for item in items:
             code = _airport_code(item)
@@ -1220,7 +1211,7 @@ class AirportFrictionCollector:
                         raise RuntimeError(f"missing repository secret {spec.secret_env}")
                     response = self.client.request(request_url)
                 parsed, mime_type = parse_payload(response.body)
-                _api_root(parsed)
+                _api_root(parsed, allow_no_data=spec.source_id == "kma_airport_warning")
                 page_responses.append(response)
                 parsed_pages.append(parsed)
                 mime_types.append(mime_type)

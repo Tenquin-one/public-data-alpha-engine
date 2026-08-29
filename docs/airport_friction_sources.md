@@ -67,6 +67,11 @@ The [KMA API Hub terms and quota page](https://apihub.kma.go.kr/apiInfo.do) stat
 | [Domestic METAR/SPECI](https://apihub.kma.go.kr/apiList.do?seqApi=14) | `https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar` | 30 min | one request per ICAO: RKSS, RKPC, RKPK, RKTU, RKTN; observation time, temperature, dewpoint, pressure, wind, visibility, present weather; raw `msgText` only when the provider includes it |
 | [Airport warning](https://apihub.kma.go.kr/apiList.do?seqApi=14&seqApiSub=260) | `https://apihub.kma.go.kr/api/typ02/openApi/AmmService/getWarning` | 30 min | one nationwide request; `tm`, `icaoCode`, `airportName`, `wrngType`, validity, `wrngMsg`, filtered to the five airports |
 
+For the airport-warning operation, KMA result code `03` (`NO_DATA`) means that
+there is no active warning. The collector treats that source-specific response
+as a successful empty list, archives the raw response, and does not create a
+missing section or fail the run. Other non-success codes remain errors.
+
 KMA stopped publishing its temporary test key on 2026-05-06. No unofficial or guessed sample credential is used. The checked-in fixture is an offline contract fixture derived from the official field definitions and is labeled as non-live in both the file and every manifest.
 
 KMA's 2025-08-01 IWXXM 2023-1 upgrade notice says `msgText` is no longer guaranteed. The collector therefore validates observation time and air temperature as the minimum weather contract and keeps the raw METAR text nullable instead of marking an otherwise valid response partial.
@@ -85,9 +90,7 @@ KMA's 2025-08-01 IWXXM 2023-1 upgrade notice says `msgText` is no longer guarant
 | KAC flight schedule (three-page safety cap) | 1,440 | 5,000 | 28.80% |
 | KMA METAR + warning | 288 | 20,000 | 1.44% |
 
-The conservative maximum is 2,784 calls/day, 167,040/60 days, and 250,560/90 days. Actual volume is lower when a schedule fits in one or two pages. Even if the KAC allowance were treated as one shared 5,000-call pool rather than six collected service allowances, the KAC maximum is 2,496/day (49.92%).
-
-During the temporary seven-day external-scheduler + GitHub-backup overlap, shared state still cadence-gates KMA but KAC may be requested twice: KAC 4,992/day, KMA 288/day, total 5,280/day. KAC remains at 99.84% even under the conservative single-pool assumption, and each individual service remains below its published limit. Remove the backup `schedule` after the overlap validation.
+The conservative maximum is 2,784 calls/day, 167,040/60 days, and 250,560/90 days. Actual volume is lower when a schedule fits in one or two pages. Even if the KAC allowance were treated as one shared 5,000-call pool rather than six collected service allowances, the KAC maximum is 2,496/day (49.92%). The verified external scheduler is the only Airport clock; the temporary GitHub backup schedule was removed on 2026-08-29 to prevent duplicate calls.
 
 ## Static calendar source
 

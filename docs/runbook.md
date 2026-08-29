@@ -55,7 +55,7 @@ GitHub `schedule`은 정확한 cron 서비스가 아니라 best-effort다. 지�
 scripts/run_airport_friction.sh /absolute/path/to/data-branch-checkout
 ```
 
-KAC는 15분, KMA METAR/특보는 30분 간격이다. `workflow_dispatch` 외부 호출과 임시 GitHub backup schedule, 필요한 두 secret, quota와 복구 절차는 [Airport Friction runbook](airport_friction_runbook.md)에 있다.
+KAC는 15분, KMA METAR/특보는 30분 간격이다. Airport는 검증된 `workflow_dispatch` 외부 호출만 사용한다. 필요한 두 secret, quota와 복구 절차는 [Airport Friction runbook](airport_friction_runbook.md)에 있다.
 
 ## 4. 상태 확인
 

@@ -16,8 +16,8 @@ That is the entire live-data setup. The code, namespace, cadence, retries, dedup
 - Both repository secrets are reaching the workflow and remain masked.
 - If KAC returns common result `04 HTTP_ERROR`, first confirm the request still uses the service key first, `type=xml`, a bounded page, and the current `B551178` GET path. The original v0.1 live probe forced `type=json&numOfRows=1000`; all six services rejected that combination with `04`. A 2026-08-28 verification then used the exact guide shape (`type=xml&numOfRows=10`) and all 16 calls timed out after authentication while awaiting the institution response. The run-local circuit breaker now stops after two consecutive transport failures and retries on the next scheduled run. If the portal preview also fails, report it to KAC/data.go.kr with dataset IDs 15158950, 15159598, 15158681, 15158689, 15158625, and 15158949. Never include the key in the report.
 - Recovery was confirmed in live run `20260827T234132Z-b2547b73`: 22 logical sources succeeded, zero were partial, and zero errored. Treat a recurrence as a provider incident unless the manifest instead reports an authentication code (`20` or `30`).
-- All five KMA METAR requests and the airport-warning request returned HTTP 403. Confirm the individual `API 활용신청` buttons for **METAR/SPECI조회** and **공항경보조회** show active/completed. Account signup creates the key, but does not itself prove those two functions are enabled.
-- The backup schedule remains enabled. Once either provider access recovers, the next run can begin saving raw payloads without another code change.
+- KMA access is active. Airport-warning result `03 NO_DATA` means “no active warning” and is now recorded as a successful empty warning list, not an API error.
+- The external dispatcher is verified. The GitHub backup schedule was removed on 2026-08-29 so only one 15-minute Airport collection is requested.
 
 The local project `.env` currently contains only the name `SEOUL_OPEN_DATA_KEY`; no KAC or KMA credential was found. GitHub does not expose secret values and this environment has no authenticated secret-listing client, so repository-side existence could not be independently confirmed. Do not reuse the Seoul key: KAC uses a Public Data Portal key and KMA uses an API Hub key.
 
@@ -53,17 +53,18 @@ Call GitHub's workflow-dispatch API for `.github/workflows/collect-airport-frict
 
 This is the same no-server external-trigger pattern as the Seoul transition: the scheduler stores only a GitHub token and dispatches the repository workflow; API credentials remain GitHub Repository Secrets.
 
-GitHub's internal 15-minute `schedule` is retained temporarily because the external scheduler has not yet been verified. It is a safety net, not the long-term clock. During overlap, raw payload dedupe prevents duplicate raw storage and `trigger_source` identifies both runs. After seven consecutive days of external triggers with no unexplained schedule gaps, delete the `schedule` block to avoid redundant manifests.
+The external scheduler is the sole 15-minute clock. GitHub's former internal backup `schedule` was removed after live dispatches and durable data-branch writes were verified. Keep `trigger_source` set to a stable external-scheduler label so manifests retain provenance.
 
 The Airport and Seoul workflows share one data-branch writer lock. If another writer still advances `data` between checkout and push, the workflow rebases its namespace-only commit on the latest branch and retries up to four times. A provider failure manifest is therefore preserved even when both Seeds finish together.
 
-The conservative single-clock maximum is 2,784 calls/day after allowing up to three flight-schedule pages per airport. During this short overlap, the maximum is 5,280/day: KAC 4,992/day and cadence-gated KMA 288/day. KAC remains under a conservative shared 5,000-call ceiling, and each service remains below its own published quota. The exact proof is embedded in `airport-quota` output and every run manifest.
+The conservative single-clock maximum is 2,784 calls/day after allowing up to three flight-schedule pages per airport: KAC 2,496/day and cadence-gated KMA 288/day. KAC remains below a conservative shared 5,000-call ceiling, and each service remains below its own published quota. The exact proof is embedded in `airport-quota` output and every run manifest.
 
 ## Health and failure behavior
 
 - Network retries: two, with bounded exponential delay.
 - Non-transient HTTP 4xx responses (including KMA 403) are not retried; their HTTP status, latency, and retry count are written to the manifest.
 - One API failure: other sources are saved; manifest status is `PARTIAL`; strict workflow exits red after committing the diagnostic manifest.
+- Airport-warning result `03 NO_DATA`: successful empty list; raw response is retained and the run stays healthy.
 - All live sources fail or keys are absent: a redacted `FAILED` manifest/state is committed; no secret is printed.
 - Scheduler gap: warning after 2.5 × 15 minutes, with estimated missed intervals.
 - Source gap: checked against 2.5 × that source's own cadence.

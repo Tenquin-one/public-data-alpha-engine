@@ -100,7 +100,7 @@ Airport Friction의 실제 운영 준비는 [전용 runbook](docs/airport_fricti
 
 GitHub 운영에서는 `.github/workflows/collect-seoul.yml`이 매시 07·22·37·52분 실행을 요청한다. GitHub 예약 실행은 지연되거나 드물게 누락될 수 있으며, 다음 성공 run이 2.5 cadence를 넘긴 공백과 추정 누락 횟수를 manifest에 기록한다. Repository secret `SEOUL_OPEN_DATA_KEY`가 없으면 공식 sample 지역 1곳, 있으면 seed 8곳을 수집한다. 원문은 매번 커지는 SQLite 대신 재구성 가능한 tar+gzip bundle로 `data` 브랜치에 적립한다. 설정과 object-storage 이관 gate는 [GitHub operations](docs/github_operations.md)에 있다.
 
-Airport Friction workflow도 `workflow_dispatch`를 제공하며 외부 scheduler가 15분마다 호출할 수 있다. 외부 trigger를 7일 검증할 때까지만 GitHub `schedule`을 보조 clock으로 유지한다. Airport 데이터는 `bundles/airport_friction/`, `runs/airport_friction/`, `state/airport_friction/`에만 기록되어 기존 서울 자산과 충돌하지 않는다.
+Airport Friction workflow는 `workflow_dispatch`만 제공하며 검증된 외부 scheduler가 15분마다 호출한다. 중복 API 호출을 피하기 위해 GitHub 내부 `schedule`은 2026-08-29에 제거했다. Airport 데이터는 `bundles/airport_friction/`, `runs/airport_friction/`, `state/airport_friction/`에만 기록되어 기존 서울 자산과 충돌하지 않는다.
 
 ## 공식 근거
 
