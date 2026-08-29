@@ -1,0 +1,1366 @@
+{
+  "schema_version": 1,
+  "normalized_schema_version": "airport-friction-0.1",
+  "namespace": "airport_friction",
+  "collector_id": "airport_friction_v0_1",
+  "run_id": "20260829T193026Z-cf6c3481",
+  "status": "FAILED",
+  "mode": "LIVE",
+  "trigger_source": "external_cron_job_org",
+  "collected_at": "2026-08-29T19:30:26.703310+00:00",
+  "source_observations": [
+    {
+      "source_id": "kac_process_time_v1",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/airport-process-time/v1?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "IATA_APCD",
+        "PRC_HR",
+        "STY_TCT_AVG_ALL"
+      ],
+      "http_status": null,
+      "latency_ms": 17673,
+      "retries": 1,
+      "error": "<urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_process_time_v2",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/airport-process-time/v2?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "IATA_APCD",
+        "PRC_HR",
+        "STY_TCT_AVG_ALL"
+      ],
+      "http_status": null,
+      "latency_ms": 17552,
+      "retries": 1,
+      "error": "<urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_congestion_v1",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/airport-congestion/v1?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "items"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_congestion_v2",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/airport-congestion/v2?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "IATA_APCD",
+        "PRC_HR",
+        "CGDR_ALL_LVL"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_parking",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/parking-realtime-status/info?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "parkingIstay",
+        "parkingFullSpace",
+        "parkingGetdate",
+        "parkingGettime"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_parking_congestion",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/parking-congestion/info?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "parkingAirportCodeName",
+        "parkingCongestion",
+        "parkingCongestionDegree",
+        "parkingOccupiedSpace",
+        "parkingTotalSpace",
+        "sysGetdate",
+        "sysGettime"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_GMP",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20260830&from_time=0330&to_time=0530&airport_code=GMP&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20260830",
+        "from_time": "0330",
+        "to_time": "0530",
+        "airport_code": "GMP",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_CJU",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20260830&from_time=0330&to_time=0530&airport_code=CJU&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20260830",
+        "from_time": "0330",
+        "to_time": "0530",
+        "airport_code": "CJU",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_PUS",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20260830&from_time=0330&to_time=0530&airport_code=PUS&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20260830",
+        "from_time": "0330",
+        "to_time": "0530",
+        "airport_code": "PUS",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_CJJ",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20260830&from_time=0330&to_time=0530&airport_code=CJJ&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20260830",
+        "from_time": "0330",
+        "to_time": "0530",
+        "airport_code": "CJJ",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_TAE",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20260830&from_time=0330&to_time=0530&airport_code=TAE&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20260830",
+        "from_time": "0330",
+        "to_time": "0530",
+        "airport_code": "TAE",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "fgenTime",
+        "flightid",
+        "scheduledatetime"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_GMP",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20260830&schDeptCityCode=GMP&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20260830",
+        "schDeptCityCode": "GMP",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_CJU",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20260830&schDeptCityCode=CJU&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20260830",
+        "schDeptCityCode": "CJU",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_PUS",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20260830&schDeptCityCode=PUS&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20260830",
+        "schDeptCityCode": "PUS",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_CJJ",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20260830&schDeptCityCode=CJJ&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20260830",
+        "schDeptCityCode": "CJJ",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_TAE",
+      "provider": "Korea Airports Corporation",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20260830&schDeptCityCode=TAE&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20260830",
+        "schDeptCityCode": "TAE",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "domesticNum",
+        "domesticStartTime",
+        "domesticArrivalTime",
+        "startcityCode",
+        "arrivalcityCode",
+        "domesticStdate",
+        "domesticEddate"
+      ],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": "KAC circuit open after 2 consecutive transport failures; last error: <urlopen error timed out>",
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_GMP",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "SKIPPED_NOT_DUE",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": "2026-08-29T19:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKSS&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKSS",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": "e50d4cd8cedd72d6cb95d6569421eb406493143b2f4b1a774fb9ec0cfef3225c",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_CJU",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "SKIPPED_NOT_DUE",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": "2026-08-29T19:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKPC&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKPC",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": "2f33d730d96b31397d8a57caf739f0bd28e91840eaa2639b8a0a0e44287b9fa5",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_PUS",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "SKIPPED_NOT_DUE",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": "2026-08-29T19:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKPK&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKPK",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": "5b605fc32e9557a937957d9f02642263a855d2c700c046a4b3d914e1cfac4db5",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_CJJ",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "SKIPPED_NOT_DUE",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": "2026-08-29T19:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKTU&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKTU",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": "fef117e24c9c36c2848ae507505a1f2869945955ddeb3e76a19c47d7b6228532",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_TAE",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "SKIPPED_NOT_DUE",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": "2026-08-29T19:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKTN&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKTN",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": "f53ff7b8165e798dc2a993d5a9365dec7c7a7ad3bc69da4fc878a2cad75cec3d",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": null,
+      "latency_ms": 0,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_airport_warning",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "ERROR",
+      "collected_at": "2026-08-29T19:30:26.703310+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmService/getWarning?pageNo=1&numOfRows=100&dataType=JSON&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "dataType": "JSON",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": null,
+      "raw_member": null,
+      "raw_uncompressed_bytes": 0,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [
+        "tm",
+        "icaoCode",
+        "wrngType",
+        "wrngMsg"
+      ],
+      "http_status": null,
+      "latency_ms": 18624,
+      "retries": 1,
+      "error": "<urlopen error timed out>",
+      "raw_members": null
+    }
+  ],
+  "normalized_records": [
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-29T19:30:26.703310+00:00",
+      "airport": {
+        "iata": "GMP",
+        "icao": "RKSS",
+        "name_ko": "김포",
+        "name_en": "Gimpo"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-30T04:30:26.703310+09:00",
+        "end": "2026-08-30T05:00:26.703310+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": null,
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-30",
+        "weekday_iso": 7,
+        "weekday_name": "Sunday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": "2026-08-29T19:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "SKIPPED_NOT_DUE",
+        "weather_warning": "ERROR"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather_warning"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "9e6aee75cea19a6c83ffa719d43367720cc7f5b4f7b5a3ff2f375dfa548dad21"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-29T19:30:26.703310+00:00",
+      "airport": {
+        "iata": "CJU",
+        "icao": "RKPC",
+        "name_ko": "제주",
+        "name_en": "Jeju"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-30T04:30:26.703310+09:00",
+        "end": "2026-08-30T05:00:26.703310+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": null,
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-30",
+        "weekday_iso": 7,
+        "weekday_name": "Sunday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": "2026-08-29T19:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "SKIPPED_NOT_DUE",
+        "weather_warning": "ERROR"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather_warning"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "c5762aa02b1a813bd0b8b797f159aa2ef3f73d4d2cbbee6d4e417f4ba293d3de"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-29T19:30:26.703310+00:00",
+      "airport": {
+        "iata": "PUS",
+        "icao": "RKPK",
+        "name_ko": "김해",
+        "name_en": "Gimhae"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-30T04:30:26.703310+09:00",
+        "end": "2026-08-30T05:00:26.703310+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": null,
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-30",
+        "weekday_iso": 7,
+        "weekday_name": "Sunday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": "2026-08-29T19:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "SKIPPED_NOT_DUE",
+        "weather_warning": "ERROR"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather_warning"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "9d21a234f3e93500a6142ef8da380bd79dddef45e2e940133122711abae04a9d"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-29T19:30:26.703310+00:00",
+      "airport": {
+        "iata": "CJJ",
+        "icao": "RKTU",
+        "name_ko": "청주",
+        "name_en": "Cheongju"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-30T04:30:26.703310+09:00",
+        "end": "2026-08-30T05:00:26.703310+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": null,
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-30",
+        "weekday_iso": 7,
+        "weekday_name": "Sunday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": "2026-08-29T19:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "SKIPPED_NOT_DUE",
+        "weather_warning": "ERROR"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather_warning"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "290d1d598f10c0b5327905cfb6267c2a2bbcddde4b9915a11e5b92d3b6b864d0"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-08-29T19:30:26.703310+00:00",
+      "airport": {
+        "iata": "TAE",
+        "icao": "RKTN",
+        "name_ko": "대구",
+        "name_en": "Daegu"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": null,
+          "to_identity_level": null
+        },
+        "identity": {
+          "to_security_seconds": null,
+          "to_security_level": null
+        },
+        "security": {
+          "to_boarding_seconds": null,
+          "to_boarding_level": null
+        },
+        "boarding": {
+          "to_departure_seconds": null,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": null,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": null,
+        "overall_level": null,
+        "operating": null
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-08-30T04:30:26.703310+09:00",
+        "end": "2026-08-30T05:00:26.703310+09:00"
+      },
+      "flights_in_requested_window": [],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": null,
+        "occupied": null,
+        "available": null,
+        "occupancy_ratio": null,
+        "facilities": [],
+        "provider_congestion": {
+          "capacity": null,
+          "occupied": null,
+          "facilities": []
+        },
+        "realtime_minus_congestion_occupied": null
+      },
+      "weather": null,
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-08-30",
+        "weekday_iso": 7,
+        "weekday_name": "Sunday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "summer",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "weather": "2026-08-29T19:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "ERROR",
+        "congestion": "ERROR",
+        "flight_status": "ERROR",
+        "flight_schedule": "ERROR",
+        "parking": "ERROR",
+        "parking_congestion": "ERROR",
+        "weather": "SKIPPED_NOT_DUE",
+        "weather_warning": "ERROR"
+      },
+      "missing_sections": [
+        "congestion",
+        "congestion_values",
+        "flight_schedule",
+        "flight_status",
+        "parking",
+        "parking_congestion",
+        "parking_congestion_values",
+        "parking_values",
+        "process_time",
+        "process_time_values",
+        "weather_warning"
+      ],
+      "quality_status": "PARTIAL",
+      "record_hash": "eaa503a52aa1755646f329492ac1c844228abf283ed9d803ab675d0cb6f5f077"
+    }
+  ],
+  "summary": {
+    "airports": 5,
+    "sources_due_or_skipped": 22,
+    "sources_succeeded": 0,
+    "sources_partial": 0,
+    "sources_skipped_not_due": 5,
+    "new_payloads": 0,
+    "duplicates": 0,
+    "errors": 17,
+    "gzip_bytes": 0
+  },
+  "health": {
+    "schedule": {
+      "status": "OK",
+      "cadence_seconds": 900,
+      "previous_run_at": "2026-08-29T19:20:17.437792+00:00",
+      "elapsed_seconds": 609,
+      "late_by_seconds": 0,
+      "missed_intervals": 0
+    },
+    "source_gaps": [
+      {
+        "source_id": "kma_airport_warning",
+        "status": "STALE",
+        "age_seconds": 39604,
+        "cadence_seconds": 1800
+      }
+    ],
+    "requests": {
+      "total_retries": 3,
+      "max_latency_ms": 18624,
+      "missing_sections": 75
+    },
+    "storage": {
+      "new_gzip_bytes": 0,
+      "cumulative_new_gzip_bytes": 1655847,
+      "migration_threshold_bytes": 500000000,
+      "status": "OK"
+    }
+  },
+  "quota_budget": {
+    "cadence_minutes": 15,
+    "weather_minutes": 30,
+    "services": {
+      "kac_airport_process_time": {
+        "requests_per_run": 2,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 192,
+        "quota_utilization_pct": 3.84,
+        "headroom": 4808
+      },
+      "kac_airport_congestion": {
+        "requests_per_run": 2,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 192,
+        "quota_utilization_pct": 3.84,
+        "headroom": 4808
+      },
+      "kac_parking_realtime_status": {
+        "requests_per_run": 1,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 96,
+        "quota_utilization_pct": 1.92,
+        "headroom": 4904
+      },
+      "kac_parking_congestion": {
+        "requests_per_run": 1,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 96,
+        "quota_utilization_pct": 1.92,
+        "headroom": 4904
+      },
+      "kac_flight_status": {
+        "requests_per_run": 5,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 480,
+        "quota_utilization_pct": 9.6,
+        "headroom": 4520
+      },
+      "kac_flight_schedule": {
+        "requests_per_run": 15,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 1440,
+        "quota_utilization_pct": 28.8,
+        "headroom": 3560
+      },
+      "kma_api_hub_combined": {
+        "requests_per_run": 6,
+        "runs_per_day": 48,
+        "quota": 20000,
+        "requests_per_day": 288,
+        "quota_utilization_pct": 1.44,
+        "headroom": 19712
+      }
+    },
+    "totals": {
+      "kac_requests_per_day": 2496,
+      "kma_requests_per_day": 288,
+      "all_requests_per_day": 2784,
+      "requests_60_days": 167040,
+      "requests_90_days": 250560
+    },
+    "temporary_dual_scheduler_overlap": {
+      "assumption": "two 15-minute clocks; shared state; force_weather=false",
+      "kac_requests_per_day": 4992,
+      "kma_requests_per_day": 288,
+      "all_requests_per_day": 5280,
+      "kac_shared_pool_utilization_pct": 99.84,
+      "all_services_within_published_limits": true
+    }
+  }
+}
