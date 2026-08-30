@@ -138,8 +138,8 @@
     "kma_metar_CJJ": {
       "content_hash": "3d91c1b1f534d566992b276224e048065edaa7bf4f697cf176ea12362112efd9",
       "source_timestamp": "2026-08-30T06:00:00+00:00",
-      "collected_at": "2026-08-30T06:02:51.512914+00:00",
-      "status": "OK",
+      "collected_at": "2026-08-30T06:45:21.706906+00:00",
+      "status": "DUPLICATE",
       "cadence_seconds": 1800
     },
     "kma_metar_TAE": {
@@ -150,46 +150,39 @@
       "cadence_seconds": 1800
     },
     "kma_airport_warning": {
-      "content_hash": "1a3fec10ed6991e69b6edcd10161fe5e6dc3d13109edae9f6c043fd205b6a3e7",
-      "source_timestamp": "2026-08-29T06:25:00+09:00",
-      "collected_at": "2026-08-29T08:30:22.959018+00:00",
-      "status": "DUPLICATE",
+      "content_hash": "8b3e3e4e7d2310e12abc3a9024ee9e7d1471956cdc78655acb43191c48b140c0",
+      "source_timestamp": "2026-08-30T06:35:00+09:00",
+      "collected_at": "2026-08-30T06:45:21.706906+00:00",
+      "status": "OK",
       "cadence_seconds": 1800
     }
   },
   "storage": {
-    "total_new_gzip_bytes": 2200209
+    "total_new_gzip_bytes": 2200529
   },
-  "updated_at": "2026-08-30T06:31:46.876717+00:00",
-  "last_run_id": "20260830T063146Z-f0060232",
+  "updated_at": "2026-08-30T06:45:21.706906+00:00",
+  "last_run_id": "20260830T064521Z-8bafaf77",
   "last_status": "PARTIAL",
   "last_mode": "LIVE",
-  "last_trigger_source": "schedule",
+  "last_trigger_source": "external_cron_job_org",
   "last_health": {
     "schedule": {
       "status": "OK",
       "cadence_seconds": 900,
-      "previous_run_at": "2026-08-30T06:30:26.498578+00:00",
-      "elapsed_seconds": 80,
+      "previous_run_at": "2026-08-30T06:31:46.876717+00:00",
+      "elapsed_seconds": 815,
       "late_by_seconds": 0,
       "missed_intervals": 0
     },
-    "source_gaps": [
-      {
-        "source_id": "kma_airport_warning",
-        "status": "STALE",
-        "age_seconds": 79284,
-        "cadence_seconds": 1800
-      }
-    ],
+    "source_gaps": [],
     "requests": {
-      "total_retries": 0,
-      "max_latency_ms": 2799,
-      "missing_sections": 4
+      "total_retries": 6,
+      "max_latency_ms": 20369,
+      "missing_sections": 77
     },
     "storage": {
-      "new_gzip_bytes": 8374,
-      "cumulative_new_gzip_bytes": 2200209,
+      "new_gzip_bytes": 320,
+      "cumulative_new_gzip_bytes": 2200529,
       "migration_threshold_bytes": 500000000,
       "status": "OK"
     }
