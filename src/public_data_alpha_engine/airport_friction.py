@@ -1176,7 +1176,6 @@ class AirportFrictionCollector:
         consecutive_kac_transport_failures = 0
         kac_circuit_reason: str | None = None
         workflow_failure_reasons: list[str] = []
-        transport_failure_providers: set[str] = set()
 
         for spec in specs:
             secret = self._secret(spec)
@@ -1341,8 +1340,6 @@ class AirportFrictionCollector:
                 workflow_failure_reason = _workflow_failure_reason(exc)
                 if workflow_failure_reason:
                     workflow_failure_reasons.append(workflow_failure_reason)
-                if _transport_failure(exc):
-                    transport_failure_providers.add(spec.provider)
                 if spec.provider == "Korea Airports Corporation":
                     if _transport_failure(exc):
                         consecutive_kac_transport_failures += 1
@@ -1405,8 +1402,6 @@ class AirportFrictionCollector:
         partials = sum(value.status == "PARTIAL" for value in observations.values())
         errors = sum(value.status == "ERROR" for value in observations.values())
         overall = "SUCCESS" if errors == 0 and partials == 0 else "PARTIAL" if succeeded else "FAILED"
-        if overall == "FAILED" and len(transport_failure_providers) > 1:
-            workflow_failure_reasons.append("multi_provider_transport_failure")
         workflow_failure_reasons = sorted(set(workflow_failure_reasons))
         new_gzip_bytes = sum(value.raw_gzip_bytes for value in observations.values())
         state["storage"]["total_new_gzip_bytes"] = int(state["storage"].get("total_new_gzip_bytes", 0)) + new_gzip_bytes

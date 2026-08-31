@@ -66,6 +66,12 @@ class KacOutageClient(FixtureRoutingClient):
         return super().request(url, **kwargs)
 
 
+class AllProvidersOutageClient(FixtureRoutingClient):
+    def request(self, url: str, **_: object) -> HttpResponse:
+        self.urls.append(url)
+        raise TimeoutError("provider timed out")
+
+
 class PaginatedScheduleClient(FixtureRoutingClient):
     def __init__(self) -> None:
         super().__init__()
@@ -314,6 +320,45 @@ class AirportFrictionTest(unittest.TestCase):
         self.assertEqual(
             manifest["health"]["workflow"]["reasons"],
             ["missing_repository_secret"],
+        )
+
+    def test_all_provider_timeouts_are_recorded_without_a_workflow_alert(self) -> None:
+        result = AirportFrictionCollector(
+            data_go_key="data-key",
+            kma_key="kma-key",
+            client=AllProvidersOutageClient(),
+        ).collect(
+            self.output,
+            mode="live",
+            now=self.now,
+            force_weather=True,
+        )
+        manifest = self.manifest(result)
+        self.assertEqual(result["status"], "FAILED")
+        self.assertFalse(result["workflow_failure"])
+        self.assertEqual(manifest["health"]["workflow"]["reasons"], [])
+        self.assertEqual(manifest["summary"]["errors"], 22)
+
+    def test_unexpected_collector_exception_requires_intervention(self) -> None:
+        class BuggyClient(FixtureRoutingClient):
+            def request(self, url: str, **_: object) -> HttpResponse:
+                raise TypeError("unexpected collector bug")
+
+        result = AirportFrictionCollector(
+            data_go_key="data-key",
+            kma_key="kma-key",
+            client=BuggyClient(),
+        ).collect(
+            self.output,
+            mode="live",
+            now=self.now,
+            force_weather=True,
+        )
+        manifest = self.manifest(result)
+        self.assertTrue(result["workflow_failure"])
+        self.assertEqual(
+            manifest["health"]["workflow"]["reasons"],
+            ["unexpected_TypeError"],
         )
 
     def test_schedule_pagination_merges_and_archives_raw_pages(self) -> None:
