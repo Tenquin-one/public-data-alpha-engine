@@ -68,7 +68,6 @@ jobs:
           if [ "$DISPATCH_MODE" = "fixture" ]; then
             args+=(--fixture --force-weather)
           else
-            args+=(--strict)
             if [ "$FORCE_WEATHER" = "true" ]; then
               args+=(--force-weather)
             fi
@@ -121,6 +120,6 @@ jobs:
               print(f"- Stored gzip bytes: {storage.get('cumulative_new_gzip_bytes', 0)}")
           PY
 
-      - name: Fail after preserving manifest and health state
+      - name: Fail only on collector or infrastructure failure
         if: steps.collector.outputs.exit_code != '0'
         run: exit 1
