@@ -26,9 +26,9 @@ permissions:
   contents: write
 
 concurrency:
-  # Seoul and Airport both append to the data branch. One shared writer lock
-  # prevents ordinary scheduled runs from racing even though their namespaces differ.
-  group: public-data-time-axis-writer
+  # Keep Airport runs ordered without letting unrelated Seoul runs replace a
+  # pending Airport run. Cross-collector data-branch races are retried on push.
+  group: public-data-airport-friction
   cancel-in-progress: false
 
 jobs:

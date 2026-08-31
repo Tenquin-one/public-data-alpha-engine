@@ -16,6 +16,8 @@ Repository secret `SEOUL_OPEN_DATA_KEY`가 있으면 8개 seed 장소를 수집�
 
 `.github/workflows/collect-airport-friction.yml`은 검증된 외부 scheduler용 `workflow_dispatch`만 제공한다. 중복 API 호출을 만들던 GitHub 내부 backup schedule은 2026-08-29에 제거했다. Airport live mode는 `DATA_GO_KR_SERVICE_KEY`와 `KMA_API_HUB_KEY`가 모두 필요하며, key가 없으면 fixture로 대체하지 않고 실패 manifest를 남긴다. Fixture는 수동 `mode=fixture`에서만 가능하다.
 
+Airport와 Seoul은 서로 다른 workflow concurrency group을 사용한다. GitHub는 같은 group에 실행이 몰리면 기존 pending run을 교체할 수 있으므로, 공유 group은 Airport 15분 run을 누락시킬 수 있다. 두 workflow가 동시에 `data`를 갱신할 때의 충돌은 `scripts/push_data_branch.sh`가 최신 branch 위로 rebase한 뒤 최대 4회 재시도한다.
+
 서울과 Airport workflow는 서로 다른 namespace를 쓰지만 하나의 `data` 브랜치에 append한다. 따라서 둘 다 `public-data-time-axis-writer` concurrency group을 공유해 저장을 직렬화한다. 드물게 다른 writer가 중간에 branch를 갱신해도 push helper가 최신 `origin/data` 위로 수집 commit을 rebase하고 최대 4회 재시도한다. 이 때문에 정상 수집 manifest가 단순 push race로 유실되지 않는다.
 
 ## Data branch layout

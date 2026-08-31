@@ -55,7 +55,7 @@ This is the same no-server external-trigger pattern as the Seoul transition: the
 
 The external scheduler is the sole 15-minute clock. GitHub's former internal backup `schedule` was removed after live dispatches and durable data-branch writes were verified. Keep `trigger_source` set to a stable external-scheduler label so manifests retain provenance.
 
-The Airport and Seoul workflows share one data-branch writer lock. If another writer still advances `data` between checkout and push, the workflow rebases its namespace-only commit on the latest branch and retries up to four times. A provider failure manifest is therefore preserved even when both Seeds finish together.
+Airport and Seoul use separate workflow queues so an unrelated pending run cannot replace an Airport run. If both writers advance `data` together, the workflow rebases its namespace-only commit on the latest branch and retries up to four times. A provider failure manifest is therefore preserved even when both Seeds finish together.
 
 The conservative single-clock maximum is 2,784 calls/day after allowing up to three flight-schedule pages per airport: KAC 2,496/day and cadence-gated KMA 288/day. KAC remains below a conservative shared 5,000-call ceiling, and each service remains below its own published quota. The exact proof is embedded in `airport-quota` output and every run manifest.
 
