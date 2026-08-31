@@ -63,10 +63,10 @@ The conservative single-clock maximum is 2,784 calls/day after allowing up to th
 
 - Network retries: two, with bounded exponential delay.
 - Non-transient HTTP 4xx responses (including KMA 403) are not retried; their HTTP status, latency, and retry count are written to the manifest.
-- One API failure: other sources are saved; manifest status is `PARTIAL`; the workflow stays green after committing the diagnostic manifest.
+- Provider/API failures are always saved. A partial provider failure keeps manifest status `PARTIAL`; a provider-wide outage can produce manifest status `FAILED`; both keep the workflow green after committing the diagnostic manifest.
 - Airport-warning result `03 NO_DATA`: successful empty list; raw response is retained and the run stays healthy.
-- All live sources fail or keys are absent: a redacted `FAILED` manifest/state is committed and the workflow exits red; no secret is printed.
-- Collector exceptions, storage/commit failures, and broken authentication or environment setup still exit red.
+- Missing repository secrets, authentication result codes `20`/`30`, unexpected collector exceptions, multi-provider transport collapse, and storage/commit failures still exit red.
+- Workflow failure classification and its redacted reasons are recorded under `health.workflow` without changing the collection status or data-branch layout.
 - Scheduler gap: warning after 2.5 × 15 minutes, with estimated missed intervals.
 - Source gap: checked against 2.5 × that source's own cadence.
 - Storage review: state changes to `MIGRATION_REVIEW` at 500 MB of cumulative newly stored gzip payloads.

@@ -114,10 +114,14 @@ jobs:
               schedule = state.get("last_health", {}).get("schedule", {})
               gaps = state.get("last_health", {}).get("source_gaps", [])
               storage = state.get("last_health", {}).get("storage", {})
+              workflow = state.get("last_health", {}).get("workflow", {})
               print(f"- Collection status: {state.get('last_status', 'UNKNOWN')}")
               print(f"- Schedule health: {schedule.get('status', 'UNKNOWN')}")
               print(f"- Source gaps: {len(gaps)}")
               print(f"- Stored gzip bytes: {storage.get('cumulative_new_gzip_bytes', 0)}")
+              print(f"- Workflow alert: {'YES' if workflow.get('failure') else 'NO'}")
+              if workflow.get("reasons"):
+                  print(f"- Alert reasons: {', '.join(workflow['reasons'])}")
           PY
 
       - name: Fail only on collector or infrastructure failure

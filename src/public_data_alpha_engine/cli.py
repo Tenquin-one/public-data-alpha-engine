@@ -185,8 +185,10 @@ def command_collect_airport(args: argparse.Namespace) -> None:
         force_weather=args.force_weather,
     )
     _json(result)
-    if result["status"] == "FAILED" or (args.strict and result["status"] != "SUCCESS"):
-        raise RuntimeError(f"Airport Friction collection ended {result['status']}")
+    if result.get("workflow_failure") or (args.strict and result["status"] != "SUCCESS"):
+        reasons = ", ".join(result.get("workflow_failure_reasons", []))
+        suffix = f" ({reasons})" if reasons else ""
+        raise RuntimeError(f"Airport Friction collection requires intervention{suffix}")
 
 
 def command_airport_quota(_: argparse.Namespace) -> None:

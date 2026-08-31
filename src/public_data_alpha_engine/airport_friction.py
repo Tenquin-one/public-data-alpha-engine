@@ -83,6 +83,17 @@ class SourceObservation:
     raw_members: list[str] | None = None
 
 
+class ApiResponseError(RuntimeError):
+    def __init__(self, code: str, message: str, *, gateway: bool = False) -> None:
+        self.code = str(code)
+        prefix = "OpenAPI gateway" if gateway else "API"
+        super().__init__(f"{prefix} result {self.code}: {message}")
+
+
+class MissingCredentialError(RuntimeError):
+    pass
+
+
 def quota_budget(*, cadence_minutes: int = 15, weather_minutes: int = 30) -> dict[str, Any]:
     if cadence_minutes <= 0 or 1440 % cadence_minutes:
         raise ValueError("cadence_minutes must be a positive divisor of 1440")
@@ -369,7 +380,7 @@ def _api_root(parsed: dict[str, Any], *, allow_no_data: bool = False) -> dict[st
             message = common_header.get(
                 "returnAuthMsg", common_header.get("errMsg", "unknown gateway error")
             )
-            raise RuntimeError(f"OpenAPI gateway result {code}: {message}")
+            raise ApiResponseError(code, str(message), gateway=True)
     root = parsed.get("response", parsed)
     if isinstance(root, dict) and len(root) == 1:
         only = next(iter(root.values()))
@@ -384,7 +395,7 @@ def _api_root(parsed: dict[str, Any], *, allow_no_data: bool = False) -> dict[st
             allow_no_data and code == "03"
         ):
             message = header.get("resultMsg", header.get("result_msg", "unknown API error"))
-            raise RuntimeError(f"API result {code}: {message}")
+            raise ApiResponseError(code, str(message))
     return root
 
 
@@ -696,10 +707,26 @@ def _is_due(state: dict[str, Any], spec: RequestSpec, now: datetime, *, force_we
     return previous is None or (now - previous.astimezone(UTC)).total_seconds() >= spec.cadence_seconds - 60
 
 
-def _kac_transport_failure(exc: Exception) -> bool:
+def _transport_failure(exc: Exception) -> bool:
     if isinstance(exc, HttpRequestError):
         return exc.status is None
     return isinstance(exc, (TimeoutError, ConnectionError))
+
+
+def _workflow_failure_reason(exc: Exception) -> str | None:
+    """Classify failures that require operator attention, not provider recovery."""
+    if isinstance(exc, MissingCredentialError):
+        return "missing_repository_secret"
+    if isinstance(exc, ApiResponseError):
+        if exc.code in {"20", "30"}:
+            return f"authentication_result_{exc.code}"
+        return None
+    if isinstance(
+        exc,
+        (HttpRequestError, TimeoutError, ConnectionError, ValueError, ET.ParseError),
+    ):
+        return None
+    return f"unexpected_{type(exc).__name__}"
 
 
 def _fixture_payloads(path: Path) -> dict[str, Any]:
@@ -1148,6 +1175,8 @@ class AirportFrictionCollector:
         specs = _request_specs(now)
         consecutive_kac_transport_failures = 0
         kac_circuit_reason: str | None = None
+        workflow_failure_reasons: list[str] = []
+        transport_failure_providers: set[str] = set()
 
         for spec in specs:
             secret = self._secret(spec)
@@ -1208,7 +1237,9 @@ class AirportFrictionCollector:
                     safe_query = {"fixture": self.fixture_path.name}
                 else:
                     if request_url is None:
-                        raise RuntimeError(f"missing repository secret {spec.secret_env}")
+                        raise MissingCredentialError(
+                            f"missing repository secret {spec.secret_env}"
+                        )
                     response = self.client.request(request_url)
                 parsed, mime_type = parse_payload(response.body)
                 _api_root(parsed, allow_no_data=spec.source_id == "kma_airport_warning")
@@ -1234,7 +1265,9 @@ class AirportFrictionCollector:
                         )
                         page_url, _ = _urls(page_spec, secret)
                         if page_url is None:
-                            raise RuntimeError(f"missing repository secret {spec.secret_env}")
+                            raise MissingCredentialError(
+                                f"missing repository secret {spec.secret_env}"
+                            )
                         response = self.client.request(page_url)
                         page_parsed, page_mime = parse_payload(response.body)
                         _api_root(page_parsed)
@@ -1305,8 +1338,13 @@ class AirportFrictionCollector:
                 }
             except Exception as exc:
                 error = _redact(str(exc), (self.data_go_key, self.kma_key))
+                workflow_failure_reason = _workflow_failure_reason(exc)
+                if workflow_failure_reason:
+                    workflow_failure_reasons.append(workflow_failure_reason)
+                if _transport_failure(exc):
+                    transport_failure_providers.add(spec.provider)
                 if spec.provider == "Korea Airports Corporation":
-                    if _kac_transport_failure(exc):
+                    if _transport_failure(exc):
                         consecutive_kac_transport_failures += 1
                         if consecutive_kac_transport_failures >= 2:
                             kac_circuit_reason = (
@@ -1367,6 +1405,9 @@ class AirportFrictionCollector:
         partials = sum(value.status == "PARTIAL" for value in observations.values())
         errors = sum(value.status == "ERROR" for value in observations.values())
         overall = "SUCCESS" if errors == 0 and partials == 0 else "PARTIAL" if succeeded else "FAILED"
+        if overall == "FAILED" and len(transport_failure_providers) > 1:
+            workflow_failure_reasons.append("multi_provider_transport_failure")
+        workflow_failure_reasons = sorted(set(workflow_failure_reasons))
         new_gzip_bytes = sum(value.raw_gzip_bytes for value in observations.values())
         state["storage"]["total_new_gzip_bytes"] = int(state["storage"].get("total_new_gzip_bytes", 0)) + new_gzip_bytes
         storage_warning = state["storage"]["total_new_gzip_bytes"] >= 500_000_000
@@ -1406,6 +1447,10 @@ class AirportFrictionCollector:
                     "cumulative_new_gzip_bytes": state["storage"]["total_new_gzip_bytes"],
                     "migration_threshold_bytes": 500_000_000,
                     "status": "MIGRATION_REVIEW" if storage_warning else "OK",
+                },
+                "workflow": {
+                    "failure": bool(workflow_failure_reasons),
+                    "reasons": workflow_failure_reasons,
                 },
             },
             "quota_budget": quota_budget(),
@@ -1447,5 +1492,7 @@ class AirportFrictionCollector:
             "bundle_path": str(bundle_path) if bundle_path else None,
             "health_status": health_schedule["status"],
             "missed_intervals": health_schedule["missed_intervals"],
+            "workflow_failure": bool(workflow_failure_reasons),
+            "workflow_failure_reasons": workflow_failure_reasons,
             **manifest["summary"],
         }

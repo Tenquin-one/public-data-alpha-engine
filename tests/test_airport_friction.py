@@ -282,6 +282,40 @@ class AirportFrictionTest(unittest.TestCase):
         self.assertEqual(manifest["summary"]["sources_succeeded"], 6)
         self.assertIsNotNone(manifest["normalized_records"][0]["weather"])
 
+    def test_kac_only_outage_is_recorded_without_failing_the_workflow(self) -> None:
+        self.fixture_collect(force_weather=True)
+        result = AirportFrictionCollector(
+            data_go_key="data-key",
+            kma_key="kma-key",
+            client=KacOutageClient(),
+        ).collect(
+            self.output,
+            mode="live",
+            now=self.now + timedelta(minutes=15),
+            force_weather=False,
+        )
+        manifest = self.manifest(result)
+        self.assertEqual(result["status"], "FAILED")
+        self.assertFalse(result["workflow_failure"])
+        self.assertEqual(manifest["health"]["workflow"]["reasons"], [])
+        self.assertEqual(manifest["summary"]["errors"], 16)
+        self.assertEqual(manifest["summary"]["sources_skipped_not_due"], 6)
+
+    def test_missing_credentials_are_an_infrastructure_failure(self) -> None:
+        result = AirportFrictionCollector().collect(
+            self.output,
+            mode="live",
+            now=self.now,
+            force_weather=True,
+        )
+        manifest = self.manifest(result)
+        self.assertEqual(result["status"], "FAILED")
+        self.assertTrue(result["workflow_failure"])
+        self.assertEqual(
+            manifest["health"]["workflow"]["reasons"],
+            ["missing_repository_secret"],
+        )
+
     def test_schedule_pagination_merges_and_archives_raw_pages(self) -> None:
         client = PaginatedScheduleClient()
         result = AirportFrictionCollector(
@@ -355,6 +389,8 @@ class AirportFrictionTest(unittest.TestCase):
             client=client,
         ).collect(self.output, mode="live", now=self.now, force_weather=True)
         manifest = self.manifest(result)
+        self.assertEqual(result["status"], "PARTIAL")
+        self.assertFalse(result["workflow_failure"])
         observation = next(
             value
             for value in manifest["source_observations"]
@@ -365,6 +401,29 @@ class AirportFrictionTest(unittest.TestCase):
         self.assertEqual(observation["http_status"], 200)
         self.assertEqual(observation["latency_ms"], 7)
         self.assertEqual(observation["retries"], 1)
+
+    def test_authentication_gateway_error_requires_intervention(self) -> None:
+        client = FixtureRoutingClient()
+        client.responses["kac_process_time_v1"] = {
+            "OpenAPI_ServiceResponse": {
+                "cmmMsgHeader": {
+                    "returnAuthMsg": "SERVICE_ACCESS_DENIED_ERROR",
+                    "returnReasonCode": "20",
+                }
+            }
+        }
+        result = AirportFrictionCollector(
+            data_go_key="data-key",
+            kma_key="kma-key",
+            client=client,
+        ).collect(self.output, mode="live", now=self.now, force_weather=True)
+        manifest = self.manifest(result)
+        self.assertEqual(result["status"], "PARTIAL")
+        self.assertTrue(result["workflow_failure"])
+        self.assertEqual(
+            manifest["health"]["workflow"]["reasons"],
+            ["authentication_result_20"],
+        )
 
     def test_incomplete_page_is_marked_partial(self) -> None:
         client = FixtureRoutingClient()
@@ -466,6 +525,7 @@ class AirportFrictionTest(unittest.TestCase):
         self.assertNotIn("args+=(--strict)", workflow)
         self.assertIn("Fail only on collector or infrastructure failure", workflow)
         self.assertIn("if: steps.collector.outputs.exit_code != '0'", workflow)
+        self.assertIn("Workflow alert:", workflow)
         self.assertIn("trigger_source:", workflow)
         self.assertIn("collect-airport", workflow)
         self.assertIn("bundles/airport_friction", workflow)
