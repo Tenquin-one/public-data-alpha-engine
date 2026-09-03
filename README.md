@@ -98,7 +98,7 @@ python3 -m public_data_alpha_engine.cli mirror-csv planned.csv --planned
 Airport Friction의 실제 운영 준비는 [전용 runbook](docs/airport_friction_runbook.md), 공식 API 검증은 [source audit](docs/airport_friction_sources.md), 보존 필드는 [normalized schema](docs/airport_friction_schema.md)에 정리했다. 공통 운영 절차와 장애 복구는 [runbook](docs/runbook.md), 계산 규칙은 [scoring spec](docs/scoring_spec.md), 전체 테이블은 [data dictionary](docs/data_dictionary.md)를 참고한다.
 초기 후보·점수·Seed Queue·서울 cohort의 CSV는 `data/exports/`에 생성된다.
 
-GitHub 운영에서는 `.github/workflows/collect-seoul.yml`이 매시 07·22·37·52분 실행을 요청한다. GitHub 예약 실행은 지연되거나 드물게 누락될 수 있으며, 다음 성공 run이 2.5 cadence를 넘긴 공백과 추정 누락 횟수를 manifest에 기록한다. Repository secret `SEOUL_OPEN_DATA_KEY`가 없으면 공식 sample 지역 1곳, 있으면 seed 8곳을 수집한다. 원문은 매번 커지는 SQLite 대신 재구성 가능한 tar+gzip bundle로 `data` 브랜치에 적립한다. 설정과 object-storage 이관 gate는 [GitHub operations](docs/github_operations.md)에 있다.
+GitHub 운영에서는 `.github/workflows/collect-seoul.yml`을 검증된 외부 scheduler가 15분마다 `workflow_dispatch`로 호출한다. 중복 수집을 막기 위해 GitHub 내부 `schedule`은 2026-09-03에 제거했다. 다음 성공 run이 2.5 cadence를 넘긴 공백과 추정 누락 횟수는 manifest에 기록한다. Repository secret `SEOUL_OPEN_DATA_KEY`가 없으면 공식 sample 지역 1곳, 있으면 seed 8곳을 수집한다. 원문은 매번 커지는 SQLite 대신 재구성 가능한 tar+gzip bundle로 `data` 브랜치에 적립한다. 설정과 object-storage 이관 gate는 [GitHub operations](docs/github_operations.md)에 있다.
 
 Airport Friction workflow는 `workflow_dispatch`만 제공하며 검증된 외부 scheduler가 15분마다 호출한다. 중복 API 호출을 피하기 위해 GitHub 내부 `schedule`은 2026-08-29에 제거했다. Airport 데이터는 `bundles/airport_friction/`, `runs/airport_friction/`, `state/airport_friction/`에만 기록되어 기존 서울 자산과 충돌하지 않는다.
 

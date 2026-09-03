@@ -10,7 +10,7 @@ SQLite를 15분마다 커밋하면 DB 전체의 binary history가 누적된다. 
 
 ## 자동화
 
-`.github/workflows/collect-seoul.yml`은 UTC 매시 07·22·37·52분, 즉 15분 간격으로 실행을 요청한다. GitHub가 매시 정각에 혼잡할 수 있어 정각을 피했다. 다만 GitHub `schedule`은 best-effort라 지연되거나 드물게 누락될 수 있다. 다음 실행은 직전 run과의 간격이 37분 30초를 넘으면 manifest `health.schedule`에 `WARNING`, 지연 초, 추정 누락 횟수를 기록한다.
+`.github/workflows/collect-seoul.yml`은 검증된 외부 scheduler가 15분마다 `workflow_dispatch`로 호출한다. 기존 GitHub 내부 `schedule`은 외부 dispatch와 함께 실행되어 과수집을 만들었기 때문에 2026-09-03에 제거했다. 다음 실행은 직전 run과의 간격이 37분 30초를 넘으면 manifest `health.schedule`에 `WARNING`, 지연 초, 추정 누락 횟수를 기록한다.
 
 Repository secret `SEOUL_OPEN_DATA_KEY`가 있으면 8개 seed 장소를 수집한다. 없으면 workflow가 중단되지 않고 공식 `sample` 키로 광화문·덕수궁 한 곳만 수집하며 Actions summary에 경고를 남긴다. Secret 값은 저장하거나 로그에 출력하지 않고 endpoint에는 `REDACTED`만 남긴다.
 

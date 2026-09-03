@@ -567,6 +567,8 @@ class AirportFrictionTest(unittest.TestCase):
         seoul_workflow = (PROJECT_ROOT / ".github" / "workflows" / "collect-seoul.yml").read_text(encoding="utf-8")
         self.assertIn("workflow_dispatch:", workflow)
         self.assertNotIn("\n  schedule:", workflow)
+        self.assertIn("workflow_dispatch:", seoul_workflow)
+        self.assertNotIn("\n  schedule:", seoul_workflow)
         self.assertNotIn("args+=(--strict)", workflow)
         self.assertIn("Fail only on collector or infrastructure failure", workflow)
         self.assertIn("if: steps.collector.outputs.exit_code != '0'", workflow)
