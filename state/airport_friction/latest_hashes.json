@@ -160,28 +160,35 @@
   "storage": {
     "total_new_gzip_bytes": 7127146
   },
-  "updated_at": "2026-09-06T06:45:31.989294+00:00",
-  "last_run_id": "20260906T064531Z-ff8e21d1",
-  "last_status": "PARTIAL",
+  "updated_at": "2026-09-06T07:00:40.277534+00:00",
+  "last_run_id": "20260906T070040Z-c2f10425",
+  "last_status": "FAILED",
   "last_mode": "LIVE",
   "last_trigger_source": "external_cron_job_org",
   "last_health": {
     "schedule": {
       "status": "OK",
       "cadence_seconds": 900,
-      "previous_run_at": "2026-09-06T06:30:34.004999+00:00",
-      "elapsed_seconds": 898,
-      "late_by_seconds": 0,
+      "previous_run_at": "2026-09-06T06:45:31.989294+00:00",
+      "elapsed_seconds": 908,
+      "late_by_seconds": 8,
       "missed_intervals": 0
     },
-    "source_gaps": [],
+    "source_gaps": [
+      {
+        "source_id": "kac_congestion_v1",
+        "status": "STALE",
+        "age_seconds": 2707,
+        "cadence_seconds": 900
+      }
+    ],
     "requests": {
-      "total_retries": 5,
-      "max_latency_ms": 22179,
-      "missing_sections": 1
+      "total_retries": 2,
+      "max_latency_ms": 18558,
+      "missing_sections": 71
     },
     "storage": {
-      "new_gzip_bytes": 8318,
+      "new_gzip_bytes": 0,
       "cumulative_new_gzip_bytes": 7127146,
       "migration_threshold_bytes": 500000000,
       "status": "OK"
