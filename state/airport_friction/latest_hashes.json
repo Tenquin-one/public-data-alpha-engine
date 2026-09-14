@@ -160,28 +160,161 @@
   "storage": {
     "total_new_gzip_bytes": 11266890
   },
-  "updated_at": "2026-09-13T04:00:51.699674+00:00",
-  "last_run_id": "20260913T040051Z-62379bc7",
-  "last_status": "PARTIAL",
+  "updated_at": "2026-09-14T04:15:35.712489+00:00",
+  "last_run_id": "20260914T041535Z-97d90150",
+  "last_status": "FAILED",
   "last_mode": "LIVE",
   "last_trigger_source": "external_cron_job_org",
   "last_health": {
     "schedule": {
-      "status": "OK",
+      "status": "WARNING",
       "cadence_seconds": 900,
-      "previous_run_at": "2026-09-13T03:45:29.886472+00:00",
-      "elapsed_seconds": 922,
-      "late_by_seconds": 22,
-      "missed_intervals": 0
+      "previous_run_at": "2026-09-13T04:00:51.699674+00:00",
+      "elapsed_seconds": 87284,
+      "late_by_seconds": 86384,
+      "missed_intervals": 95
     },
-    "source_gaps": [],
+    "source_gaps": [
+      {
+        "source_id": "kac_process_time_v1",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_process_time_v2",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_congestion_v1",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_congestion_v2",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_parking",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_parking_congestion",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_GMP",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_CJU",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_PUS",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_CJJ",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_TAE",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_GMP",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_CJU",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_PUS",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_CJJ",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_TAE",
+        "status": "STALE",
+        "age_seconds": 88206,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kma_metar_GMP",
+        "status": "STALE",
+        "age_seconds": 87284,
+        "cadence_seconds": 1800
+      },
+      {
+        "source_id": "kma_metar_CJU",
+        "status": "STALE",
+        "age_seconds": 87284,
+        "cadence_seconds": 1800
+      },
+      {
+        "source_id": "kma_metar_PUS",
+        "status": "STALE",
+        "age_seconds": 87284,
+        "cadence_seconds": 1800
+      },
+      {
+        "source_id": "kma_metar_CJJ",
+        "status": "STALE",
+        "age_seconds": 87284,
+        "cadence_seconds": 1800
+      },
+      {
+        "source_id": "kma_metar_TAE",
+        "status": "STALE",
+        "age_seconds": 87284,
+        "cadence_seconds": 1800
+      },
+      {
+        "source_id": "kma_airport_warning",
+        "status": "STALE",
+        "age_seconds": 87284,
+        "cadence_seconds": 1800
+      }
+    ],
     "requests": {
-      "total_retries": 2,
-      "max_latency_ms": 17852,
-      "missing_sections": 71
+      "total_retries": 8,
+      "max_latency_ms": 18672,
+      "missing_sections": 85
     },
     "storage": {
-      "new_gzip_bytes": 3712,
+      "new_gzip_bytes": 0,
       "cumulative_new_gzip_bytes": 11266890,
       "migration_threshold_bytes": 500000000,
       "status": "OK"
