@@ -160,28 +160,125 @@
   "storage": {
     "total_new_gzip_bytes": 14060904
   },
-  "updated_at": "2026-09-18T03:15:38.223203+00:00",
-  "last_run_id": "20260918T031538Z-5cc33f9f",
-  "last_status": "PARTIAL",
+  "updated_at": "2026-09-18T03:30:41.712221+00:00",
+  "last_run_id": "20260918T033041Z-b57cbf7a",
+  "last_status": "FAILED",
   "last_mode": "LIVE",
   "last_trigger_source": "external_cron_job_org",
   "last_health": {
     "schedule": {
       "status": "OK",
       "cadence_seconds": 900,
-      "previous_run_at": "2026-09-18T03:00:47.225780+00:00",
-      "elapsed_seconds": 891,
-      "late_by_seconds": 0,
+      "previous_run_at": "2026-09-18T03:15:38.223203+00:00",
+      "elapsed_seconds": 903,
+      "late_by_seconds": 3,
       "missed_intervals": 0
     },
-    "source_gaps": [],
+    "source_gaps": [
+      {
+        "source_id": "kac_process_time_v1",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_process_time_v2",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_congestion_v1",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_congestion_v2",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_parking",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_parking_congestion",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_GMP",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_CJU",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_PUS",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_CJJ",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_TAE",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_GMP",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_CJU",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_PUS",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_CJJ",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      },
+      {
+        "source_id": "kac_flight_schedule_TAE",
+        "status": "STALE",
+        "age_seconds": 2704,
+        "cadence_seconds": 900
+      }
+    ],
     "requests": {
       "total_retries": 4,
-      "max_latency_ms": 17978,
+      "max_latency_ms": 19331,
       "missing_sections": 75
     },
     "storage": {
-      "new_gzip_bytes": 3787,
+      "new_gzip_bytes": 0,
       "cumulative_new_gzip_bytes": 14060904,
       "migration_threshold_bytes": 500000000,
       "status": "OK"
