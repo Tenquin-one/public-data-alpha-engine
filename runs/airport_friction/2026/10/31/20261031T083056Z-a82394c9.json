@@ -1,0 +1,2536 @@
+{
+  "schema_version": 1,
+  "normalized_schema_version": "airport-friction-0.1",
+  "namespace": "airport_friction",
+  "collector_id": "airport_friction_v0_1",
+  "run_id": "20261031T083056Z-a82394c9",
+  "status": "SUCCESS",
+  "mode": "LIVE",
+  "trigger_source": "external_cron_job_org",
+  "collected_at": "2026-10-31T08:30:56.347756+00:00",
+  "source_observations": [
+    {
+      "source_id": "kac_process_time_v1",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T02:55:00+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/airport-process-time/v1?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU"
+      ],
+      "content_hash": "b0c197475c4a51ace085d62a699a0261a48e745deac7dd1b0b3b4adbc7d2108f",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 2043,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1151,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_process_time_v2",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T02:55:00+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/airport-process-time/v2?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": "b0c197475c4a51ace085d62a699a0261a48e745deac7dd1b0b3b4adbc7d2108f",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 2043,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1109,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_congestion_v1",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T02:55:00+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/airport-congestion/v1?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU"
+      ],
+      "content_hash": "c3a9818dc20cfc3437bdc980500ab73055d4dfddee71b0611510065f685d053a",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 1513,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 982,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_congestion_v2",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T02:55:00+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/airport-congestion/v2?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": "c3a9818dc20cfc3437bdc980500ab73055d4dfddee71b0611510065f685d053a",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 1513,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 601,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_parking",
+      "provider": "Korea Airports Corporation",
+      "status": "OK",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T17:30:04+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/parking-realtime-status/info?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": "8017ef1e7353c870b33aacdfdaf04ae4de31eca1cc6a6ec1619f6ffe7d3c71e3",
+      "raw_member": "payloads/kac-parking-8017ef1e7353c870b33aacdfdaf04ae4de31eca1cc6a6ec1619f6ffe7d3c71e3.xml.gz",
+      "raw_uncompressed_bytes": 12193,
+      "raw_gzip_bytes": 1156,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 626,
+      "retries": 0,
+      "error": null,
+      "raw_members": [
+        "payloads/kac-parking-8017ef1e7353c870b33aacdfdaf04ae4de31eca1cc6a6ec1619f6ffe7d3c71e3.xml.gz"
+      ]
+    },
+    {
+      "source_id": "kac_parking_congestion",
+      "provider": "Korea Airports Corporation",
+      "status": "OK",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T17:30:04+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/parking-congestion/info?pageNo=1&numOfRows=100&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": "651de5b0bc25ef6bd914a81eb850d8bb4c805d9f47638aaf8bbfbe04a948f242",
+      "raw_member": "payloads/kac-parking-congestion-651de5b0bc25ef6bd914a81eb850d8bb4c805d9f47638aaf8bbfbe04a948f242.xml.gz",
+      "raw_uncompressed_bytes": 13512,
+      "raw_gzip_bytes": 1121,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 994,
+      "retries": 0,
+      "error": null,
+      "raw_members": [
+        "payloads/kac-parking-congestion-651de5b0bc25ef6bd914a81eb850d8bb4c805d9f47638aaf8bbfbe04a948f242.xml.gz"
+      ]
+    },
+    {
+      "source_id": "kac_flight_GMP",
+      "provider": "Korea Airports Corporation",
+      "status": "OK",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T17:30:10+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20261031&from_time=1630&to_time=1830&airport_code=GMP&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20261031",
+        "from_time": "1630",
+        "to_time": "1830",
+        "airport_code": "GMP",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": "11f925f2b6e623923931af203a6baaf41c0f568ff9f98a3ec59b06015057cdc2",
+      "raw_member": "payloads/kac-flight-gmp-11f925f2b6e623923931af203a6baaf41c0f568ff9f98a3ec59b06015057cdc2.xml.gz",
+      "raw_uncompressed_bytes": 12780,
+      "raw_gzip_bytes": 1090,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1528,
+      "retries": 0,
+      "error": null,
+      "raw_members": [
+        "payloads/kac-flight-gmp-11f925f2b6e623923931af203a6baaf41c0f568ff9f98a3ec59b06015057cdc2.xml.gz"
+      ]
+    },
+    {
+      "source_id": "kac_flight_CJU",
+      "provider": "Korea Airports Corporation",
+      "status": "OK",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T17:30:10+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20261031&from_time=1630&to_time=1830&airport_code=CJU&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20261031",
+        "from_time": "1630",
+        "to_time": "1830",
+        "airport_code": "CJU",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": "402051592d8764c1c1149a911bc06dbbd67ec7c54ef673fbedf801adddb293b0",
+      "raw_member": "payloads/kac-flight-cju-402051592d8764c1c1149a911bc06dbbd67ec7c54ef673fbedf801adddb293b0.xml.gz",
+      "raw_uncompressed_bytes": 31189,
+      "raw_gzip_bytes": 1728,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1801,
+      "retries": 0,
+      "error": null,
+      "raw_members": [
+        "payloads/kac-flight-cju-402051592d8764c1c1149a911bc06dbbd67ec7c54ef673fbedf801adddb293b0.xml.gz"
+      ]
+    },
+    {
+      "source_id": "kac_flight_PUS",
+      "provider": "Korea Airports Corporation",
+      "status": "OK",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T17:31:06+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20261031&from_time=1630&to_time=1830&airport_code=PUS&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20261031",
+        "from_time": "1630",
+        "to_time": "1830",
+        "airport_code": "PUS",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": "07ebda5670c3c9b98cd936ea08f776081d3e76e54d0196ba829f83d54be8149a",
+      "raw_member": "payloads/kac-flight-pus-07ebda5670c3c9b98cd936ea08f776081d3e76e54d0196ba829f83d54be8149a.xml.gz",
+      "raw_uncompressed_bytes": 13548,
+      "raw_gzip_bytes": 1016,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1482,
+      "retries": 0,
+      "error": null,
+      "raw_members": [
+        "payloads/kac-flight-pus-07ebda5670c3c9b98cd936ea08f776081d3e76e54d0196ba829f83d54be8149a.xml.gz"
+      ]
+    },
+    {
+      "source_id": "kac_flight_CJJ",
+      "provider": "Korea Airports Corporation",
+      "status": "OK",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T17:31:06+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20261031&from_time=1630&to_time=1830&airport_code=CJJ&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20261031",
+        "from_time": "1630",
+        "to_time": "1830",
+        "airport_code": "CJJ",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": "4a4f3efc3dd3d37a5c43feb9e0d86e10c034237e8ce593118d6ed6a5886732b2",
+      "raw_member": "payloads/kac-flight-cjj-4a4f3efc3dd3d37a5c43feb9e0d86e10c034237e8ce593118d6ed6a5886732b2.xml.gz",
+      "raw_uncompressed_bytes": 4129,
+      "raw_gzip_bytes": 663,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1185,
+      "retries": 0,
+      "error": null,
+      "raw_members": [
+        "payloads/kac-flight-cjj-4a4f3efc3dd3d37a5c43feb9e0d86e10c034237e8ce593118d6ed6a5886732b2.xml.gz"
+      ]
+    },
+    {
+      "source_id": "kac_flight_TAE",
+      "provider": "Korea Airports Corporation",
+      "status": "OK",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T17:31:06+09:00",
+      "source_url": "https://apis.data.go.kr/B551178/flight-status/depart?pageNo=1&numOfRows=100&searchday=20261031&from_time=1630&to_time=1830&airport_code=TAE&line=D&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "searchday": "20261031",
+        "from_time": "1630",
+        "to_time": "1830",
+        "airport_code": "TAE",
+        "line": "D",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": "0c02bad4b2933e42d69a245b1d4795a55b4c8fcd1385f33b62a030436023bdb7",
+      "raw_member": "payloads/kac-flight-tae-0c02bad4b2933e42d69a245b1d4795a55b4c8fcd1385f33b62a030436023bdb7.xml.gz",
+      "raw_uncompressed_bytes": 1815,
+      "raw_gzip_bytes": 553,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1654,
+      "retries": 0,
+      "error": null,
+      "raw_members": [
+        "payloads/kac-flight-tae-0c02bad4b2933e42d69a245b1d4795a55b4c8fcd1385f33b62a030436023bdb7.xml.gz"
+      ]
+    },
+    {
+      "source_id": "kac_flight_schedule_GMP",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20261031&schDeptCityCode=GMP&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20261031",
+        "schDeptCityCode": "GMP",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": "d819e66694db543044761fc8e0b13d4adfa9aa7d8f59aca7c81d39fa4af00b08",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 153911,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 2063,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_CJU",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20261031&schDeptCityCode=CJU&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20261031",
+        "schDeptCityCode": "CJU",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": "494048c1aa9d6f0ec37016f1edd3a4a77446dbc0a002e7ddaf7f8b9f0a8cc94d",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 231352,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 4180,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_PUS",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20261031&schDeptCityCode=PUS&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20261031",
+        "schDeptCityCode": "PUS",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": "fb12073e1a0bbaddea6f61d6cdce75b953cf8d5a1e7fcdf16eff5c67ecd7c41c",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 66062,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1248,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_CJJ",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20261031&schDeptCityCode=CJJ&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20261031",
+        "schDeptCityCode": "CJJ",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": "ceafd48dbf3ddd46f45ee4c98926b180f8122b7921fabdfed67238a58acf0556",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 31121,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1249,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kac_flight_schedule_TAE",
+      "provider": "Korea Airports Corporation",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apis.data.go.kr/B551178/flight-schedule/dom?pageNo=1&numOfRows=100&schDate=20261031&schDeptCityCode=TAE&type=xml&serviceKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "schDate": "20261031",
+        "schDeptCityCode": "TAE",
+        "type": "xml",
+        "serviceKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": "34f0b2acef6f6c7282b0a8bf45e71847479990654d34d275d8973f4e472e5294",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 15233,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 613,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_GMP",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T08:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKSS&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKSS",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "GMP"
+      ],
+      "content_hash": "ffa749aeeab7ae775186334d544f2b05d223bcfb52cd8a0e3e75e32ab9044351",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 2646,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1828,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_CJU",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T08:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKPC&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKPC",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "CJU"
+      ],
+      "content_hash": "f0ba73d28b7d02f37d5b0bf713d39e44f60f0e083a46273b14dee6e9e3589465",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 2643,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1910,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_PUS",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T08:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKPK&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKPK",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "PUS"
+      ],
+      "content_hash": "5d83942bf3c460e42e96744446fb058a201af39e816a78b25f7220c6e0a0e1b0",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 2644,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1884,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_CJJ",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T08:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKTU&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKTU",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "CJJ"
+      ],
+      "content_hash": "700b460f53e0fdf2630d267d26a8e436e6c010b44f2778e44fc26bffa8769c96",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 2648,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1857,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_metar_TAE",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": "2026-10-31T08:00:00+00:00",
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmIwxxmService/getMetar?pageNo=1&numOfRows=10&dataType=JSON&icao=RKTN&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "10",
+        "dataType": "JSON",
+        "icao": "RKTN",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "TAE"
+      ],
+      "content_hash": "2a0dc661655bafad823c2ee5ce381a066a10a0e82a47f98066edc95b50685b8e",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 2707,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1846,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    },
+    {
+      "source_id": "kma_airport_warning",
+      "provider": "Korea Meteorological Administration API Hub",
+      "status": "DUPLICATE",
+      "collected_at": "2026-10-31T08:30:56.347756+00:00",
+      "source_timestamp": null,
+      "source_url": "https://apihub.kma.go.kr/api/typ02/openApi/AmmService/getWarning?pageNo=1&numOfRows=100&dataType=JSON&authKey=REDACTED",
+      "query_params": {
+        "pageNo": "1",
+        "numOfRows": "100",
+        "dataType": "JSON",
+        "authKey": "REDACTED"
+      },
+      "airports": [
+        "GMP",
+        "CJU",
+        "PUS",
+        "CJJ",
+        "TAE"
+      ],
+      "content_hash": "b334cfd585b1eef567b9afe78817622aab8e3761d568adf819951aa4333c60dc",
+      "raw_member": null,
+      "raw_uncompressed_bytes": 65,
+      "raw_gzip_bytes": 0,
+      "missing_sections": [],
+      "http_status": 200,
+      "latency_ms": 1007,
+      "retries": 0,
+      "error": null,
+      "raw_members": null
+    }
+  ],
+  "normalized_records": [
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-10-31T08:30:56.347756+00:00",
+      "airport": {
+        "iata": "GMP",
+        "icao": "RKSS",
+        "name_ko": "김포",
+        "name_en": "Gimpo"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": 0,
+          "to_identity_level": 0
+        },
+        "identity": {
+          "to_security_seconds": 0,
+          "to_security_level": 0
+        },
+        "security": {
+          "to_boarding_seconds": 180,
+          "to_boarding_level": 1
+        },
+        "boarding": {
+          "to_departure_seconds": 0,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": 0,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": 180,
+        "overall_level": 0,
+        "operating": false
+      },
+      "departures_30m": 3,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 2,
+      "timetable_minus_live_departures_30m": -1,
+      "departure_window": {
+        "start": "2026-10-31T17:30:56.347756+09:00",
+        "end": "2026-10-31T18:00:56.347756+09:00"
+      },
+      "flights_in_requested_window": [
+        {
+          "flight_id": "OZ8735",
+          "scheduled_at": "2026-10-31T16:30:00+09:00",
+          "estimated_at": "2026-10-31T16:42:00+09:00",
+          "status": "출발",
+          "destination_iata": "RSU",
+          "destination_name": "여수",
+          "source_flight_id": "0000000000000013414231"
+        },
+        {
+          "flight_id": "OZ8973",
+          "scheduled_at": "2026-10-31T16:35:00+09:00",
+          "estimated_at": "2026-10-31T16:48:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013409021"
+        },
+        {
+          "flight_id": "OZ8819",
+          "scheduled_at": "2026-10-31T16:40:00+09:00",
+          "estimated_at": "2026-10-31T16:56:00+09:00",
+          "status": "출발",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013388631"
+        },
+        {
+          "flight_id": "ZE219",
+          "scheduled_at": "2026-10-31T16:40:00+09:00",
+          "estimated_at": "2026-10-31T16:57:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013511796"
+        },
+        {
+          "flight_id": "LJ3585",
+          "scheduled_at": "2026-10-31T16:40:00+09:00",
+          "estimated_at": "2026-10-31T16:56:00+09:00",
+          "status": "출발",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013388631"
+        },
+        {
+          "flight_id": "BX8053",
+          "scheduled_at": "2026-10-31T16:40:00+09:00",
+          "estimated_at": "2026-10-31T16:56:00+09:00",
+          "status": "출발",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013388631"
+        },
+        {
+          "flight_id": "TW723",
+          "scheduled_at": "2026-10-31T17:20:00+09:00",
+          "estimated_at": "2026-10-31T17:28:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013369617"
+        },
+        {
+          "flight_id": "TW725",
+          "scheduled_at": "2026-10-31T17:25:00+09:00",
+          "estimated_at": "2026-10-31T17:25:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013370233"
+        },
+        {
+          "flight_id": "BX8437",
+          "scheduled_at": "2026-10-31T17:40:00+09:00",
+          "estimated_at": "2026-10-31T17:40:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013508693"
+        },
+        {
+          "flight_id": "OZ8019",
+          "scheduled_at": "2026-10-31T17:40:00+09:00",
+          "estimated_at": "2026-10-31T17:40:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013508693"
+        },
+        {
+          "flight_id": "KE1835",
+          "scheduled_at": "2026-10-31T17:40:00+09:00",
+          "estimated_at": "2026-10-31T17:40:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013462769"
+        },
+        {
+          "flight_id": "XU2597",
+          "scheduled_at": "2026-10-31T18:05:00+09:00",
+          "estimated_at": "2026-10-31T18:05:00+09:00",
+          "status": "탑승장 입장",
+          "destination_iata": "HIN",
+          "destination_name": "진주/사천",
+          "source_flight_id": "0000000000000013457202"
+        },
+        {
+          "flight_id": "7C135",
+          "scheduled_at": "2026-10-31T18:20:00+09:00",
+          "estimated_at": "2026-10-31T18:20:00+09:00",
+          "status": "탑승장 입장",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013514471"
+        },
+        {
+          "flight_id": "KE1169",
+          "scheduled_at": "2026-10-31T18:25:00+09:00",
+          "estimated_at": "2026-10-31T18:25:00+09:00",
+          "status": "탑승장 입장",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013470201"
+        },
+        {
+          "flight_id": "TW727",
+          "scheduled_at": "2026-10-31T18:30:00+09:00",
+          "estimated_at": "2026-10-31T18:30:00+09:00",
+          "status": "탑승장 입장",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013370849"
+        },
+        {
+          "flight_id": "ZE221",
+          "scheduled_at": "2026-10-31T18:30:00+09:00",
+          "estimated_at": "2026-10-31T18:30:00+09:00",
+          "status": "탑승장 입장",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013418851"
+        }
+      ],
+      "schedule_in_departure_window": [
+        {
+          "flight_id": "KE1835",
+          "origin_iata": "GMP",
+          "origin_name": "서울/김포",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "departure_time_local": "1740",
+          "arrival_time_local": "1845",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2027-03-27T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "대한항공",
+          "airline_en": "KOREAN AIR",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T17:40:00+09:00"
+        },
+        {
+          "flight_id": "BX8437",
+          "origin_iata": "GMP",
+          "origin_name": "서울/김포",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "departure_time_local": "1740",
+          "arrival_time_local": "1855",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2027-03-27T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "에어부산",
+          "airline_en": "AIR BUSAN",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T17:40:00+09:00"
+        }
+      ],
+      "parking": {
+        "capacity": 5915,
+        "occupied": 5224,
+        "available": 691,
+        "occupancy_ratio": 0.883178,
+        "facilities": [
+          {
+            "name": "국내선 제1주차장",
+            "occupied": 2279,
+            "capacity": 2279,
+            "entries": 1637,
+            "exits": 1054
+          },
+          {
+            "name": "국내선 제2주차장",
+            "occupied": 1558,
+            "capacity": 1733,
+            "entries": 872,
+            "exits": 535
+          },
+          {
+            "name": "국제선 주차빌딩",
+            "occupied": 507,
+            "capacity": 567,
+            "entries": 586,
+            "exits": 482
+          },
+          {
+            "name": "국제선 지하",
+            "occupied": 478,
+            "capacity": 599,
+            "entries": 352,
+            "exits": 280
+          },
+          {
+            "name": "화물청사",
+            "occupied": 402,
+            "capacity": 737,
+            "entries": 1293,
+            "exits": 1103
+          }
+        ],
+        "provider_congestion": {
+          "capacity": 5915,
+          "occupied": 5224,
+          "facilities": [
+            {
+              "name": "국내선 제1주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "100%",
+              "provider_degree_percent": 100.0,
+              "occupied": 2279,
+              "capacity": 2279
+            },
+            {
+              "name": "국내선 제2주차장",
+              "provider_level": "원활",
+              "provider_degree_raw": "89.9%",
+              "provider_degree_percent": 89.9,
+              "occupied": 1558,
+              "capacity": 1733
+            },
+            {
+              "name": "국제선 주차빌딩",
+              "provider_level": "원활",
+              "provider_degree_raw": "89.42%",
+              "provider_degree_percent": 89.42,
+              "occupied": 507,
+              "capacity": 567
+            },
+            {
+              "name": "국제선 지하",
+              "provider_level": "원활",
+              "provider_degree_raw": "79.8%",
+              "provider_degree_percent": 79.8,
+              "occupied": 478,
+              "capacity": 599
+            },
+            {
+              "name": "화물청사",
+              "provider_level": "원활",
+              "provider_degree_raw": "54.55%",
+              "provider_degree_percent": 54.55,
+              "occupied": 402,
+              "capacity": 737
+            }
+          ]
+        },
+        "realtime_minus_congestion_occupied": 0
+      },
+      "weather": {
+        "observed_at": "2026-10-31T08:00:00+00:00",
+        "metar": null,
+        "temperature_c": 14.0,
+        "dewpoint_c": -3.0,
+        "qnh_hpa": 1022.0,
+        "wind_direction_deg": 270.0,
+        "wind_speed": 5.0,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-10-31",
+        "weekday_iso": 6,
+        "weekday_name": "Saturday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "autumn",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "process_time": "2026-10-31T02:55:00+09:00",
+        "congestion": "2026-10-31T02:55:00+09:00",
+        "parking": "2026-10-31T17:30:03+09:00",
+        "parking_congestion": "2026-10-31T17:30:03+09:00",
+        "flight_status": "2026-10-31T17:30:10+09:00",
+        "flight_schedule": null,
+        "weather": "2026-10-31T08:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "DUPLICATE",
+        "congestion": "DUPLICATE",
+        "flight_status": "OK",
+        "flight_schedule": "DUPLICATE",
+        "parking": "OK",
+        "parking_congestion": "OK",
+        "weather": "DUPLICATE",
+        "weather_warning": "DUPLICATE"
+      },
+      "missing_sections": [],
+      "quality_status": "OK",
+      "record_hash": "8d53b82949fff8ddf91ba8c46991bc2bdec1669c410e18c63f9a04f0e2373ed7"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-10-31T08:30:56.347756+00:00",
+      "airport": {
+        "iata": "CJU",
+        "icao": "RKPC",
+        "name_ko": "제주",
+        "name_en": "Jeju"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": 0,
+          "to_identity_level": 0
+        },
+        "identity": {
+          "to_security_seconds": 0,
+          "to_security_level": 0
+        },
+        "security": {
+          "to_boarding_seconds": 300,
+          "to_boarding_level": 1
+        },
+        "boarding": {
+          "to_departure_seconds": 0,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": 0,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": 300,
+        "overall_level": 0,
+        "operating": false
+      },
+      "departures_30m": 6,
+      "delayed_departures_30m": 1,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 5,
+      "timetable_minus_live_departures_30m": -1,
+      "departure_window": {
+        "start": "2026-10-31T17:30:56.347756+09:00",
+        "end": "2026-10-31T18:00:56.347756+09:00"
+      },
+      "flights_in_requested_window": [
+        {
+          "flight_id": "7C126",
+          "scheduled_at": "2026-10-31T16:30:00+09:00",
+          "estimated_at": "2026-10-31T16:59:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013514469"
+        },
+        {
+          "flight_id": "LJ7586",
+          "scheduled_at": "2026-10-31T16:30:00+09:00",
+          "estimated_at": "2026-10-31T17:08:00+09:00",
+          "status": "출발",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "source_flight_id": "0000000000000013359647"
+        },
+        {
+          "flight_id": "TW722",
+          "scheduled_at": "2026-10-31T16:30:00+09:00",
+          "estimated_at": "2026-10-31T16:45:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013369477"
+        },
+        {
+          "flight_id": "KE5246",
+          "scheduled_at": "2026-10-31T16:30:00+09:00",
+          "estimated_at": "2026-10-31T17:08:00+09:00",
+          "status": "출발",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "source_flight_id": "0000000000000013359647"
+        },
+        {
+          "flight_id": "KE1244",
+          "scheduled_at": "2026-10-31T16:35:00+09:00",
+          "estimated_at": "2026-10-31T16:47:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013474077"
+        },
+        {
+          "flight_id": "7C306",
+          "scheduled_at": "2026-10-31T16:35:00+09:00",
+          "estimated_at": "2026-10-31T17:01:00+09:00",
+          "status": "출발",
+          "destination_iata": "KWJ",
+          "destination_name": "광주",
+          "source_flight_id": "0000000000000013453291"
+        },
+        {
+          "flight_id": "ZE284",
+          "scheduled_at": "2026-10-31T16:40:00+09:00",
+          "estimated_at": "2026-10-31T17:02:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013502998"
+        },
+        {
+          "flight_id": "OZ8966",
+          "scheduled_at": "2026-10-31T16:40:00+09:00",
+          "estimated_at": "2026-10-31T17:04:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013413615"
+        },
+        {
+          "flight_id": "KE1262",
+          "scheduled_at": "2026-10-31T16:45:00+09:00",
+          "estimated_at": "2026-10-31T17:12:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013474385"
+        },
+        {
+          "flight_id": "WE6502",
+          "scheduled_at": "2026-10-31T16:55:00+09:00",
+          "estimated_at": "2026-10-31T17:24:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013395025"
+        },
+        {
+          "flight_id": "OZ8132",
+          "scheduled_at": "2026-10-31T17:05:00+09:00",
+          "estimated_at": "2026-10-31T17:27:00+09:00",
+          "status": "출발",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013307029"
+        },
+        {
+          "flight_id": "BX8794",
+          "scheduled_at": "2026-10-31T17:05:00+09:00",
+          "estimated_at": "2026-10-31T17:27:00+09:00",
+          "status": "출발",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013307029"
+        },
+        {
+          "flight_id": "LJ3756",
+          "scheduled_at": "2026-10-31T17:05:00+09:00",
+          "estimated_at": "2026-10-31T17:27:00+09:00",
+          "status": "출발",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013307029"
+        },
+        {
+          "flight_id": "OZ8148",
+          "scheduled_at": "2026-10-31T17:10:00+09:00",
+          "estimated_at": "2026-10-31T17:21:00+09:00",
+          "status": "출발",
+          "destination_iata": "KWJ",
+          "destination_name": "광주",
+          "source_flight_id": "0000000000000013316525"
+        },
+        {
+          "flight_id": "TW724",
+          "scheduled_at": "2026-10-31T17:10:00+09:00",
+          "estimated_at": "2026-10-31T17:10:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013369925"
+        },
+        {
+          "flight_id": "ZE276",
+          "scheduled_at": "2026-10-31T17:10:00+09:00",
+          "estimated_at": "2026-10-31T17:15:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013426441"
+        },
+        {
+          "flight_id": "7C128",
+          "scheduled_at": "2026-10-31T17:15:00+09:00",
+          "estimated_at": "2026-10-31T17:15:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013441999"
+        },
+        {
+          "flight_id": "ZE714",
+          "scheduled_at": "2026-10-31T17:20:00+09:00",
+          "estimated_at": "2026-10-31T17:20:00+09:00",
+          "status": "탑승중",
+          "destination_iata": "CJJ",
+          "destination_name": "청주",
+          "source_flight_id": "0000000000000013429105"
+        },
+        {
+          "flight_id": "KE1360",
+          "scheduled_at": "2026-10-31T17:20:00+09:00",
+          "estimated_at": "2026-10-31T17:20:00+09:00",
+          "status": "탑승중",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013457863"
+        },
+        {
+          "flight_id": "7C228",
+          "scheduled_at": "2026-10-31T17:30:00+09:00",
+          "estimated_at": "2026-10-31T17:30:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "CJJ",
+          "destination_name": "청주",
+          "source_flight_id": "0000000000000013450783"
+        },
+        {
+          "flight_id": "LJ7590",
+          "scheduled_at": "2026-10-31T17:40:00+09:00",
+          "estimated_at": "2026-10-31T17:40:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "source_flight_id": "0000000000000013360263"
+        },
+        {
+          "flight_id": "ZE216",
+          "scheduled_at": "2026-10-31T17:40:00+09:00",
+          "estimated_at": "2026-10-31T17:40:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013423909"
+        },
+        {
+          "flight_id": "KE5242",
+          "scheduled_at": "2026-10-31T17:40:00+09:00",
+          "estimated_at": "2026-10-31T17:40:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "source_flight_id": "0000000000000013360263"
+        },
+        {
+          "flight_id": "KE1548",
+          "scheduled_at": "2026-10-31T17:45:00+09:00",
+          "estimated_at": "2026-10-31T17:45:00+09:00",
+          "status": "마감예정",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013483549"
+        },
+        {
+          "flight_id": "TW806",
+          "scheduled_at": "2026-10-31T17:55:00+09:00",
+          "estimated_at": "2026-10-31T17:55:00+09:00",
+          "status": "수속중",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "source_flight_id": "0000000000000013373929"
+        },
+        {
+          "flight_id": "OZ8234",
+          "scheduled_at": "2026-10-31T18:00:00+09:00",
+          "estimated_at": "2026-10-31T18:00:00+09:00",
+          "status": "지연",
+          "destination_iata": "CJJ",
+          "destination_name": "청주",
+          "source_flight_id": "0000000000000013318701"
+        },
+        {
+          "flight_id": "LJ3758",
+          "scheduled_at": "2026-10-31T18:05:00+09:00",
+          "estimated_at": "2026-10-31T18:05:00+09:00",
+          "status": "수속중",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013307253"
+        },
+        {
+          "flight_id": "OZ8116",
+          "scheduled_at": "2026-10-31T18:05:00+09:00",
+          "estimated_at": "2026-10-31T18:05:00+09:00",
+          "status": "수속중",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013307253"
+        },
+        {
+          "flight_id": "ZE218",
+          "scheduled_at": "2026-10-31T18:05:00+09:00",
+          "estimated_at": "2026-10-31T18:05:00+09:00",
+          "status": "탑승구 변경",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013424315"
+        },
+        {
+          "flight_id": "BX8960",
+          "scheduled_at": "2026-10-31T18:05:00+09:00",
+          "estimated_at": "2026-10-31T18:05:00+09:00",
+          "status": "수속중",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "source_flight_id": "0000000000000013307253"
+        },
+        {
+          "flight_id": "7C706",
+          "scheduled_at": "2026-10-31T18:10:00+09:00",
+          "estimated_at": "2026-10-31T18:10:00+09:00",
+          "status": "수속중",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "source_flight_id": "0000000000000013452015"
+        },
+        {
+          "flight_id": "7C130",
+          "scheduled_at": "2026-10-31T18:10:00+09:00",
+          "estimated_at": "2026-10-31T18:10:00+09:00",
+          "status": "수속중",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013442307"
+        },
+        {
+          "flight_id": "TW846",
+          "scheduled_at": "2026-10-31T18:15:00+09:00",
+          "estimated_at": "2026-10-31T18:15:00+09:00",
+          "status": "지연",
+          "destination_iata": "CJJ",
+          "destination_name": "청주",
+          "source_flight_id": "0000000000000013380473"
+        },
+        {
+          "flight_id": "TW808",
+          "scheduled_at": "2026-10-31T18:15:00+09:00",
+          "estimated_at": "2026-10-31T18:15:00+09:00",
+          "status": "수속중",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "source_flight_id": "0000000000000013374545"
+        },
+        {
+          "flight_id": "KE1268",
+          "scheduled_at": "2026-10-31T18:20:00+09:00",
+          "estimated_at": "2026-10-31T18:20:00+09:00",
+          "status": "탑승구 변경",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013512902"
+        },
+        {
+          "flight_id": "LJ7602",
+          "scheduled_at": "2026-10-31T18:25:00+09:00",
+          "estimated_at": "2026-10-31T18:25:00+09:00",
+          "status": "지연",
+          "destination_iata": "KWJ",
+          "destination_name": "광주",
+          "source_flight_id": "0000000000000013510316"
+        },
+        {
+          "flight_id": "KE1626",
+          "scheduled_at": "2026-10-31T18:25:00+09:00",
+          "estimated_at": "2026-10-31T18:25:00+09:00",
+          "status": "탑승구 변경",
+          "destination_iata": "KWJ",
+          "destination_name": "광주",
+          "source_flight_id": "0000000000000013512766"
+        },
+        {
+          "flight_id": "KE5200",
+          "scheduled_at": "2026-10-31T18:25:00+09:00",
+          "estimated_at": "2026-10-31T18:25:00+09:00",
+          "status": "지연",
+          "destination_iata": "KWJ",
+          "destination_name": "광주",
+          "source_flight_id": "0000000000000013510316"
+        },
+        {
+          "flight_id": "7C132",
+          "scheduled_at": "2026-10-31T18:30:00+09:00",
+          "estimated_at": "2026-10-31T18:30:00+09:00",
+          "status": "수속중",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013442615"
+        },
+        {
+          "flight_id": "KE1276",
+          "scheduled_at": "2026-10-31T18:30:00+09:00",
+          "estimated_at": "2026-10-31T18:30:00+09:00",
+          "status": "수속중",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013475001"
+        }
+      ],
+      "schedule_in_departure_window": [
+        {
+          "flight_id": "ZE216",
+          "origin_iata": "CJU",
+          "origin_name": "제주",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "departure_time_local": "1740",
+          "arrival_time_local": "1855",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2026-11-29T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "이스타항공",
+          "airline_en": "EASTAR JET",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T17:40:00+09:00"
+        },
+        {
+          "flight_id": "LJ7590",
+          "origin_iata": "CJU",
+          "origin_name": "제주",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "departure_time_local": "1740",
+          "arrival_time_local": "1850",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2027-03-27T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "진에어",
+          "airline_en": "JINAIR",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T17:40:00+09:00"
+        },
+        {
+          "flight_id": "KE1548",
+          "origin_iata": "CJU",
+          "origin_name": "제주",
+          "destination_iata": "PUS",
+          "destination_name": "부산/김해",
+          "departure_time_local": "1745",
+          "arrival_time_local": "1845",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2027-03-27T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "대한항공",
+          "airline_en": "KOREAN AIR",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T17:45:00+09:00"
+        },
+        {
+          "flight_id": "TW806",
+          "origin_iata": "CJU",
+          "origin_name": "제주",
+          "destination_iata": "TAE",
+          "destination_name": "대구",
+          "departure_time_local": "1755",
+          "arrival_time_local": "1900",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2027-03-27T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "트리니티항공",
+          "airline_en": "TRINITY AIRWAYS",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T17:55:00+09:00"
+        },
+        {
+          "flight_id": "OZ8234",
+          "origin_iata": "CJU",
+          "origin_name": "제주",
+          "destination_iata": "CJJ",
+          "destination_name": "청주",
+          "departure_time_local": "1800",
+          "arrival_time_local": "1910",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2027-03-27T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "아시아나항공",
+          "airline_en": "ASIANA AIRLINES",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T18:00:00+09:00"
+        }
+      ],
+      "parking": {
+        "capacity": 2783,
+        "occupied": 2678,
+        "available": 105,
+        "occupancy_ratio": 0.962271,
+        "facilities": [
+          {
+            "name": "P1주차장",
+            "occupied": 1481,
+            "capacity": 1563,
+            "entries": 4422,
+            "exits": 3761
+          },
+          {
+            "name": "P2장기주차장",
+            "occupied": 465,
+            "capacity": 488,
+            "entries": 194,
+            "exits": 120
+          },
+          {
+            "name": "화물주차장",
+            "occupied": 732,
+            "capacity": 732,
+            "entries": 1170,
+            "exits": 965
+          }
+        ],
+        "provider_congestion": {
+          "capacity": 2783,
+          "occupied": 2678,
+          "facilities": [
+            {
+              "name": "P1주차장",
+              "provider_level": "혼잡",
+              "provider_degree_raw": "94.75%",
+              "provider_degree_percent": 94.75,
+              "occupied": 1481,
+              "capacity": 1563
+            },
+            {
+              "name": "P2장기주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "95.29%",
+              "provider_degree_percent": 95.29,
+              "occupied": 465,
+              "capacity": 488
+            },
+            {
+              "name": "화물주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "100%",
+              "provider_degree_percent": 100.0,
+              "occupied": 732,
+              "capacity": 732
+            }
+          ]
+        },
+        "realtime_minus_congestion_occupied": 0
+      },
+      "weather": {
+        "observed_at": "2026-10-31T08:00:00+00:00",
+        "metar": null,
+        "temperature_c": 19.0,
+        "dewpoint_c": 8.0,
+        "qnh_hpa": 1023.0,
+        "wind_direction_deg": 330.0,
+        "wind_speed": 6.0,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-10-31",
+        "weekday_iso": 6,
+        "weekday_name": "Saturday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "autumn",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "process_time": "2026-10-31T02:55:00+09:00",
+        "congestion": "2026-10-31T02:55:00+09:00",
+        "parking": "2026-10-31T17:30:03+09:00",
+        "parking_congestion": "2026-10-31T17:30:03+09:00",
+        "flight_status": "2026-10-31T17:30:10+09:00",
+        "flight_schedule": null,
+        "weather": "2026-10-31T08:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "DUPLICATE",
+        "congestion": "DUPLICATE",
+        "flight_status": "OK",
+        "flight_schedule": "DUPLICATE",
+        "parking": "OK",
+        "parking_congestion": "OK",
+        "weather": "DUPLICATE",
+        "weather_warning": "DUPLICATE"
+      },
+      "missing_sections": [],
+      "quality_status": "OK",
+      "record_hash": "1e71d597fd3279b008cc9bf91d736741c904de58fb2d4c3780b43473f1117f9a"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-10-31T08:30:56.347756+00:00",
+      "airport": {
+        "iata": "PUS",
+        "icao": "RKPK",
+        "name_ko": "김해",
+        "name_en": "Gimhae"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": 0,
+          "to_identity_level": 0
+        },
+        "identity": {
+          "to_security_seconds": 0,
+          "to_security_level": 0
+        },
+        "security": {
+          "to_boarding_seconds": 120,
+          "to_boarding_level": 1
+        },
+        "boarding": {
+          "to_departure_seconds": 0,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": 0,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": 120,
+        "overall_level": 0,
+        "operating": false
+      },
+      "departures_30m": 1,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 1,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-10-31T17:30:56.347756+09:00",
+        "end": "2026-10-31T18:00:56.347756+09:00"
+      },
+      "flights_in_requested_window": [
+        {
+          "flight_id": "7C511",
+          "scheduled_at": "2026-10-31T16:35:00+09:00",
+          "estimated_at": "2026-10-31T16:45:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013447299"
+        },
+        {
+          "flight_id": "KE1826",
+          "scheduled_at": "2026-10-31T16:50:00+09:00",
+          "estimated_at": "2026-10-31T17:09:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013461845"
+        },
+        {
+          "flight_id": "KL9843",
+          "scheduled_at": "2026-10-31T16:50:00+09:00",
+          "estimated_at": "2026-10-31T17:09:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013461845"
+        },
+        {
+          "flight_id": "TW926",
+          "scheduled_at": "2026-10-31T16:55:00+09:00",
+          "estimated_at": "2026-10-31T16:59:00+09:00",
+          "status": "출발",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013384865"
+        },
+        {
+          "flight_id": "KE5229",
+          "scheduled_at": "2026-10-31T17:00:00+09:00",
+          "estimated_at": "2026-10-31T17:02:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013352865"
+        },
+        {
+          "flight_id": "LJ2891",
+          "scheduled_at": "2026-10-31T17:00:00+09:00",
+          "estimated_at": "2026-10-31T17:02:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013352865"
+        },
+        {
+          "flight_id": "OZ8173",
+          "scheduled_at": "2026-10-31T17:10:00+09:00",
+          "estimated_at": "2026-10-31T17:10:00+09:00",
+          "status": "탑승중",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013304001"
+        },
+        {
+          "flight_id": "LJ3763",
+          "scheduled_at": "2026-10-31T17:10:00+09:00",
+          "estimated_at": "2026-10-31T17:10:00+09:00",
+          "status": "탑승중",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013304001"
+        },
+        {
+          "flight_id": "BX8961",
+          "scheduled_at": "2026-10-31T17:10:00+09:00",
+          "estimated_at": "2026-10-31T17:10:00+09:00",
+          "status": "탑승중",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013304001"
+        },
+        {
+          "flight_id": "7C513",
+          "scheduled_at": "2026-10-31T17:20:00+09:00",
+          "estimated_at": "2026-10-31T17:22:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013447439"
+        },
+        {
+          "flight_id": "OZ8135",
+          "scheduled_at": "2026-10-31T17:20:00+09:00",
+          "estimated_at": "2026-10-31T17:24:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013304133"
+        },
+        {
+          "flight_id": "BX8963",
+          "scheduled_at": "2026-10-31T17:20:00+09:00",
+          "estimated_at": "2026-10-31T17:24:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013304133"
+        },
+        {
+          "flight_id": "LJ3761",
+          "scheduled_at": "2026-10-31T17:20:00+09:00",
+          "estimated_at": "2026-10-31T17:24:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013304133"
+        },
+        {
+          "flight_id": "KE1551",
+          "scheduled_at": "2026-10-31T18:00:00+09:00",
+          "estimated_at": "2026-10-31T18:00:00+09:00",
+          "status": "탑승장 입장",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013483857"
+        },
+        {
+          "flight_id": "LJ3586",
+          "scheduled_at": "2026-10-31T18:20:00+09:00",
+          "estimated_at": "2026-10-31T18:20:00+09:00",
+          "status": "수속중",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013393671"
+        },
+        {
+          "flight_id": "OZ8822",
+          "scheduled_at": "2026-10-31T18:20:00+09:00",
+          "estimated_at": "2026-10-31T18:20:00+09:00",
+          "status": "수속중",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013393671"
+        },
+        {
+          "flight_id": "BX8064",
+          "scheduled_at": "2026-10-31T18:20:00+09:00",
+          "estimated_at": "2026-10-31T18:20:00+09:00",
+          "status": "수속중",
+          "destination_iata": "GMP",
+          "destination_name": "서울/김포",
+          "source_flight_id": "0000000000000013393671"
+        }
+      ],
+      "schedule_in_departure_window": [
+        {
+          "flight_id": "KE1551",
+          "origin_iata": "PUS",
+          "origin_name": "부산/김해",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "departure_time_local": "1800",
+          "arrival_time_local": "1900",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2026-12-16T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "대한항공",
+          "airline_en": "KOREAN AIR",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T18:00:00+09:00"
+        }
+      ],
+      "parking": {
+        "capacity": 5336,
+        "occupied": 5287,
+        "available": 49,
+        "occupancy_ratio": 0.990817,
+        "facilities": [
+          {
+            "name": "P1 여객주차장",
+            "occupied": 2005,
+            "capacity": 2005,
+            "entries": 991,
+            "exits": 715
+          },
+          {
+            "name": "P2 여객주차장",
+            "occupied": 2404,
+            "capacity": 2453,
+            "entries": 1017,
+            "exits": 847
+          },
+          {
+            "name": "P3 여객(화물)",
+            "occupied": 878,
+            "capacity": 878,
+            "entries": 452,
+            "exits": 372
+          }
+        ],
+        "provider_congestion": {
+          "capacity": 5336,
+          "occupied": 5287,
+          "facilities": [
+            {
+              "name": "P1 여객주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "100%",
+              "provider_degree_percent": 100.0,
+              "occupied": 2005,
+              "capacity": 2005
+            },
+            {
+              "name": "P2 여객주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "98%",
+              "provider_degree_percent": 98.0,
+              "occupied": 2404,
+              "capacity": 2453
+            },
+            {
+              "name": "P3 여객(화물)",
+              "provider_level": "만차",
+              "provider_degree_raw": "100%",
+              "provider_degree_percent": 100.0,
+              "occupied": 878,
+              "capacity": 878
+            }
+          ]
+        },
+        "realtime_minus_congestion_occupied": 0
+      },
+      "weather": {
+        "observed_at": "2026-10-31T08:00:00+00:00",
+        "metar": null,
+        "temperature_c": 20.0,
+        "dewpoint_c": 8.0,
+        "qnh_hpa": 1019.0,
+        "wind_direction_deg": 240.0,
+        "wind_speed": 2.0,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-10-31",
+        "weekday_iso": 6,
+        "weekday_name": "Saturday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "autumn",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "process_time": "2026-10-31T02:55:00+09:00",
+        "congestion": "2026-10-31T02:55:00+09:00",
+        "parking": "2026-10-31T17:30:03+09:00",
+        "parking_congestion": "2026-10-31T17:30:03+09:00",
+        "flight_status": "2026-10-31T17:31:06+09:00",
+        "flight_schedule": null,
+        "weather": "2026-10-31T08:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "DUPLICATE",
+        "congestion": "DUPLICATE",
+        "flight_status": "OK",
+        "flight_schedule": "DUPLICATE",
+        "parking": "OK",
+        "parking_congestion": "OK",
+        "weather": "DUPLICATE",
+        "weather_warning": "DUPLICATE"
+      },
+      "missing_sections": [],
+      "quality_status": "OK",
+      "record_hash": "16304485d72f0a7ebf5b40afa212b71f18cccf875f2779fda2b95e1a2d361261"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-10-31T08:30:56.347756+00:00",
+      "airport": {
+        "iata": "CJJ",
+        "icao": "RKTU",
+        "name_ko": "청주",
+        "name_en": "Cheongju"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": 0,
+          "to_identity_level": 0
+        },
+        "identity": {
+          "to_security_seconds": 0,
+          "to_security_level": 0
+        },
+        "security": {
+          "to_boarding_seconds": 180,
+          "to_boarding_level": 1
+        },
+        "boarding": {
+          "to_departure_seconds": 0,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": 0,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": 180,
+        "overall_level": 0,
+        "operating": false
+      },
+      "departures_30m": 2,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 2,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-10-31T17:30:56.347756+09:00",
+        "end": "2026-10-31T18:00:56.347756+09:00"
+      },
+      "flights_in_requested_window": [
+        {
+          "flight_id": "KE1719",
+          "scheduled_at": "2026-10-31T16:30:00+09:00",
+          "estimated_at": "2026-10-31T16:57:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013333875"
+        },
+        {
+          "flight_id": "TW835",
+          "scheduled_at": "2026-10-31T16:50:00+09:00",
+          "estimated_at": "2026-10-31T17:06:00+09:00",
+          "status": "출발",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013377623"
+        },
+        {
+          "flight_id": "LJ7489",
+          "scheduled_at": "2026-10-31T17:55:00+09:00",
+          "estimated_at": "2026-10-31T17:55:00+09:00",
+          "status": "수속중",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013355971"
+        },
+        {
+          "flight_id": "TW863",
+          "scheduled_at": "2026-10-31T18:00:00+09:00",
+          "estimated_at": "2026-10-31T18:00:00+09:00",
+          "status": "수속중",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013381089"
+        },
+        {
+          "flight_id": "KE1723",
+          "scheduled_at": "2026-10-31T18:20:00+09:00",
+          "estimated_at": "2026-10-31T18:20:00+09:00",
+          "status": "수속중",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013334597"
+        }
+      ],
+      "schedule_in_departure_window": [
+        {
+          "flight_id": "LJ7489",
+          "origin_iata": "CJJ",
+          "origin_name": "청주",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "departure_time_local": "1755",
+          "arrival_time_local": "1905",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2027-03-27T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "진에어",
+          "airline_en": "JINAIR",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T17:55:00+09:00"
+        },
+        {
+          "flight_id": "TW863",
+          "origin_iata": "CJJ",
+          "origin_name": "청주",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "departure_time_local": "1800",
+          "arrival_time_local": "1910",
+          "valid_from": "2026-10-25T00:00:00+09:00",
+          "valid_to": "2027-03-27T00:00:00+09:00",
+          "operates": {
+            "monday": "Y",
+            "tuesday": "Y",
+            "wednesday": "Y",
+            "thursday": "Y",
+            "friday": "Y",
+            "saturday": "Y",
+            "sunday": "Y"
+          },
+          "airline_ko": "트리니티항공",
+          "airline_en": "TRINITY AIRWAYS",
+          "flight_purpose": "여객기",
+          "scheduled_at": "2026-10-31T18:00:00+09:00"
+        }
+      ],
+      "parking": {
+        "capacity": 5177,
+        "occupied": 5075,
+        "available": 102,
+        "occupancy_ratio": 0.980297,
+        "facilities": [
+          {
+            "name": "여객 제1주차장",
+            "occupied": 2195,
+            "capacity": 2203,
+            "entries": 1542,
+            "exits": 1314
+          },
+          {
+            "name": "여객 제2주차장",
+            "occupied": 1650,
+            "capacity": 1703,
+            "entries": 808,
+            "exits": 612
+          },
+          {
+            "name": "여객 제3주차장",
+            "occupied": 788,
+            "capacity": 808,
+            "entries": 374,
+            "exits": 202
+          },
+          {
+            "name": "여객 제4주차장",
+            "occupied": 442,
+            "capacity": 463,
+            "entries": 270,
+            "exits": 145
+          }
+        ],
+        "provider_congestion": {
+          "capacity": 5177,
+          "occupied": 5075,
+          "facilities": [
+            {
+              "name": "여객 제1주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "99.64%",
+              "provider_degree_percent": 99.64,
+              "occupied": 2195,
+              "capacity": 2203
+            },
+            {
+              "name": "여객 제2주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "96.89%",
+              "provider_degree_percent": 96.89,
+              "occupied": 1650,
+              "capacity": 1703
+            },
+            {
+              "name": "여객 제3주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "97.52%",
+              "provider_degree_percent": 97.52,
+              "occupied": 788,
+              "capacity": 808
+            },
+            {
+              "name": "여객 제4주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "95.46%",
+              "provider_degree_percent": 95.46,
+              "occupied": 442,
+              "capacity": 463
+            }
+          ]
+        },
+        "realtime_minus_congestion_occupied": 0
+      },
+      "weather": {
+        "observed_at": "2026-10-31T08:00:00+00:00",
+        "metar": null,
+        "temperature_c": 16.0,
+        "dewpoint_c": -5.0,
+        "qnh_hpa": 1022.0,
+        "wind_direction_deg": 300.0,
+        "wind_speed": 9.0,
+        "wind_gust": null,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-10-31",
+        "weekday_iso": 6,
+        "weekday_name": "Saturday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "autumn",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "process_time": "2026-10-31T02:55:00+09:00",
+        "congestion": "2026-10-31T02:55:00+09:00",
+        "parking": "2026-10-31T17:30:03+09:00",
+        "parking_congestion": "2026-10-31T17:30:03+09:00",
+        "flight_status": "2026-10-31T17:31:06+09:00",
+        "flight_schedule": null,
+        "weather": "2026-10-31T08:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "DUPLICATE",
+        "congestion": "DUPLICATE",
+        "flight_status": "OK",
+        "flight_schedule": "DUPLICATE",
+        "parking": "OK",
+        "parking_congestion": "OK",
+        "weather": "DUPLICATE",
+        "weather_warning": "DUPLICATE"
+      },
+      "missing_sections": [],
+      "quality_status": "OK",
+      "record_hash": "6f4ab50bcaab01ba498b7a11113064e999e1b3db616c5b97a9ac1694b8557142"
+    },
+    {
+      "schema_version": "airport-friction-0.1",
+      "timestamp": "2026-10-31T08:30:56.347756+00:00",
+      "airport": {
+        "iata": "TAE",
+        "icao": "RKTN",
+        "name_ko": "대구",
+        "name_en": "Daegu"
+      },
+      "friction": {
+        "checkin": {
+          "to_identity_seconds": 0,
+          "to_identity_level": 0
+        },
+        "identity": {
+          "to_security_seconds": 0,
+          "to_security_level": 0
+        },
+        "security": {
+          "to_boarding_seconds": 180,
+          "to_boarding_level": 1
+        },
+        "boarding": {
+          "to_departure_seconds": 0,
+          "to_departure_level": null,
+          "level_reason": "KAC congestion publishes three stages; no fourth-stage congestion level"
+        },
+        "provider_stage_d_seconds": 0,
+        "provider_stage_d_mapping": "boarding_to_aircraft_departure",
+        "total_seconds": 180,
+        "overall_level": 0,
+        "operating": false
+      },
+      "departures_30m": 0,
+      "delayed_departures_30m": 0,
+      "cancelled_departures_30m": 0,
+      "timetable_departures_30m": 0,
+      "timetable_minus_live_departures_30m": 0,
+      "departure_window": {
+        "start": "2026-10-31T17:30:56.347756+09:00",
+        "end": "2026-10-31T18:00:56.347756+09:00"
+      },
+      "flights_in_requested_window": [
+        {
+          "flight_id": "KE1579",
+          "scheduled_at": "2026-10-31T17:15:00+09:00",
+          "estimated_at": "2026-10-31T17:25:00+09:00",
+          "status": "탑승중",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013486051"
+        },
+        {
+          "flight_id": "LJ7587",
+          "scheduled_at": "2026-10-31T18:15:00+09:00",
+          "estimated_at": "2026-10-31T18:15:00+09:00",
+          "status": "수속중",
+          "destination_iata": "CJU",
+          "destination_name": "제주",
+          "source_flight_id": "0000000000000013358721"
+        }
+      ],
+      "schedule_in_departure_window": [],
+      "parking": {
+        "capacity": 1374,
+        "occupied": 1314,
+        "available": 60,
+        "occupancy_ratio": 0.956332,
+        "facilities": [
+          {
+            "name": "여객주차장",
+            "occupied": 1301,
+            "capacity": 1361,
+            "entries": 472,
+            "exits": 339
+          },
+          {
+            "name": "화물주차장",
+            "occupied": 13,
+            "capacity": 13,
+            "entries": 26,
+            "exits": 26
+          }
+        ],
+        "provider_congestion": {
+          "capacity": 1374,
+          "occupied": 1314,
+          "facilities": [
+            {
+              "name": "여객주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "95.59%",
+              "provider_degree_percent": 95.59,
+              "occupied": 1301,
+              "capacity": 1361
+            },
+            {
+              "name": "화물주차장",
+              "provider_level": "만차",
+              "provider_degree_raw": "100%",
+              "provider_degree_percent": 100.0,
+              "occupied": 13,
+              "capacity": 13
+            }
+          ]
+        },
+        "realtime_minus_congestion_occupied": 0
+      },
+      "weather": {
+        "observed_at": "2026-10-31T08:00:00+00:00",
+        "metar": null,
+        "temperature_c": 19.0,
+        "dewpoint_c": 2.0,
+        "qnh_hpa": 1020.0,
+        "wind_direction_deg": 320.0,
+        "wind_speed": 6.0,
+        "wind_gust": 16.0,
+        "visibility_m": null,
+        "present_weather": null
+      },
+      "weather_warnings": [],
+      "calendar": {
+        "local_date": "2026-10-31",
+        "weekday_iso": 6,
+        "weekday_name": "Saturday",
+        "is_weekend": true,
+        "is_holiday": false,
+        "holiday_name": null,
+        "season": "autumn",
+        "holiday_calendar_version": "kr-official-2026-v1"
+      },
+      "source_timestamps": {
+        "process_time": "2026-10-31T02:55:00+09:00",
+        "congestion": "2026-10-31T02:55:00+09:00",
+        "parking": "2026-10-31T17:30:03+09:00",
+        "parking_congestion": "2026-10-31T17:30:03+09:00",
+        "flight_status": "2026-10-31T17:31:06+09:00",
+        "flight_schedule": null,
+        "weather": "2026-10-31T08:00:00+00:00"
+      },
+      "source_status": {
+        "process_time": "DUPLICATE",
+        "congestion": "DUPLICATE",
+        "flight_status": "OK",
+        "flight_schedule": "DUPLICATE",
+        "parking": "OK",
+        "parking_congestion": "OK",
+        "weather": "DUPLICATE",
+        "weather_warning": "DUPLICATE"
+      },
+      "missing_sections": [],
+      "quality_status": "OK",
+      "record_hash": "25c9043afd815fbfed78b69787b1e7f8f40f1407b5ca8e09a048609ec607b1d5"
+    }
+  ],
+  "summary": {
+    "airports": 5,
+    "sources_due_or_skipped": 22,
+    "sources_succeeded": 22,
+    "sources_partial": 0,
+    "sources_skipped_not_due": 0,
+    "new_payloads": 7,
+    "duplicates": 15,
+    "errors": 0,
+    "gzip_bytes": 7327
+  },
+  "health": {
+    "schedule": {
+      "status": "OK",
+      "cadence_seconds": 900,
+      "previous_run_at": "2026-10-31T08:15:50.300013+00:00",
+      "elapsed_seconds": 906,
+      "late_by_seconds": 6,
+      "missed_intervals": 0
+    },
+    "source_gaps": [],
+    "requests": {
+      "total_retries": 0,
+      "max_latency_ms": 4180,
+      "missing_sections": 0
+    },
+    "storage": {
+      "new_gzip_bytes": 7327,
+      "cumulative_new_gzip_bytes": 49246334,
+      "migration_threshold_bytes": 500000000,
+      "status": "OK"
+    },
+    "workflow": {
+      "failure": false,
+      "reasons": []
+    }
+  },
+  "quota_budget": {
+    "cadence_minutes": 15,
+    "weather_minutes": 30,
+    "services": {
+      "kac_airport_process_time": {
+        "requests_per_run": 2,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 192,
+        "quota_utilization_pct": 3.84,
+        "headroom": 4808
+      },
+      "kac_airport_congestion": {
+        "requests_per_run": 2,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 192,
+        "quota_utilization_pct": 3.84,
+        "headroom": 4808
+      },
+      "kac_parking_realtime_status": {
+        "requests_per_run": 1,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 96,
+        "quota_utilization_pct": 1.92,
+        "headroom": 4904
+      },
+      "kac_parking_congestion": {
+        "requests_per_run": 1,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 96,
+        "quota_utilization_pct": 1.92,
+        "headroom": 4904
+      },
+      "kac_flight_status": {
+        "requests_per_run": 5,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 480,
+        "quota_utilization_pct": 9.6,
+        "headroom": 4520
+      },
+      "kac_flight_schedule": {
+        "requests_per_run": 15,
+        "runs_per_day": 96,
+        "quota": 5000,
+        "requests_per_day": 1440,
+        "quota_utilization_pct": 28.8,
+        "headroom": 3560
+      },
+      "kma_api_hub_combined": {
+        "requests_per_run": 6,
+        "runs_per_day": 48,
+        "quota": 20000,
+        "requests_per_day": 288,
+        "quota_utilization_pct": 1.44,
+        "headroom": 19712
+      }
+    },
+    "totals": {
+      "kac_requests_per_day": 2496,
+      "kma_requests_per_day": 288,
+      "all_requests_per_day": 2784,
+      "requests_60_days": 167040,
+      "requests_90_days": 250560
+    }
+  }
+}
